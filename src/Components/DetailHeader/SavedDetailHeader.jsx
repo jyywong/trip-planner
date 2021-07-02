@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import DetailHeaderBase from './DetailHeaderBase';
 import EditLocationIcon from '@material-ui/icons/EditLocation';
 import { Box, Typography } from '@material-ui/core';
@@ -20,16 +21,18 @@ const useStyles = makeStyles({
 	}
 });
 const SavedDetailHeader = ({ collapseTimeline }) => {
+	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
+	const stop = useSelector((state) => state.tripStop.stops.find((stop) => stop.id === selectedItem));
 	const classes = useStyles();
 	return (
 		<React.Fragment>
 			<DetailHeaderBase collapseTimeline={collapseTimeline}>
 				<Box display="flex" alignItems="flex-end" width="100%">
 					<Typography className={classes.h3White} variant="h3">
-						Title
+						{selectedItem !== 0 && stop.details.title}
 					</Typography>
 					<Typography className={classes.h5White} variant="h5">
-						6:30am
+						{selectedItem !== 0 && stop.time}
 					</Typography>
 					<Box display="flex" marginLeft="auto">
 						<EditLocationIcon className={classes.whiteSVG} />

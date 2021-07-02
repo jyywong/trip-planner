@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 	}
 });
 
-const NewDetailHeader = ({ collapseTimeline }) => {
+const NewDetailHeader = ({ formValues, setFormValues, collapseTimeline }) => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
@@ -32,12 +32,19 @@ const NewDetailHeader = ({ collapseTimeline }) => {
 				{/* <Typography variant="h2">Lunch</Typography> */}
 				<form noValidate>
 					<Box display="flex" alignItems="flex-end">
-						<TextField className={classes.root} label="Event name" />
+						<TextField
+							className={classes.root}
+							label="Event name"
+							value={formValues.name}
+							onChange={(e) => setFormValues({ ...formValues, name: e.target.value })}
+						/>
 						<TextField
 							type="time"
 							label="Arrive at"
-							defaultValue="12:00"
+							// defaultValue="12:00"
 							InputLabelProps={{ shrink: true }}
+							value={formValues.time}
+							onChange={(e) => setFormValues({ ...formValues, time: e.target.value })}
 						/>
 					</Box>
 				</form>

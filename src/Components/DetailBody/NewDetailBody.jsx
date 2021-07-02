@@ -10,7 +10,7 @@ const useStyles = makeStyles({
 		}
 	}
 });
-const NewDetailBody = ({ collapseTimeline }) => {
+const NewDetailBody = ({ createNewStop, formValues, setFormValues, collapseTimeline }) => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
@@ -22,7 +22,15 @@ const NewDetailBody = ({ collapseTimeline }) => {
 				width="100%"
 				height="50%"
 			>
-				<TextField className={classes.root} multiline label="Details" rows={14} variant="outlined" />
+				<TextField
+					className={classes.root}
+					multiline
+					label="Details"
+					rows={14}
+					variant="outlined"
+					value={formValues.details}
+					onChange={(e) => setFormValues({ ...formValues, details: e.target.value })}
+				/>
 			</Box>
 			<Box
 				display={collapseTimeline ? 'flex' : 'none'}
@@ -33,7 +41,7 @@ const NewDetailBody = ({ collapseTimeline }) => {
 				justifyContent="flex-end"
 				alignItems="flex-end"
 			>
-				<Button variant="outlined" color="primary" size="large">
+				<Button variant="outlined" color="primary" size="large" onClick={createNewStop}>
 					Create
 				</Button>
 				<Box ml={2}>

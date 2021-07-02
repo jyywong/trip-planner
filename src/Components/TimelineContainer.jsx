@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import DetailComp from './DetailComp';
+import { useSelector } from 'react-redux';
 
 import { Box, Typography } from '@material-ui/core';
 import TimelineComp from './TimelineComp';
@@ -16,7 +16,8 @@ const useStyles = makeStyles({
 	}
 });
 const TimelineContainer = () => {
-	const [ collapseTimeline, setCollapseTimeline ] = useState(false);
+	const [ selectedItem, setSelectedItem ] = useState({});
+	const collapseTimeline = useSelector((state) => state.timelineExpand);
 	const classes = useStyles();
 	return (
 		<React.Fragment>
@@ -34,11 +35,14 @@ const TimelineContainer = () => {
 						<Typography variant="h2">Name of Trip</Typography>
 					</Box>
 					<Box>
-						<TimelineComp collapseTimeline={collapseTimeline} setCollapseTimeline={setCollapseTimeline} />
+						<TimelineComp
+							selectedItem={selectedItem}
+							setSelectedItem={setSelectedItem}
+							collapseTimeline={collapseTimeline}
+						/>
 					</Box>
 				</Box>
 			</div>
-			<DetailComp collapseTimeline={collapseTimeline} />
 		</React.Fragment>
 	);
 };

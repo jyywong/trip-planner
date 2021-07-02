@@ -38,6 +38,7 @@ function Main() {
 				}}
 			>
 				<TimelineContainer />
+				<DetailComp />
 			</div>
 		</React.Fragment>
 	);

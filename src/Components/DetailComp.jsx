@@ -1,11 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import DetailHeaderPicture from './DetailHeaderPicture';
 import NewDetailHeader from './DetailHeader/NewDetailHeader';
 import SavedDetailHeader from './DetailHeader/SavedDetailHeader';
 import NewDetailBody from './DetailBody/NewDetailBody';
-import SavedDetailBody from './DetailBody/SavedDetailBody';
+import SavedDetailBase from './DetailBody/SavedDetailBase';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
+import NewStopFormComp from './NewStopFormComp';
 
 const useStyles = makeStyles({
 	expandGrid: {
@@ -19,7 +21,9 @@ const useStyles = makeStyles({
 		visibility: 'hidden'
 	}
 });
-const DetailComp = ({ collapseTimeline }) => {
+const DetailComp = () => {
+	const collapseTimeline = useSelector((state) => state.timelineExpand);
+	const UIMode = useSelector((state) => state.UIState.mode);
 	const classes = useStyles();
 	return (
 		<React.Fragment>
@@ -34,10 +38,16 @@ const DetailComp = ({ collapseTimeline }) => {
 					boxShadow={3}
 				>
 					<DetailHeaderPicture collapseTimeline={collapseTimeline} />
-					{/* <NewDetailHeader collapseTimeline={collapseTimeline} /> */}
-					<SavedDetailHeader collapseTimeline={collapseTimeline} />
-					{/* <NewDetailBody collapseTimeline={collapseTimeline} /> */}
-					<SavedDetailBody collapseTimeline={collapseTimeline} />
+					{UIMode === 'Detail' ? (
+						<React.Fragment>
+							<SavedDetailHeader collapseTimeline={collapseTimeline} />
+							<SavedDetailBase collapseTimeline={collapseTimeline} />
+						</React.Fragment>
+					) : (
+						<React.Fragment>
+							<NewStopFormComp collapseTimeline={collapseTimeline} />
+						</React.Fragment>
+					)}
 				</Box>
 			</div>
 		</React.Fragment>
