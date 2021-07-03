@@ -30,28 +30,27 @@ const NewDetailHeader = ({ formValues, setFormValues, collapseTimeline }) => {
 		<React.Fragment>
 			<DetailHeaderBase collapseTimeline={collapseTimeline}>
 				{/* <Typography variant="h2">Lunch</Typography> */}
-				<form noValidate>
-					<Box display="flex" alignItems="flex-end">
-						<TextField
-							className={classes.root}
-							label="Event name"
-							value={formValues.name}
-							onChange={(e) => setFormValues({ ...formValues, name: e.target.value })}
-						/>
-						<TextField
-							type="time"
-							label="Arrive at"
-							// defaultValue="12:00"
-							InputLabelProps={{ shrink: true }}
-							value={formValues.time}
-							onChange={(e) => setFormValues({ ...formValues, time: e.target.value })}
-						/>
-					</Box>
-				</form>
+
+				<Box display="flex" alignItems="flex-end">
+					<TextField
+						className={classes.root}
+						label="Event name"
+						value={formValues.name}
+						onChange={(e) => setFormValues({ ...formValues, name: e.target.value })}
+					/>
+					<TextField
+						type="time"
+						label="Arrive at"
+						// defaultValue="12:00"
+						InputLabelProps={{ shrink: true }}
+						value={formValues.time}
+						onChange={(e) => setFormValues({ ...formValues, time: e.target.value })}
+					/>
+				</Box>
 
 				<Box display="flex" alignItems="center" ml="auto">
 					<EditLocationIcon />
-					<Typography variant="subtitle1">Location</Typography>
+					<Typography variant="caption">{formValues.location.address}</Typography>
 				</Box>
 			</DetailHeaderBase>
 		</React.Fragment>

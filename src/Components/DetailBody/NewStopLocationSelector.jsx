@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { Box } from '@material-ui/core';
-import LocationDetails from './LocationDetails';
+import React, { useState, useRef, useCallback } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import LocationSearchBar from './LocationSearchBar';
+
+import { Box } from '@material-ui/core';
 const containerStyle = {
 	width: '100%',
 	height: '100%'
@@ -14,8 +14,7 @@ const center = {
 };
 
 const libraries = [ 'places' ];
-
-const SavedLocationBody = () => {
+const NewStopLocationSelector = ({ collapseTimeline, formValues, setFormValues }) => {
 	const [ currentMapMarker, setCurrentMapMarker ] = useState(null);
 	const { isLoaded } = useJsApiLoader({
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -40,21 +39,23 @@ const SavedLocationBody = () => {
 		mapRef.current.setZoom(14);
 	}, []);
 
+	const onChooseLocation = (address, place_id, latLng) => {
+		setFormValues((current) => ({ ...current, location: { address, place_id, latLng } }));
+	};
+
 	return (
 		<React.Fragment>
-			<Box boxSizing="border-box" padding={4} display="flex" flexDirection="column" width="100%" height="45%">
-				<LocationDetails />
-				{isLoaded && <LocationSearchBar panTo={panTo} setCurrentMapMarker={setCurrentMapMarker} />}
+			<Box display={collapseTimeline ? 'flex' : 'none'} boxSizing="border-box" padding={2}>
+				{isLoaded && (
+					<LocationSearchBar
+						panTo={panTo}
+						formValues={formValues}
+						setCurrentMapMarker={setCurrentMapMarker}
+						onChooseLocation={onChooseLocation}
+					/>
+				)}
 			</Box>
-			<Box
-				boxSizing="border-box"
-				display="flex"
-				width="100%"
-				flexGrow="1"
-				bgcolor="pink"
-				borderRadius="0 0 10px 10px"
-				overflow="hidden"
-			>
+			<Box display={collapseTimeline ? 'flex' : 'none'} boxSizing="border-box" width="100%" height="35%">
 				{isLoaded ? (
 					<GoogleMap
 						mapContainerStyle={containerStyle}
@@ -77,4 +78,4 @@ const SavedLocationBody = () => {
 	);
 };
 
-export default SavedLocationBody;
+export default NewStopLocationSelector;

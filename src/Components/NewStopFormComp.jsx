@@ -5,7 +5,12 @@ import NewDetailHeader from './DetailHeader/NewDetailHeader';
 import NewDetailBody from './DetailBody/NewDetailBody';
 const NewStopFormComp = ({ collapseTimeline }) => {
 	const dispatch = useDispatch();
-	const [ formValues, setFormValues ] = useState({ name: '', time: '', details: '', location: '' });
+	const [ formValues, setFormValues ] = useState({
+		name: '',
+		time: '',
+		details: '',
+		location: { address: '', place_id: '', latLng: {} }
+	});
 	const createNewStop = () => {
 		const id = Math.random() * 100;
 		const newStop = {
@@ -14,7 +19,8 @@ const NewStopFormComp = ({ collapseTimeline }) => {
 			details: {
 				title: formValues.name,
 				body: formValues.details
-			}
+			},
+			location: formValues.location
 		};
 		dispatch(createStop(newStop));
 	};

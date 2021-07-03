@@ -1,43 +1,40 @@
-import React from 'react';
-import { Box, TextField, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Box, TextField, Button, Tabs, Tab } from '@material-ui/core';
+import NewStopDetailsTextBox from './NewStopDetailsTextBox';
+import NewStopLocationSelector from './NewStopLocationSelector';
 
-const useStyles = makeStyles({
-	root: {
-		width: '100%',
-		'& .MuiInputBase-root': {
-			height: '75%'
-		}
-	}
-});
 const NewDetailBody = ({ createNewStop, formValues, setFormValues, collapseTimeline }) => {
-	const classes = useStyles();
+	const [ tabValue, setTabValue ] = useState(0);
+	const handleTabChange = (event, newValue) => {
+		setTabValue(newValue);
+	};
 	return (
 		<React.Fragment>
-			<Box
-				display={collapseTimeline ? 'flex' : 'none'}
-				boxSizing="border-box"
-				paddingX={4}
-				padding={2}
-				width="100%"
-				height="50%"
-			>
-				<TextField
-					className={classes.root}
-					multiline
-					label="Details"
-					rows={14}
-					variant="outlined"
-					value={formValues.details}
-					onChange={(e) => setFormValues({ ...formValues, details: e.target.value })}
-				/>
+			<Box display={collapseTimeline ? 'flex' : 'none'} width="100%" justifyContent="center">
+				<Tabs value={tabValue} onChange={handleTabChange}>
+					<Tab label="Details" />
+					<Tab label="Location" />
+				</Tabs>
 			</Box>
+			{tabValue === 0 ? (
+				<NewStopDetailsTextBox
+					collapseTimeline={collapseTimeline}
+					formValues={formValues}
+					setFormValues={setFormValues}
+				/>
+			) : (
+				<NewStopLocationSelector
+					formValues={formValues}
+					setFormValues={setFormValues}
+					collapseTimeline={collapseTimeline}
+				/>
+			)}
 			<Box
 				display={collapseTimeline ? 'flex' : 'none'}
 				boxSizing="border-box"
 				padding={3}
 				width="100%"
-				height="15%"
+				flexGrow="1"
 				justifyContent="flex-end"
 				alignItems="flex-end"
 			>

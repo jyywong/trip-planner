@@ -1,18 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
-import Welcome from './Pages/Welcome';
-import NewTrip from './Pages/NewTrip';
+import React, { useRef, useEffect } from 'react';
 import DetailComp from './Components/DetailComp';
 import TimelineContainer from './Components/TimelineContainer';
-import TimelineComp from './Components/TimelineComp';
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Typography } from '@material-ui/core';
 import { wrapGrid } from 'animate-css-grid';
-
-const useStyles = makeStyles({
-	whiteText: {
-		color: 'white'
-	}
-});
 
 function Main() {
 	const gridRef = useRef(null);

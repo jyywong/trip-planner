@@ -34,6 +34,11 @@ const initialState = {
 			details: {
 				title: 'Repeat',
 				body: 'Because this is the life you love'
+			},
+			location: {
+				address: '',
+				place_id: '',
+				latLng: {}
 			}
 		}
 	]
