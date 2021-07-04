@@ -1,12 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { setHours, setMinutes } from 'date-fns';
+const today = new Date();
 
 const initialState = {
 	selectedStop: 0,
+	date: today.toISOString(),
 
 	stops: [
 		{
 			id: 1,
-			time: '9:30am',
+			time: setMinutes(setHours(today, 9), 30).toISOString(),
 			details: {
 				title: 'Eat',
 				body: 'Because you need strength'
@@ -14,7 +17,7 @@ const initialState = {
 		},
 		{
 			id: 2,
-			time: '10:00am',
+			time: setMinutes(setHours(today, 10), 0).toISOString(),
 			details: {
 				title: 'Code',
 				body: "Because it's awesome"
@@ -22,7 +25,7 @@ const initialState = {
 		},
 		{
 			id: 3,
-			time: '7:00pm',
+			time: setMinutes(setHours(today, 19), 0).toISOString(),
 			details: {
 				title: 'Sleep',
 				body: 'Because you need rest'
@@ -30,7 +33,7 @@ const initialState = {
 		},
 		{
 			id: 4,
-			time: '9:30am',
+			time: setMinutes(setHours(today, 9), 30).toISOString(),
 			details: {
 				title: 'Repeat',
 				body: 'Because this is the life you love'

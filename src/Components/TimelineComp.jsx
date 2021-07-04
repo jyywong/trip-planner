@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import parseISO from 'date-fns/parseISO';
 import { changeModeToAdd } from '../Slices/UISlice';
 import { collapseTimeline } from '../Slices/TimelineStateSlice';
 import { Box, Typography } from '@material-ui/core';
@@ -12,6 +13,7 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
 import TimelineBlock from './Timeline/TimelineBlock';
+import { compareAsc } from 'date-fns';
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		padding: '6px 16px'
@@ -43,11 +45,15 @@ const TimelineComp = ({ selectedItem, setSelectedItem }) => {
 	const classes = useStyles();
 	const dispatch = useDispatch();
 	const tripStops = useSelector((state) => state.tripStop.stops);
+	const unFrozenTripStops = [ ...tripStops ];
+	const sortTripStopsByTime = (unFrozenTripStops) =>
+		unFrozenTripStops.sort((a, b) => compareAsc(parseISO(a.time), parseISO(b.time)));
 
+	const sortedTripStops = sortTripStopsByTime(unFrozenTripStops);
 	return (
 		<React.Fragment>
 			<Timeline align="alternate">
-				{tripStops.map((item) => (
+				{sortedTripStops.map((item) => (
 					<TimelineBlock
 						key={item.id}
 						id={item.id}

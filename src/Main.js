@@ -22,6 +22,8 @@ function Main() {
 					padding: '1rem',
 					borderRadius: '10px',
 					height: '92vh',
+					maxHeight: '92vh',
+					minHeight: '0',
 					width: '97vw',
 					gridTemplateColumns: 'repeat(8, 1fr)'
 				}}

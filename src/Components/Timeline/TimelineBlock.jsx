@@ -1,4 +1,5 @@
 import React from 'react';
+import { parseISO, format } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeModeToDetail } from '../../Slices/UISlice';
 import { Typography } from '@material-ui/core';
@@ -32,7 +33,7 @@ const TimelineBlock = ({ id, time, details }) => {
 			<TimelineItem>
 				<TimelineOppositeContent>
 					<Typography variant="body2" color="textSecondary">
-						{time}
+						{format(parseISO(time), 'h:mmaaa')}
 					</Typography>
 				</TimelineOppositeContent>
 				<TimelineSeparator>

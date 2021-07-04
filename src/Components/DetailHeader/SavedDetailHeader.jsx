@@ -1,4 +1,5 @@
 import React from 'react';
+import { format, parseISO } from 'date-fns';
 import { useSelector } from 'react-redux';
 import DetailHeaderBase from './DetailHeaderBase';
 import EditLocationIcon from '@material-ui/icons/EditLocation';
@@ -32,7 +33,7 @@ const SavedDetailHeader = ({ collapseTimeline }) => {
 						{selectedItem !== 0 && stop.details.title}
 					</Typography>
 					<Typography className={classes.h5White} variant="h5">
-						{selectedItem !== 0 && stop.time}
+						{selectedItem !== 0 && format(parseISO(stop.time), 'h:mmaaa')}
 					</Typography>
 					<Box display="flex" marginLeft="auto">
 						<EditLocationIcon className={classes.whiteSVG} />

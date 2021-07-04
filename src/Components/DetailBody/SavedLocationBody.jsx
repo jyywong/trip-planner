@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import { Box } from '@material-ui/core';
 import LocationDetails from './LocationDetails';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import LocationSearchBar from './LocationSearchBar';
+
 const containerStyle = {
 	width: '100%',
 	height: '100%'
@@ -44,7 +44,6 @@ const SavedLocationBody = () => {
 		<React.Fragment>
 			<Box boxSizing="border-box" padding={4} display="flex" flexDirection="column" width="100%" height="45%">
 				<LocationDetails />
-				{isLoaded && <LocationSearchBar panTo={panTo} setCurrentMapMarker={setCurrentMapMarker} />}
 			</Box>
 			<Box
 				boxSizing="border-box"

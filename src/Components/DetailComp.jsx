@@ -13,12 +13,14 @@ const useStyles = makeStyles({
 	expandGrid: {
 		gridColumn: '4/9',
 		visibility: 'visible',
-		gridRow: '1/2'
+		gridRow: '1/2',
+		display: 'flex'
 	},
 	collapsedGrid: {
 		gridColumn: '9/9',
 		gridRow: '1/2',
-		visibility: 'hidden'
+		visibility: 'hidden',
+		display: 'flex'
 	}
 });
 const DetailComp = () => {
@@ -30,8 +32,8 @@ const DetailComp = () => {
 			<div className={collapseTimeline ? classes.expandGrid : classes.collapsedGrid}>
 				<Box
 					display="flex"
+					flexGrow="1"
 					flexDirection="column"
-					height="100%"
 					alignItems="center"
 					borderRadius="10px"
 					m={1}
