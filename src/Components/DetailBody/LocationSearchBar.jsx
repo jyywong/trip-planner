@@ -25,6 +25,7 @@ const LocationSearchBar = ({ panTo, formValues, setCurrentMapMarker, onChooseLoc
 				try {
 					const results = await getGeocode({ address });
 					const { lat, lng } = await getLatLng(results[0]);
+
 					panTo({ lat, lng });
 					setCurrentMapMarker({ lat, lng });
 					onChooseLocation(address);
@@ -44,6 +45,7 @@ const LocationSearchBar = ({ panTo, formValues, setCurrentMapMarker, onChooseLoc
 						const results = await getGeocode({ address });
 						console.log(results[0]);
 						const { lat, lng } = await getLatLng(results[0]);
+
 						panTo({ lat, lng });
 						setCurrentMapMarker({ lat, lng });
 						onChooseLocation(address, results[0].place_id, { lat, lng });

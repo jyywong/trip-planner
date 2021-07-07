@@ -13,6 +13,12 @@ const initialState = {
 			details: {
 				title: 'Eat',
 				body: 'Because you need strength'
+			},
+			location: {
+				name: "McDonald's",
+				address: '5995 Mavis Rd, Mississauga, ON L5R 3T7, Canada',
+				place_id: 'ChIJOYmf5_VAK4gR5jyD_UnsFJo',
+				latLng: [ '43.6124365', '-79.6947028' ]
 			}
 		},
 		{
@@ -21,6 +27,12 @@ const initialState = {
 			details: {
 				title: 'Code',
 				body: "Because it's awesome"
+			},
+			location: {
+				name: 'Streetsville Library',
+				address: '112 Queen St S, Mississauga, ON L5M 1K8, Canada',
+				place_id: 'ChIJ0dswc7hBK4gRedQAX5fxhOM',
+				latLng: [ '43.58395566925499', '-79.71705160190031' ]
 			}
 		},
 		{
@@ -29,19 +41,12 @@ const initialState = {
 			details: {
 				title: 'Sleep',
 				body: 'Because you need rest'
-			}
-		},
-		{
-			id: 4,
-			time: setMinutes(setHours(today, 9), 30).toISOString(),
-			details: {
-				title: 'Repeat',
-				body: 'Because this is the life you love'
 			},
 			location: {
-				address: '',
-				place_id: '',
-				latLng: {}
+				name: 'Hotel ALT',
+				address: 'Hotel ALT Toronto Pearson, 6080 Viscount Rd, Mississauga, ON L4V 0A1, Canada',
+				place_id: 'ChIJgfwDnno5K4gR-4yrgtGm3UA',
+				latLng: [ '43.68992430069423', '-79.61469001539221' ]
 			}
 		}
 	]

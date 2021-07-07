@@ -35,6 +35,8 @@ const NewStopLocationSelector = ({ collapseTimeline, formValues, setFormValues }
 	const mapRef = useRef();
 
 	const panTo = useCallback(({ lat, lng }) => {
+		console.log(lat, lng);
+		console.log(typeof lat, typeof lng);
 		mapRef.current.panTo({ lat, lng });
 		mapRef.current.setZoom(14);
 	}, []);

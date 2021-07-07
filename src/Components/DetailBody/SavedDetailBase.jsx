@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Box, Typography, Tabs, Tab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import SavedDetailBody from './SavedDetailBody';
 import SavedLocationBody from './SavedLocationBody';
+import NextStopBody from './NextStop/NextStopBody';
 const useStyles = makeStyles({
 	noDisplay: {
 		display: 'none'
@@ -20,6 +21,14 @@ const SavedDetailBase = ({ collapseTimeline }) => {
 	const handleTabChange = (event, newValue) => {
 		setTabValue(newValue);
 	};
+
+	useEffect(
+		() => {
+			console.log('saveddetailbase being updated');
+			setTabValue(0);
+		},
+		[ selectedItem ]
+	);
 	return (
 		<React.Fragment>
 			<Box display={collapseTimeline ? 'flex' : 'none'} width="100%" justifyContent="center">
@@ -51,7 +60,7 @@ const SavedDetailBase = ({ collapseTimeline }) => {
 						case 1:
 							return <SavedLocationBody />;
 						case 2:
-							return 'Next Stop';
+							return <NextStopBody />;
 					}
 				})()}
 			</Box>

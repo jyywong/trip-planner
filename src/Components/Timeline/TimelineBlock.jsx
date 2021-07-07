@@ -13,6 +13,7 @@ import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import Paper from '@material-ui/core/Paper';
+import { collapseTimeline } from '../../Slices/TimelineStateSlice';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -26,6 +27,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TimelineBlock = ({ id, time, details }) => {
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
+	const timelineExpand = useSelector((state) => state.timelineExpand);
+	const uiMode = useSelector((state) => state.UIState.mode);
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	return (
@@ -46,9 +49,17 @@ const TimelineBlock = ({ id, time, details }) => {
 					onClick={() => {
 						dispatch(selectStop(id));
 						dispatch(changeModeToDetail());
+						if (!timelineExpand) {
+							dispatch(collapseTimeline());
+						}
 					}}
 				>
-					<Paper elevation={3} className={selectedItem === id ? classes.highlightedContainer : classes.paper}>
+					<Paper
+						elevation={3}
+						className={
+							uiMode === 'Detail' && selectedItem === id ? classes.highlightedContainer : classes.paper
+						}
+					>
 						<Typography variant="h6" component="h1">
 							{details.title}
 						</Typography>

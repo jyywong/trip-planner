@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 		'&::-webkit-scrollbar-thumb': {
 			backgroundColor: '#a3a3a3',
 			borderRadius: '10px',
-			border: '3px solid #f2f2f2'
+			border: '5px solid #f2f2f2'
 		}
 	}
 }));
