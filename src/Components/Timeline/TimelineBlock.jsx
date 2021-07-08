@@ -13,7 +13,7 @@ import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import Paper from '@material-ui/core/Paper';
-import { collapseTimeline } from '../../Slices/TimelineStateSlice';
+import { openDetails } from '../../Slices/TimelineStateSlice';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -50,7 +50,7 @@ const TimelineBlock = ({ id, time, details }) => {
 						dispatch(selectStop(id));
 						dispatch(changeModeToDetail());
 						if (!timelineExpand) {
-							dispatch(collapseTimeline());
+							dispatch(openDetails());
 						}
 					}}
 				>

@@ -4,7 +4,7 @@ import { setHours, setMinutes, parseISO } from 'date-fns';
 import { createStop } from '../Slices/TripStopSlice';
 import NewDetailHeader from './DetailHeader/NewDetailHeader';
 import NewDetailBody from './DetailBody/NewDetailBody';
-const NewStopFormComp = ({ collapseTimeline }) => {
+const NewStopFormComp = ({ timelineState }) => {
 	const dispatch = useDispatch();
 	const today = useSelector((state) => state.tripStop.date);
 	const [ formValues, setFormValues ] = useState({
@@ -37,16 +37,12 @@ const NewStopFormComp = ({ collapseTimeline }) => {
 	};
 	return (
 		<React.Fragment>
-			<NewDetailHeader
-				formValues={formValues}
-				setFormValues={setFormValues}
-				collapseTimeline={collapseTimeline}
-			/>
+			<NewDetailHeader formValues={formValues} setFormValues={setFormValues} timelineState={timelineState} />
 			<NewDetailBody
 				createNewStop={createNewStop}
 				formValues={formValues}
 				setFormValues={setFormValues}
-				collapseTimeline={collapseTimeline}
+				timelineState={timelineState}
 			/>
 		</React.Fragment>
 	);

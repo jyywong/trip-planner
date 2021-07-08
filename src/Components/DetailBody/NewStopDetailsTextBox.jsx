@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
 const useStyles = makeStyles({
 	root: {
 		width: '100%',
@@ -9,12 +10,12 @@ const useStyles = makeStyles({
 		}
 	}
 });
-const NewStopDetailsTextBox = ({ collapseTimeline, formValues, setFormValues }) => {
+const NewStopDetailsTextBox = ({ timelineState, formValues, setFormValues }) => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
 			<Box
-				display={collapseTimeline ? 'flex' : 'none'}
+				display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
 				boxSizing="border-box"
 				padding={2}
 				width="100%"

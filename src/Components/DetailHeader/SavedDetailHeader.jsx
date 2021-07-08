@@ -21,13 +21,13 @@ const useStyles = makeStyles({
 		color: 'white'
 	}
 });
-const SavedDetailHeader = ({ collapseTimeline }) => {
+const SavedDetailHeader = ({ timelineState }) => {
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
 	const stop = useSelector((state) => state.tripStop.stops.find((stop) => stop.id === selectedItem));
 	const classes = useStyles();
 	return (
 		<React.Fragment>
-			<DetailHeaderBase collapseTimeline={collapseTimeline}>
+			<DetailHeaderBase timelineState={timelineState}>
 				<Box display="flex" alignItems="flex-end" width="100%">
 					<Typography className={classes.h3White} variant="h3">
 						{selectedItem !== 0 && stop.details.title}

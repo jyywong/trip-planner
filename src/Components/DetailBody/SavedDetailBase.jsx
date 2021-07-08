@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core';
 import SavedDetailBody from './SavedDetailBody';
 import SavedLocationBody from './SavedLocationBody';
 import NextStopBody from './NextStop/NextStopBody';
+import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
 const useStyles = makeStyles({
 	noDisplay: {
 		display: 'none'
@@ -13,7 +14,7 @@ const useStyles = makeStyles({
 		display: 'inherit'
 	}
 });
-const SavedDetailBase = ({ collapseTimeline }) => {
+const SavedDetailBase = ({ timelineState }) => {
 	const classes = useStyles();
 	const [ tabValue, setTabValue ] = useState(0);
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
@@ -31,7 +32,11 @@ const SavedDetailBase = ({ collapseTimeline }) => {
 	);
 	return (
 		<React.Fragment>
-			<Box display={collapseTimeline ? 'flex' : 'none'} width="100%" justifyContent="center">
+			<Box
+				display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
+				width="100%"
+				justifyContent="center"
+			>
 				<Tabs value={tabValue} onChange={handleTabChange}>
 					<Tab label="Details" />
 					<Tab label="Location" />
@@ -39,7 +44,7 @@ const SavedDetailBase = ({ collapseTimeline }) => {
 				</Tabs>
 			</Box>
 			<Box
-				display={collapseTimeline ? 'flex' : 'none'}
+				display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
 				boxSizing="border-box"
 				flexDirection="column"
 				width="100%"
@@ -52,7 +57,7 @@ const SavedDetailBase = ({ collapseTimeline }) => {
 							return (
 								<SavedDetailBody
 									selectedItem={selectedItem}
-									collapseTimeline={collapseTimeline}
+									timelineState={timelineState}
 									classes={classes}
 									stop={stop}
 								/>

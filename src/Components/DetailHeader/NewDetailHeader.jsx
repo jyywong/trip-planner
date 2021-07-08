@@ -24,11 +24,11 @@ const useStyles = makeStyles({
 	}
 });
 
-const NewDetailHeader = ({ formValues, setFormValues, collapseTimeline }) => {
+const NewDetailHeader = ({ formValues, setFormValues, timelineState }) => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
-			<DetailHeaderBase collapseTimeline={collapseTimeline}>
+			<DetailHeaderBase timelineState={timelineState}>
 				{/* <Typography variant="h2">Lunch</Typography> */}
 
 				<Box display="flex" alignItems="flex-end">

@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import tripStopReducer from './Slices/TripStopSlice';
-import timelineExpandReducer from './Slices/TimelineStateSlice';
+import timelineStateReducer from './Slices/TimelineStateSlice';
 import UIStateReducer from './Slices/UISlice';
 export default configureStore({
 	reducer: {
-		timelineExpand: timelineExpandReducer,
+		timelineState: timelineStateReducer,
 		tripStop: tripStopReducer,
 		UIState: UIStateReducer
 	}

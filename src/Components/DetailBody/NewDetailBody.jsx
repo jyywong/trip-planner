@@ -2,15 +2,20 @@ import React, { useState } from 'react';
 import { Box, TextField, Button, Tabs, Tab } from '@material-ui/core';
 import NewStopDetailsTextBox from './NewStopDetailsTextBox';
 import NewStopLocationSelector from './NewStopLocationSelector';
+import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
 
-const NewDetailBody = ({ createNewStop, formValues, setFormValues, collapseTimeline }) => {
+const NewDetailBody = ({ createNewStop, formValues, setFormValues, timelineState }) => {
 	const [ tabValue, setTabValue ] = useState(0);
 	const handleTabChange = (event, newValue) => {
 		setTabValue(newValue);
 	};
 	return (
 		<React.Fragment>
-			<Box display={collapseTimeline ? 'flex' : 'none'} width="100%" justifyContent="center">
+			<Box
+				display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
+				width="100%"
+				justifyContent="center"
+			>
 				<Tabs value={tabValue} onChange={handleTabChange}>
 					<Tab label="Details" />
 					<Tab label="Location" />
@@ -18,7 +23,7 @@ const NewDetailBody = ({ createNewStop, formValues, setFormValues, collapseTimel
 			</Box>
 			{tabValue === 0 ? (
 				<NewStopDetailsTextBox
-					collapseTimeline={collapseTimeline}
+					timelineState={timelineState}
 					formValues={formValues}
 					setFormValues={setFormValues}
 				/>
@@ -26,11 +31,11 @@ const NewDetailBody = ({ createNewStop, formValues, setFormValues, collapseTimel
 				<NewStopLocationSelector
 					formValues={formValues}
 					setFormValues={setFormValues}
-					collapseTimeline={collapseTimeline}
+					timelineState={timelineState}
 				/>
 			)}
 			<Box
-				display={collapseTimeline ? 'flex' : 'none'}
+				display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
 				boxSizing="border-box"
 				padding={3}
 				width="100%"

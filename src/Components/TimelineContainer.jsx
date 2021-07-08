@@ -4,11 +4,12 @@ import { useSelector } from 'react-redux';
 import { Box, Typography } from '@material-ui/core';
 import TimelineComp from './TimelineComp';
 import { makeStyles } from '@material-ui/core/styles';
+import { timelineStateComparer } from '../HelperFunction';
 
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
 		gridColumn: '1/9',
-		gridrow: '1/2',
+		gridRow: '1/2',
 		display: 'flex',
 		minHeight: '0'
 	},
@@ -34,11 +35,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TimelineContainer = () => {
 	const [ selectedItem, setSelectedItem ] = useState({});
-	const collapseTimeline = useSelector((state) => state.timelineExpand);
+	const timelineState = useSelector((state) => state.timelineState);
 	const classes = useStyles();
 	return (
 		<React.Fragment>
-			<div className={collapseTimeline ? classes.collapsedGrid : classes.expandGrid}>
+			<div
+				className={timelineStateComparer(
+					timelineState,
+					classes.expandGrid,
+					classes.collapsedGrid,
+					classes.collapsedGrid
+				)}
+			>
 				<Box
 					display="flex"
 					flexGrow="1"
@@ -55,11 +63,7 @@ const TimelineContainer = () => {
 						<Typography variant="h2">Name of Trip</Typography>
 					</Box>
 					<Box className={classes.root} flexBasis="70%" flexGrow="0" overflow="auto" minHeight="0">
-						<TimelineComp
-							selectedItem={selectedItem}
-							setSelectedItem={setSelectedItem}
-							collapseTimeline={collapseTimeline}
-						/>
+						<TimelineComp selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
 					</Box>
 				</Box>
 			</div>

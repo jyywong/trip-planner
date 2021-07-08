@@ -1,11 +1,12 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
+import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
 
-const DetailHeaderBase = ({ collapseTimeline, children }) => {
+const DetailHeaderBase = ({ timelineState, children }) => {
 	return (
 		<React.Fragment>
 			<Box
-				display={collapseTimeline ? 'flex' : 'none'}
+				display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
 				boxSizing="border-box"
 				width="100%"
 				height="15%"

@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import DetailComp from './Components/DetailComp';
 import TimelineContainer from './Components/TimelineContainer';
 import { wrapGrid } from 'animate-css-grid';
+import SuggestionsComp from './Components/Suggestions/SuggestionsComp';
 
 function Main() {
 	const gridRef = useRef(null);
@@ -30,6 +31,7 @@ function Main() {
 			>
 				<TimelineContainer />
 				<DetailComp />
+				<SuggestionsComp />
 			</div>
 		</React.Fragment>
 	);

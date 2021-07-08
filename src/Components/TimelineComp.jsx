@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import parseISO from 'date-fns/parseISO';
 import { changeModeToAdd } from '../Slices/UISlice';
-import { collapseTimeline } from '../Slices/TimelineStateSlice';
+import { openDetails } from '../Slices/TimelineStateSlice';
 import { Box, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Timeline from '@material-ui/lab/Timeline';
@@ -69,7 +69,7 @@ const TimelineComp = ({ selectedItem, setSelectedItem }) => {
 							className={classes.addCircle}
 							color="secondary"
 							onClick={() => {
-								dispatch(collapseTimeline());
+								dispatch(openDetails());
 								dispatch(changeModeToAdd());
 							}}
 						>

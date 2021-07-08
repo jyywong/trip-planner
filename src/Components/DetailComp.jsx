@@ -1,35 +1,51 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { openSuggestions } from '../Slices/TimelineStateSlice';
 import DetailHeaderPicture from './DetailHeaderPicture';
 import NewDetailHeader from './DetailHeader/NewDetailHeader';
 import SavedDetailHeader from './DetailHeader/SavedDetailHeader';
 import NewDetailBody from './DetailBody/NewDetailBody';
 import SavedDetailBase from './DetailBody/SavedDetailBase';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box } from '@material-ui/core';
+import { Box, Button } from '@material-ui/core';
 import NewStopFormComp from './NewStopFormComp';
+import { displayOnlyIfTimelineStateIsNotTimelineOnly, timelineStateComparer } from '../HelperFunction';
 
 const useStyles = makeStyles({
+	collapsedGrid: {
+		gridColumn: '9/9',
+		gridRow: '1/2',
+		visibility: 'hidden',
+		display: 'flex'
+	},
 	expandGrid: {
 		gridColumn: '4/9',
 		visibility: 'visible',
 		gridRow: '1/2',
 		display: 'flex'
 	},
-	collapsedGrid: {
-		gridColumn: '9/9',
+	middleGrid: {
+		gridColumn: '4/7',
+		visibility: 'visible',
 		gridRow: '1/2',
-		visibility: 'hidden',
 		display: 'flex'
 	}
 });
 const DetailComp = () => {
-	const collapseTimeline = useSelector((state) => state.timelineExpand);
+	const dispatch = useDispatch();
+	const timelineState = useSelector((state) => state.timelineState);
 	const UIMode = useSelector((state) => state.UIState.mode);
 	const classes = useStyles();
 	return (
 		<React.Fragment>
-			<div className={collapseTimeline ? classes.expandGrid : classes.collapsedGrid}>
+			<div
+				className={timelineStateComparer(
+					timelineState,
+					classes.collapsedGrid,
+					classes.expandGrid,
+					classes.middleGrid
+				)}
+			>
 				<Box
 					display="flex"
 					flexGrow="1"
@@ -39,15 +55,25 @@ const DetailComp = () => {
 					m={1}
 					boxShadow={3}
 				>
-					<DetailHeaderPicture collapseTimeline={collapseTimeline} />
+					<DetailHeaderPicture timelineState={timelineState} />
+					<Box display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}>
+						<Button
+							onClick={() => {
+								dispatch(openSuggestions());
+							}}
+						>
+							Suggestions
+						</Button>
+					</Box>
+
 					{UIMode === 'Detail' ? (
 						<React.Fragment>
-							<SavedDetailHeader collapseTimeline={collapseTimeline} />
-							<SavedDetailBase collapseTimeline={collapseTimeline} />
+							<SavedDetailHeader timelineState={timelineState} />
+							<SavedDetailBase timelineState={timelineState} />
 						</React.Fragment>
 					) : (
 						<React.Fragment>
-							<NewStopFormComp collapseTimeline={collapseTimeline} />
+							<NewStopFormComp timelineState={timelineState} />
 						</React.Fragment>
 					)}
 				</Box>

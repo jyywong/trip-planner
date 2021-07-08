@@ -2,6 +2,7 @@ import React from 'react';
 import { Box } from '@material-ui/core';
 import WallpaperIcon from '@material-ui/icons/Wallpaper';
 import { makeStyles } from '@material-ui/core';
+import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../HelperFunction';
 
 const useStyles = makeStyles({
 	whiteIcon: {
@@ -11,12 +12,12 @@ const useStyles = makeStyles({
 	}
 });
 
-const DetailHeaderPicture = ({ collapseTimeline }) => {
+const DetailHeaderPicture = ({ timelineState }) => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
 			<Box
-				display={collapseTimeline ? 'flex' : 'none'}
+				display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
 				justifyContent="center"
 				alignItems="center"
 				height="20%"

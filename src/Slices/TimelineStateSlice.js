@@ -1,18 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = false;
+const initialState = 'TIMELINE_ONLY';
 
-export const timelineExpand = createSlice({
-	name: 'timelineExpand',
+export const timelineState = createSlice({
+	name: 'timelineState',
 	initialState,
 	reducers: {
-		collapseTimeline: (state) => {
-			state = true;
+		openDetails: (state) => {
+			state = 'TIMELINE_DETAILS';
+			return state;
+		},
+		openSuggestions: (state) => {
+			state = 'TIMELINE_DETAILS_SUGGESTIONS';
 			return state;
 		}
 	}
 });
 
-export const { collapseTimeline } = timelineExpand.actions;
+export const { openDetails, openSuggestions } = timelineState.actions;
 
-export default timelineExpand.reducer;
+export default timelineState.reducer;

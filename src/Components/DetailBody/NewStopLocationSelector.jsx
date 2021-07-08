@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import LocationSearchBar from './LocationSearchBar';
+import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
 
 import { Box } from '@material-ui/core';
 const containerStyle = {
@@ -14,7 +15,7 @@ const center = {
 };
 
 const libraries = [ 'places' ];
-const NewStopLocationSelector = ({ collapseTimeline, formValues, setFormValues }) => {
+const NewStopLocationSelector = ({ timelineState, formValues, setFormValues }) => {
 	const [ currentMapMarker, setCurrentMapMarker ] = useState(null);
 	const { isLoaded } = useJsApiLoader({
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -47,7 +48,11 @@ const NewStopLocationSelector = ({ collapseTimeline, formValues, setFormValues }
 
 	return (
 		<React.Fragment>
-			<Box display={collapseTimeline ? 'flex' : 'none'} boxSizing="border-box" padding={2}>
+			<Box
+				display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
+				boxSizing="border-box"
+				padding={2}
+			>
 				{isLoaded && (
 					<LocationSearchBar
 						panTo={panTo}
@@ -57,7 +62,12 @@ const NewStopLocationSelector = ({ collapseTimeline, formValues, setFormValues }
 					/>
 				)}
 			</Box>
-			<Box display={collapseTimeline ? 'flex' : 'none'} boxSizing="border-box" width="100%" height="35%">
+			<Box
+				display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
+				boxSizing="border-box"
+				width="100%"
+				height="35%"
+			>
 				{isLoaded ? (
 					<GoogleMap
 						mapContainerStyle={containerStyle}
