@@ -18,7 +18,7 @@ const SuggestionVotes = () => {
 
 	return (
 		<React.Fragment>
-			<Box display="flex" flexBasis="20%" paddingX={4} justifyContent="space-evenly" marginTop={1}>
+			<Box display="flex" flexBasis="20%" paddingX={4} justifyContent="space-evenly" marginTop={2}>
 				<ThumbUpIcon className={classes.greenThumb} fontSize="large" />
 				<Typography variant="h5">3</Typography>
 				<ThumbDownIcon className={classes.redThumb} fontSize="large" />

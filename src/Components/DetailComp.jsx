@@ -1,15 +1,12 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { openSuggestions } from '../Slices/TimelineStateSlice';
+import { useSelector } from 'react-redux';
 import DetailHeaderPicture from './DetailHeaderPicture';
-import NewDetailHeader from './DetailHeader/NewDetailHeader';
 import SavedDetailHeader from './DetailHeader/SavedDetailHeader';
-import NewDetailBody from './DetailBody/NewDetailBody';
 import SavedDetailBase from './DetailBody/SavedDetailBase';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Button } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import NewStopFormComp from './NewStopFormComp';
-import { displayOnlyIfTimelineStateIsNotTimelineOnly, timelineStateComparer } from '../HelperFunction';
+import { timelineStateComparer } from '../HelperFunction';
 
 const useStyles = makeStyles({
 	collapsedGrid: {
@@ -32,7 +29,6 @@ const useStyles = makeStyles({
 	}
 });
 const DetailComp = () => {
-	const dispatch = useDispatch();
 	const timelineState = useSelector((state) => state.timelineState);
 	const UIMode = useSelector((state) => state.UIState.mode);
 	const classes = useStyles();
@@ -56,15 +52,6 @@ const DetailComp = () => {
 					boxShadow={3}
 				>
 					<DetailHeaderPicture timelineState={timelineState} />
-					<Box display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}>
-						<Button
-							onClick={() => {
-								dispatch(openSuggestions());
-							}}
-						>
-							Suggestions
-						</Button>
-					</Box>
 
 					{UIMode === 'Detail' ? (
 						<React.Fragment>

@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import { Box } from '@material-ui/core';
 import LocationDetails from './LocationDetails';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-import usePlacesAutocomplete from 'use-places-autocomplete';
 
 const containerStyle = {
 	width: '100%',

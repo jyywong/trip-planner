@@ -1,15 +1,15 @@
 import React from 'react';
 import { Box } from '@material-ui/core';
-import SuggestionHeader from './SuggestionHeader';
-import SuggestionPropChange from './SuggestionPropChange';
-import SuggestionVotes from './SuggestionVotes';
-import SuggestionVoteBar from './SuggestionVoteBar';
+import SuggestionHeader from './SuggestionParts/SuggestionHeader';
+import SuggestionPropChange from './SuggestionParts/SuggestionPropChange';
+import SuggestionVotes from './SuggestionParts/SuggestionVotes';
+import SuggestionVoteBar from './SuggestionParts/SuggestionVoteBar';
 const Suggestion = () => {
 	return (
 		<React.Fragment>
 			<Box
 				boxSizing="border-box"
-				flexBasis="35%"
+				// flexBasis="40%"
 				margin={3}
 				width="80%"
 				borderRadius="10px"
@@ -18,9 +18,8 @@ const Suggestion = () => {
 				justifyContent="space-between"
 				flexDirection="column"
 				bgcolor="white"
-				// overflow="hidden"
 			>
-				<Box padding={2}>
+				<Box flexGrow="0" padding={2}>
 					<SuggestionHeader />
 					<SuggestionPropChange />
 					<SuggestionVotes />
