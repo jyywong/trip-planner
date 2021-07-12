@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-
-import { Box, Typography } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { Box, Typography, Button } from '@material-ui/core';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TimelineComp from './TimelineComp';
 import { makeStyles } from '@material-ui/core/styles';
 import { timelineStateComparer } from '../HelperFunction';
+import { openEventIdeas } from '../Slices/TimelineStateSlice';
 
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
@@ -15,6 +16,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 	collapsedGrid: {
 		gridColumn: '1/4',
+		gridRow: '1/2',
+		display: 'flex',
+		minHeight: '0'
+	},
+	halfGrid: {
+		gridColumn: '1/5',
 		gridRow: '1/2',
 		display: 'flex',
 		minHeight: '0'
@@ -34,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 const TimelineContainer = () => {
+	const dispatch = useDispatch();
 	const [ selectedItem, setSelectedItem ] = useState({});
 	const timelineState = useSelector((state) => state.timelineState);
 	const classes = useStyles();
@@ -44,7 +52,8 @@ const TimelineContainer = () => {
 					timelineState,
 					classes.expandGrid,
 					classes.collapsedGrid,
-					classes.collapsedGrid
+					classes.collapsedGrid,
+					classes.halfGrid
 				)}
 			>
 				<Box
@@ -65,6 +74,14 @@ const TimelineContainer = () => {
 					<Box className={classes.root} flexBasis="70%" flexGrow="0" overflow="auto" minHeight="0">
 						<TimelineComp selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
 					</Box>
+					<Button
+						endIcon={<ChevronRightIcon fontSize="large" />}
+						onClick={() => {
+							dispatch(openEventIdeas());
+						}}
+					>
+						Other Ideas
+					</Button>
 				</Box>
 			</div>
 		</React.Fragment>

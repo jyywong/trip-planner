@@ -15,9 +15,8 @@ const center = {
 	lng: -38.523
 };
 
-const libraries = [ 'places' ];
-
 const SavedLocationBody = () => {
+	const isLoaded = useSelector((state) => state.tripStop.googleLibraryIsLoaded);
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
 	const stop = useSelector((state) => state.tripStop.stops.find((stop) => stop.id === selectedItem));
 	const [ placeDetails, setPlaceDetails ] = useState({
@@ -29,10 +28,6 @@ const SavedLocationBody = () => {
 		url: ''
 	});
 	const [ currentMapMarker, setCurrentMapMarker ] = useState(null);
-	const { isLoaded } = useJsApiLoader({
-		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-		libraries
-	});
 
 	const [ map, setMap ] = useState(null);
 	const onLoad = useCallback(

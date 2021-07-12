@@ -13,10 +13,14 @@ export const timelineState = createSlice({
 		openSuggestions: (state) => {
 			state = 'TIMELINE_DETAILS_SUGGESTIONS';
 			return state;
+		},
+		openEventIdeas: (state) => {
+			state = 'TIMELINE_EVENT_IDEAS';
+			return state;
 		}
 	}
 });
 
-export const { openDetails, openSuggestions } = timelineState.actions;
+export const { openDetails, openSuggestions, openEventIdeas } = timelineState.actions;
 
 export default timelineState.reducer;

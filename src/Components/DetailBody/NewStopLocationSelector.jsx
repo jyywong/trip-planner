@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback } from 'react';
+import { useSelector } from 'react-redux';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import LocationSearchBar from './LocationSearchBar';
 import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
@@ -14,13 +15,9 @@ const center = {
 	lng: -38.523
 };
 
-const libraries = [ 'places' ];
 const NewStopLocationSelector = ({ timelineState, formValues, setFormValues }) => {
 	const [ currentMapMarker, setCurrentMapMarker ] = useState(null);
-	const { isLoaded } = useJsApiLoader({
-		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-		libraries
-	});
+	const isLoaded = useSelector((state) => state.tripStop.googleLibraryIsLoaded);
 
 	const [ map, setMap ] = useState(null);
 	const onLoad = useCallback((map) => {

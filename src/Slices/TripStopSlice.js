@@ -4,6 +4,7 @@ const today = new Date();
 
 const initialState = {
 	selectedStop: 0,
+	googleLibraryIsLoaded: false,
 	date: today.toISOString(),
 
 	stops: [
@@ -56,6 +57,9 @@ export const TripStopSlice = createSlice({
 	name: 'tripStops',
 	initialState,
 	reducers: {
+		updateGoogleIsLoaded: (state, action) => {
+			state.googleLibraryIsLoaded = action.payload;
+		},
 		selectStop: (state, action) => {
 			state.selectedStop = action.payload;
 		},
@@ -65,6 +69,6 @@ export const TripStopSlice = createSlice({
 	}
 });
 
-export const { selectStop, createStop } = TripStopSlice.actions;
+export const { updateGoogleIsLoaded, selectStop, createStop } = TripStopSlice.actions;
 
 export default TripStopSlice.reducer;

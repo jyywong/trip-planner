@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
-import { makeStyles } from '@material-ui/styles';
 import { Box, Typography, Button } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { makeStyles } from '@material-ui/styles';
 import { displayOnlyIfTimelineStateIsTimelineDetailsSuggestions, timelineStateComparer } from '../../HelperFunction';
-import Suggestion from './Suggestion';
-import NewSuggestion from './NewSuggestion';
+import EventIdea from './EventIdea';
 
 const useStyles = makeStyles({
 	collapsedGrid: {
@@ -16,8 +14,8 @@ const useStyles = makeStyles({
 		display: 'flex',
 		minHeight: '0'
 	},
-	openSuggestions: {
-		gridColumn: '7/9',
+	openEventIdeas: {
+		gridColumn: '5/9',
 		gridRow: '1/2',
 		visibility: 'visible',
 		display: 'flex',
@@ -40,10 +38,12 @@ const useStyles = makeStyles({
 		}
 	}
 });
-const SuggestionsComp = () => {
+
+const EventIdeaContainer = () => {
 	const timelineState = useSelector((state) => state.timelineState);
-	const [ showForm, setShowForm ] = useState(false);
+
 	const classes = useStyles();
+
 	return (
 		<React.Fragment>
 			<div
@@ -51,12 +51,12 @@ const SuggestionsComp = () => {
 					timelineState,
 					classes.collapsedGrid,
 					classes.collapsedGrid,
-					classes.openSuggestions,
-					classes.collapsedGrid
+					classes.collapsedGrid,
+					classes.openEventIdeas
 				)}
 			>
 				<Box
-					display={displayOnlyIfTimelineStateIsTimelineDetailsSuggestions(timelineState)}
+					display={timelineState === 'TIMELINE_EVENT_IDEAS' ? 'flex' : 'none'}
 					flexGrow="1"
 					boxSizing="border-box"
 					flexDirection="column"
@@ -79,18 +79,8 @@ const SuggestionsComp = () => {
 						bgcolor="#c4c4c4"
 					>
 						<Typography className={classes.whiteText} variant="h4">
-							Suggestions
+							Event Ideas
 						</Typography>
-						<Box>
-							<Button
-								variant="outlined"
-								onClick={() => {
-									setShowForm(true);
-								}}
-							>
-								<AddIcon />
-							</Button>
-						</Box>
 					</Box>
 					<Box
 						className={classes.scrollbar}
@@ -102,10 +92,7 @@ const SuggestionsComp = () => {
 						height="100%"
 						minHeight="0"
 					>
-						{showForm && <NewSuggestion setShowForm={setShowForm} />}
-						<Suggestion />
-						<Suggestion />
-						<Suggestion />
+						<EventIdea />
 					</Box>
 				</Box>
 			</div>
@@ -113,4 +100,4 @@ const SuggestionsComp = () => {
 	);
 };
 
-export default SuggestionsComp;
+export default EventIdeaContainer;

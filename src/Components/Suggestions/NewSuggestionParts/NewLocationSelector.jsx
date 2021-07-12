@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import { TextField, Grid, Typography } from '@material-ui/core';
 import { useJsApiLoader } from '@react-google-maps/api';
-
 import LocationOnIcon from '@material-ui/icons/LocationOn';
-import { makeStyles } from '@material-ui/styles';
 import { Autocomplete } from '@material-ui/lab';
 const libraries = [ 'places' ];
 
 const NewLocationSelector = () => {
 	const [ inputValue, setInputValue ] = useState('');
 
-	const { isLoaded } = useJsApiLoader({
-		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-		libraries
-	});
+	const isLoaded = useSelector((state) => state.tripStop.googleLibraryIsLoaded);
 	const {
 		init,
 		ready,
@@ -30,19 +26,13 @@ const NewLocationSelector = () => {
 	});
 	const getOptions = () =>
 		data.map((suggestion) => {
-			const { place_id, description } = suggestion;
-			return { place_id, description };
+			const { place_id, description, structured_formatting } = suggestion;
+			return { place_id, description, structured_formatting };
 		});
 
 	useEffect(
 		() => {
 			init();
-			// console.log('being called');
-			// console.log(data);
-			// setOptions(data.map(({ place_id, description }) => ({ place_id, description })));
-			// if (inputValue === '') {
-			// 	setOptions([]);
-			// }
 		},
 		[ isLoaded ]
 	);
@@ -54,6 +44,7 @@ const NewLocationSelector = () => {
 					style={{ width: '100%' }}
 					options={getOptions()}
 					value={value}
+					inputvalue={inputValue}
 					getOptionLabel={(option) => (typeof option === 'string' ? option : option.description)}
 					onChange={(event, newValue) => {
 						setValue(newValue);
@@ -63,7 +54,6 @@ const NewLocationSelector = () => {
 						<TextField {...params} label="Add a location" variant="outlined" fullWidth />
 					)}
 					onInputChange={(event, newInputValue) => {
-						// console.log('inputvalue changing');
 						setInputValue(newInputValue);
 						setValue(newInputValue);
 					}}
@@ -73,9 +63,9 @@ const NewLocationSelector = () => {
 								<LocationOnIcon />
 							</Grid>
 							<Grid item xs>
-								{option.description}
+								{option.structured_formatting.main_text}
 								<Typography variant="body2" color="textSecondary">
-									Somewhere
+									{option.description}
 								</Typography>
 							</Grid>
 						</Grid>

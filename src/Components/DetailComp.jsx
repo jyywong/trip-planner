@@ -6,7 +6,7 @@ import SavedDetailBase from './DetailBody/SavedDetailBase';
 import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 import NewStopFormComp from './NewStopFormComp';
-import { timelineStateComparer } from '../HelperFunction';
+import { displayOnlyIfTimelineStateIsNotTimelineOnly, timelineStateComparer } from '../HelperFunction';
 
 const useStyles = makeStyles({
 	collapsedGrid: {
@@ -39,11 +39,12 @@ const DetailComp = () => {
 					timelineState,
 					classes.collapsedGrid,
 					classes.expandGrid,
-					classes.middleGrid
+					classes.middleGrid,
+					classes.collapsedGrid
 				)}
 			>
 				<Box
-					display="flex"
+					display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
 					flexGrow="1"
 					flexDirection="column"
 					alignItems="center"

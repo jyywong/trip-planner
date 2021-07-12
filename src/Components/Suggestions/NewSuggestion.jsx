@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { format, parseISO } from 'date-fns';
+import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import NewLocationSelector from './NewSuggestionParts/NewLocationSelector';
+import { newSuggestion } from '../../Slices/SuggestionsSlice';
 
 const useStyles = makeStyles((theme) => ({
 	overrideTextMargins: {
@@ -19,16 +21,17 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const NewSuggestion = () => {
+const NewSuggestion = ({ setShowForm }) => {
+	const dispatch = useDispatch();
 	const [ formValues, setFormValues ] = useState({
-		title: '',
-		body: '',
+		eventName: '',
 		time: '',
 		location: {
 			name: '',
 			address: '',
 			place_id: ''
-		}
+		},
+		details: ''
 	});
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
 	const selectedStop = useSelector((state) => state.tripStop.stops.find((stop) => stop.id === selectedItem));
@@ -37,9 +40,9 @@ const NewSuggestion = () => {
 			if (selectedItem !== 0) {
 				const { time, details, location } = selectedStop;
 				setFormValues({
-					title: details.title,
-					body: details.body,
-					time,
+					eventName: details.title,
+					details: details.body,
+					time: format(parseISO(time), 'kk:mm'),
 					location
 				});
 			}
@@ -47,6 +50,19 @@ const NewSuggestion = () => {
 		[ selectedItem ]
 	);
 	const classes = useStyles();
+	const handleCreate = () => {
+		const newSuggestionObject = {
+			id: Math.random() * 100,
+			creator: 1,
+			created_at: new Date().toISOString(),
+			content: formValues,
+			votes: {
+				upvotes: 0,
+				downvotes: 0
+			}
+		};
+		dispatch(newSuggestion(newSuggestionObject));
+	};
 	return (
 		<React.Fragment>
 			<Box
@@ -75,8 +91,8 @@ const NewSuggestion = () => {
 						className={classes.overrideTextMargins}
 						variant="outlined"
 						label="New event name"
-						value={formValues.title}
-						onChange={(e) => setFormValues((current) => ({ ...current, title: e.target.value }))}
+						value={formValues.eventName}
+						onChange={(e) => setFormValues((current) => ({ ...current, eventName: e.target.value }))}
 					/>
 					<TextField
 						className={classes.overrideTextMargins}
@@ -84,29 +100,28 @@ const NewSuggestion = () => {
 						InputLabelProps={{ shrink: true }}
 						type="time"
 						variant="outlined"
+						value={formValues.time}
+						onChange={(e) => setFormValues((current) => ({ ...current, time: e.target.value }))}
 					/>
-					<TextField
-						className={classes.overrideTextMargins}
-						label="New location"
-						variant="outlined"
-						value={formValues.location.name}
-						onChange={(e) => setFormValues((current) => ({ ...current, title: e.target.value }))}
-					/>
-					<NewLocationSelector />
+					<div className={classes.overrideTextMargins}>
+						<NewLocationSelector />
+					</div>
+
 					<TextField
 						className={classes.overrideTextMargins}
 						label="New details"
 						variant="outlined"
 						rows={5}
 						multiline
-						value={formValues.body}
-						onChange={(e) => setFormValues((current) => ({ ...current, body: e.target.value }))}
+						value={formValues.details}
+						onChange={(e) => setFormValues((current) => ({ ...current, details: e.target.value }))}
 					/>
 					<Button
 						className={classes.overrideCreateButtonMargin}
 						size="large"
 						color="primary"
 						variant="contained"
+						onClick={handleCreate}
 					>
 						Create
 					</Button>
@@ -115,6 +130,9 @@ const NewSuggestion = () => {
 						size="large"
 						color="primary"
 						variant="outlined"
+						onClick={() => {
+							setShowForm(false);
+						}}
 					>
 						Cancel
 					</Button>
