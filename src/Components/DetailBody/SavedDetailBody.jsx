@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { openDetails } from '../../Slices/TimelineStateSlice';
 import { openSuggestions } from '../../Slices/TimelineStateSlice';
 import { useDispatch } from 'react-redux';
@@ -16,6 +17,8 @@ const SavedDetailBody = ({ timelineState, selectedItem, stop }) => {
 				flexDirection="column"
 				justifyContent="space-between"
 				padding={4}
+				component={motion.div}
+				layout
 			>
 				<Typography variant="body1">{selectedItem !== 0 && stop.details.body}</Typography>
 				<Box alignSelf="flex-end">

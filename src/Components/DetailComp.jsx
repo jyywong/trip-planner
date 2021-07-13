@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { motion } from 'framer-motion';
 import DetailHeaderPicture from './DetailHeaderPicture';
 import SavedDetailHeader from './DetailHeader/SavedDetailHeader';
 import SavedDetailBase from './DetailBody/SavedDetailBase';
@@ -34,7 +35,7 @@ const DetailComp = () => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
-			<div
+			<motion.div
 				className={timelineStateComparer(
 					timelineState,
 					classes.collapsedGrid,
@@ -42,6 +43,7 @@ const DetailComp = () => {
 					classes.middleGrid,
 					classes.collapsedGrid
 				)}
+				layout
 			>
 				<Box
 					display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
@@ -51,6 +53,8 @@ const DetailComp = () => {
 					borderRadius="10px"
 					m={1}
 					boxShadow={3}
+					component={motion.div}
+					layout
 				>
 					<DetailHeaderPicture timelineState={timelineState} />
 
@@ -65,7 +69,7 @@ const DetailComp = () => {
 						</React.Fragment>
 					)}
 				</Box>
-			</div>
+			</motion.div>
 		</React.Fragment>
 	);
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography, Button } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -47,7 +48,7 @@ const TimelineContainer = () => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
-			<div
+			<motion.div
 				className={timelineStateComparer(
 					timelineState,
 					classes.expandGrid,
@@ -55,6 +56,7 @@ const TimelineContainer = () => {
 					classes.collapsedGrid,
 					classes.halfGrid
 				)}
+				layout
 			>
 				<Box
 					display="flex"
@@ -67,11 +69,21 @@ const TimelineContainer = () => {
 					overflow="hidden"
 					m={1}
 					minHeight="0"
+					component={motion.div}
+					layout
 				>
-					<Box display="flex" flexShrink="1" marginTop={2} flexBasis="15%" alignSelf="f">
+					<Box display="flex" flexShrink="1" marginTop={2} flexBasis="15%" component={motion.div} layout>
 						<Typography variant="h2">Name of Trip</Typography>
 					</Box>
-					<Box className={classes.root} flexBasis="70%" flexGrow="0" overflow="auto" minHeight="0">
+					<Box
+						className={classes.root}
+						flexBasis="70%"
+						flexGrow="0"
+						overflow="auto"
+						minHeight="0"
+						component={motion.div}
+						layout
+					>
 						<TimelineComp selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
 					</Box>
 					<Button
@@ -81,11 +93,13 @@ const TimelineContainer = () => {
 								? dispatch(openEventIdeas())
 								: dispatch(returnToTimelineOnly());
 						}}
+						component={motion.div}
+						layout
 					>
 						Other Ideas
 					</Button>
 				</Box>
-			</div>
+			</motion.div>
 		</React.Fragment>
 	);
 };

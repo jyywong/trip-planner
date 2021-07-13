@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
 import { useSelector } from 'react-redux';
 import DetailHeaderBase from './DetailHeaderBase';
@@ -28,7 +29,7 @@ const SavedDetailHeader = ({ timelineState }) => {
 	return (
 		<React.Fragment>
 			<DetailHeaderBase timelineState={timelineState}>
-				<Box display="flex" alignItems="flex-end" width="100%">
+				<Box display="flex" alignItems="flex-end" width="100%" component={motion.div} layout>
 					<Typography className={classes.h3White} variant="h3">
 						{selectedItem !== 0 && stop.details.title}
 					</Typography>

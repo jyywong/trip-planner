@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Box } from '@material-ui/core';
 import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
 
@@ -14,6 +15,8 @@ const DetailHeaderBase = ({ timelineState, children }) => {
 				paddingY={2}
 				paddingX={4}
 				bgcolor="#bb86fc"
+				component={motion.div}
+				layout
 			>
 				{children}
 			</Box>

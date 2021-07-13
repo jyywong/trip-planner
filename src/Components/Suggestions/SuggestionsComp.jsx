@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Box, Typography, Button } from '@material-ui/core';
@@ -46,7 +47,7 @@ const SuggestionsComp = () => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
-			<div
+			<motion.div
 				className={timelineStateComparer(
 					timelineState,
 					classes.collapsedGrid,
@@ -54,6 +55,7 @@ const SuggestionsComp = () => {
 					classes.openSuggestions,
 					classes.collapsedGrid
 				)}
+				layout
 			>
 				<Box
 					display={displayOnlyIfTimelineStateIsTimelineDetailsSuggestions(timelineState)}
@@ -108,7 +110,7 @@ const SuggestionsComp = () => {
 						<Suggestion />
 					</Box>
 				</Box>
-			</div>
+			</motion.div>
 		</React.Fragment>
 	);
 };

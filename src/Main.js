@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useJsApiLoader } from '@react-google-maps/api';
+import { motion, AnimateSharedLayout } from 'framer-motion';
 import DetailComp from './Components/DetailComp';
 import TimelineContainer from './Components/TimelineContainer';
 import { wrapGrid } from 'animate-css-grid';
@@ -20,7 +21,7 @@ function Main() {
 		libraries
 	});
 	useEffect(() => {
-		wrapGrid(gridRef.current, { duration: 400, easing: 'easeOut' });
+		// wrapGrid(gridRef.current, { duration: 400, easing: 'easeOut' });
 	}, []);
 	useEffect(
 		() => {

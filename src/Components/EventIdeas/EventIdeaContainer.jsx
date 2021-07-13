@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { motion } from 'framer-motion';
 import { Box, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { displayOnlyIfTimelineStateIsTimelineDetailsSuggestions, timelineStateComparer } from '../../HelperFunction';
@@ -46,7 +47,7 @@ const EventIdeaContainer = () => {
 
 	return (
 		<React.Fragment>
-			<div
+			<motion.div
 				className={timelineStateComparer(
 					timelineState,
 					classes.collapsedGrid,
@@ -54,6 +55,7 @@ const EventIdeaContainer = () => {
 					classes.collapsedGrid,
 					classes.openEventIdeas
 				)}
+				layout
 			>
 				<Box
 					display={timelineState === 'TIMELINE_EVENT_IDEAS' ? 'flex' : 'none'}
@@ -95,7 +97,7 @@ const EventIdeaContainer = () => {
 						{eventIdeas.map((eventIdea) => <EventIdea key={eventIdea.id} eventIdea={eventIdea} />)}
 					</Box>
 				</Box>
-			</div>
+			</motion.div>
 		</React.Fragment>
 	);
 };
