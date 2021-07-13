@@ -5,7 +5,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import TimelineComp from './TimelineComp';
 import { makeStyles } from '@material-ui/core/styles';
 import { timelineStateComparer } from '../HelperFunction';
-import { openEventIdeas } from '../Slices/TimelineStateSlice';
+import { openEventIdeas, returnToTimelineOnly } from '../Slices/TimelineStateSlice';
 
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
@@ -77,7 +77,9 @@ const TimelineContainer = () => {
 					<Button
 						endIcon={<ChevronRightIcon fontSize="large" />}
 						onClick={() => {
-							dispatch(openEventIdeas());
+							timelineState !== 'TIMELINE_EVENT_IDEAS'
+								? dispatch(openEventIdeas())
+								: dispatch(returnToTimelineOnly());
 						}}
 					>
 						Other Ideas

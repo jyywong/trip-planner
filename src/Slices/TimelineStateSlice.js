@@ -17,10 +17,14 @@ export const timelineState = createSlice({
 		openEventIdeas: (state) => {
 			state = 'TIMELINE_EVENT_IDEAS';
 			return state;
+		},
+		returnToTimelineOnly: (state) => {
+			state = 'TIMELINE_ONLY';
+			return state;
 		}
 	}
 });
 
-export const { openDetails, openSuggestions, openEventIdeas } = timelineState.actions;
+export const { openDetails, openSuggestions, openEventIdeas, returnToTimelineOnly } = timelineState.actions;
 
 export default timelineState.reducer;

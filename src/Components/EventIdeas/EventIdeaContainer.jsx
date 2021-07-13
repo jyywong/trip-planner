@@ -41,7 +41,7 @@ const useStyles = makeStyles({
 
 const EventIdeaContainer = () => {
 	const timelineState = useSelector((state) => state.timelineState);
-
+	const eventIdeas = useSelector((state) => Object.values(state.eventIdeas.byID));
 	const classes = useStyles();
 
 	return (
@@ -92,7 +92,7 @@ const EventIdeaContainer = () => {
 						height="100%"
 						minHeight="0"
 					>
-						<EventIdea />
+						{eventIdeas.map((eventIdea) => <EventIdea key={eventIdea.id} eventIdea={eventIdea} />)}
 					</Box>
 				</Box>
 			</div>

@@ -7,6 +7,8 @@ import { wrapGrid } from 'animate-css-grid';
 import SuggestionsComp from './Components/Suggestions/SuggestionsComp';
 import { updateGoogleIsLoaded } from './Slices/TripStopSlice';
 import EventIdeaContainer from './Components/EventIdeas/EventIdeaContainer';
+import Welcome from './Pages/Welcome';
+import NewTrip from './Pages/NewTrip';
 
 const libraries = [ 'places' ];
 
