@@ -43,7 +43,8 @@ function Main() {
 					maxHeight: '92vh',
 					minHeight: '0',
 					width: '97vw',
-					gridTemplateColumns: 'repeat(8, 1fr)'
+					gridTemplateColumns: 'repeat(8, 1fr)',
+					overflowX: 'hidden'
 				}}
 			>
 				<TimelineContainer />

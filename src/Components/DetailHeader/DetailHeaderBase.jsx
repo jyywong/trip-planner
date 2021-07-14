@@ -15,6 +15,7 @@ const DetailHeaderBase = ({ timelineState, children }) => {
 				paddingY={2}
 				paddingX={4}
 				bgcolor="#bb86fc"
+				overflow="hidden"
 				component={motion.div}
 				layout
 			>
