@@ -32,7 +32,7 @@ const LocationDetails = ({ placeDetails }) => {
 					</Box>
 				</Box>
 
-				<Box className={classes.root} display="flex">
+				<Box className={classes.root} display="flex" flexWrap="wrap">
 					{types.map((type) => (
 						<Chip key={types.indexOf(type)} className={classes.biggerChips} label={type} />
 					))}

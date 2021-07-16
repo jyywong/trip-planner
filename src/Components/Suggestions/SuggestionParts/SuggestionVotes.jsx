@@ -1,8 +1,10 @@
 import React from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { Box, Typography, IconButton } from '@material-ui/core';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { makeStyles } from '@material-ui/styles';
+import { upvoteSuggestion, downvoteSuggestion } from '../../../Slices/SuggestionsSlice';
 
 const useStyles = makeStyles((theme) => ({
 	greenThumb: {
@@ -13,16 +15,33 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const SuggestionVotes = () => {
+const SuggestionVotes = ({ suggestion }) => {
+	const dispatch = useDispatch();
 	const classes = useStyles();
-
+	const handleUpvote = () => {
+		dispatch(upvoteSuggestion({ id: suggestion.id }));
+	};
+	const handleDownvote = () => {
+		dispatch(downvoteSuggestion({ id: suggestion.id }));
+	};
 	return (
 		<React.Fragment>
-			<Box display="flex" flexBasis="20%" paddingX={4} justifyContent="space-evenly" marginTop={2}>
-				<ThumbUpIcon className={classes.greenThumb} fontSize="large" />
-				<Typography variant="h5">3</Typography>
-				<ThumbDownIcon className={classes.redThumb} fontSize="large" />
-				<Typography variant="h5">2</Typography>
+			<Box
+				display="flex"
+				flexBasis="20%"
+				paddingX={4}
+				justifyContent="space-evenly"
+				alignItems="center"
+				marginTop={2}
+			>
+				<IconButton onClick={handleUpvote}>
+					<ThumbUpIcon className={classes.greenThumb} fontSize="large" />
+				</IconButton>
+				<Typography variant="h5">{suggestion.votes.upvotes}</Typography>
+				<IconButton onClick={handleDownvote}>
+					<ThumbDownIcon className={classes.redThumb} fontSize="large" />
+				</IconButton>
+				<Typography variant="h5">{suggestion.votes.downvotes}</Typography>
 			</Box>
 		</React.Fragment>
 	);

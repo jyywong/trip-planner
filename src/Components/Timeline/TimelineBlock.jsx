@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { parseISO, format } from 'date-fns';
+import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeModeToDetail } from '../../Slices/UISlice';
-import { Typography } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { selectStop } from '../../Slices/TripStopSlice';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 		border: '1px solid blue'
 	}
 }));
-const TimelineBlock = ({ id, time, details }) => {
+const TimelineBlock = forwardRef(({ id, time, details }, ref) => {
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
 	const timelineExpand = useSelector((state) => state.timelineExpand);
 	const uiMode = useSelector((state) => state.UIState.mode);
@@ -33,12 +34,13 @@ const TimelineBlock = ({ id, time, details }) => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
-			<TimelineItem>
+			<TimelineItem ref={ref}>
 				<TimelineOppositeContent>
 					<Typography variant="body2" color="textSecondary">
 						{format(parseISO(time), 'h:mmaaa')}
 					</Typography>
 				</TimelineOppositeContent>
+
 				<TimelineSeparator>
 					<TimelineDot>
 						<FastfoodIcon />
@@ -69,6 +71,8 @@ const TimelineBlock = ({ id, time, details }) => {
 			</TimelineItem>
 		</React.Fragment>
 	);
-};
+});
 
 export default TimelineBlock;
+
+export const MotionTimelineBlock = motion(TimelineBlock, { forwardMotionProps: true });

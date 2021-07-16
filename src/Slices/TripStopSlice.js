@@ -65,10 +65,16 @@ export const TripStopSlice = createSlice({
 		},
 		createStop: (state, action) => {
 			state.stops.push(action.payload);
+		},
+		updateStop: (state, action) => {
+			const currentStop = state.stops.find((event) => event.id === state.selectedStop);
+			currentStop.details.body = action.payload.details;
+			currentStop.details.title = action.payload.title;
+			currentStop.location = action.payload.location;
 		}
 	}
 });
 
-export const { updateGoogleIsLoaded, selectStop, createStop } = TripStopSlice.actions;
+export const { updateGoogleIsLoaded, selectStop, createStop, updateStop } = TripStopSlice.actions;
 
 export default TripStopSlice.reducer;

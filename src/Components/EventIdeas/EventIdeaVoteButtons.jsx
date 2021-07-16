@@ -1,8 +1,10 @@
 import React from 'react';
-import { Box, Typography } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { Box, Typography, IconButton } from '@material-ui/core';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { makeStyles } from '@material-ui/styles';
+import { upvoteEventIdea, downvoteEventIdea } from '../../Slices/EventIdeasSlice';
 
 const useStyles = makeStyles({
 	greenThumb: {
@@ -12,8 +14,16 @@ const useStyles = makeStyles({
 		color: '#B50101'
 	}
 });
-const EventIdeaVoteButtons = ({ votes }) => {
+
+const EventIdeaVoteButtons = ({ id, votes }) => {
+	const dispatch = useDispatch();
 	const classes = useStyles();
+	const handleUpvote = () => {
+		dispatch(upvoteEventIdea({ id }));
+	};
+	const handleDownvote = () => {
+		dispatch(downvoteEventIdea({ id }));
+	};
 	return (
 		<React.Fragment>
 			<Box
@@ -25,11 +35,14 @@ const EventIdeaVoteButtons = ({ votes }) => {
 				bgcolor="#f2f2f2"
 			>
 				<Typography variant="h6">{votes.upvotes}</Typography>
-				<Box marginBottom={1}>
-					<ThumbUpIcon className={classes.greenThumb} />
-				</Box>
 
-				<ThumbDownIcon className={classes.redThumb} />
+				<IconButton onClick={handleUpvote}>
+					<ThumbUpIcon className={classes.greenThumb} />
+				</IconButton>
+
+				<IconButton onClick={handleDownvote}>
+					<ThumbDownIcon className={classes.redThumb} />
+				</IconButton>
 				<Typography variant="h6">{votes.downvotes}</Typography>
 			</Box>
 		</React.Fragment>

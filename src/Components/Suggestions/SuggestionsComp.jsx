@@ -42,6 +42,10 @@ const useStyles = makeStyles({
 });
 const SuggestionsComp = () => {
 	const timelineState = useSelector((state) => state.timelineState);
+	const alternativesForSelectedStop = useSelector((state) => {
+		const allSuggestions = Object.values(state.suggestions.byID);
+		return allSuggestions.filter((suggestion) => suggestion.eventID === state.tripStop.selectedStop);
+	});
 	const [ showForm, setShowForm ] = useState(false);
 	const classes = useStyles();
 	return (
@@ -50,13 +54,6 @@ const SuggestionsComp = () => {
 				<React.Fragment>
 					<motion.div
 						key="suggestion"
-						// className={timelineStateComparer(
-						// 	timelineState,
-						// 	classes.collapsedGrid,
-						// 	classes.collapsedGrid,
-						// 	classes.openSuggestions,
-						// 	classes.collapsedGrid
-						// )}
 						className={classes.openSuggestions}
 						animate={{
 							x: 0
@@ -126,10 +123,9 @@ const SuggestionsComp = () => {
 									<AnimatePresence>
 										{showForm && <NewSuggestion key="newSuggestion" setShowForm={setShowForm} />}
 									</AnimatePresence>
-
-									<Suggestion />
-									<Suggestion />
-									<Suggestion />
+									{alternativesForSelectedStop.map((alternative) => (
+										<Suggestion key={alternative.id} suggestion={alternative} />
+									))}
 								</Box>
 							</AnimateSharedLayout>
 						</Box>
