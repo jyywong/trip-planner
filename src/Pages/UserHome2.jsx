@@ -1,10 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import React, { useState } from 'react';
 import { Box, Button, Typography, AppBar, Toolbar, IconButton } from '@material-ui/core';
+import { motion, useAnimation } from 'framer-motion';
+import { makeStyles } from '@material-ui/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import PersonIcon from '@material-ui/icons/Person';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-const UserHome = () => {
+const useStyles = makeStyles({
+	leftBoxNA: {
+		gridColumn: '1/3'
+	},
+	leftBoxA: {
+		gridColumn: '1/1'
+	}
+});
+const UserHome2 = () => {
+	const classes = useStyles();
+	const [ animating, setAnimating ] = useState(false);
 	const controlsLeft = useAnimation();
 	const controlsMiddle = useAnimation();
 	const controlsRight = useAnimation();
@@ -16,44 +27,7 @@ const UserHome = () => {
 		console.log(shownCards);
 	};
 	const handleClickRight = () => {
-		controlsLeft.start({
-			x: -300,
-			opacity: 0,
-			transitionEnd: {
-				x: 0,
-				opacity: 1
-			}
-		});
-		controlsMiddle
-			.start({
-				x: '-34rem',
-				scale: 0.875,
-
-				transitionEnd: {
-					scale: 1,
-					x: 0
-				}
-			})
-			.then(() => {
-				console.log('hi');
-				setShownCards((current) => current.map((cardIndex) => cardIndex + 1));
-			});
-		controlsRight.start({
-			x: '-38rem',
-			scale: 1.142,
-			transitionEnd: {
-				scale: 1,
-				x: 0
-			}
-		});
-		controlsNext.start({
-			x: 0,
-			opacity: 1,
-			transitionEnd: {
-				x: 1000,
-				opacity: 0
-			}
-		});
+		setAnimating(true);
 	};
 
 	return (
@@ -88,29 +62,32 @@ const UserHome = () => {
 					layout
 				>
 					<Box
+						className={animating ? classes.leftBoxA : classes.leftBoxNA}
 						boxSizing="border-box"
-						gridColumn="1/3"
+						// gridColumn={animating ? '1/1' : '1/3'}
+						gridRow="1/2"
 						height="70%"
 						width="70%"
 						display="flex"
 						boxShadow="3"
 						bgcolor={cardList[shownCards[0]]}
 						component={motion.div}
-						animate={controlsLeft}
+						layout
 					>
 						{cardList[shownCards[0]]}
 					</Box>
 
 					<Box
 						boxSizing="border-box"
-						gridColumn="3/5"
+						gridColumn={animating ? '1/3' : '3/5'}
+						gridRow="1/2"
 						height="80%"
 						width="80%"
 						display="flex"
 						boxShadow="8"
 						bgcolor={cardList[shownCards[1]]}
 						component={motion.div}
-						animate={controlsMiddle}
+						layout
 					>
 						<Button onClick={handleClickLeft}>
 							<Typography variant="body1">&larr;</Typography>
@@ -126,7 +103,7 @@ const UserHome = () => {
 					<Box
 						boxSizing="border-box"
 						zIndex="2"
-						gridColumn="5/7"
+						gridColumn={animating ? '3/5' : '5/7'}
 						gridRow="1/2"
 						height="70%"
 						width="70%"
@@ -134,25 +111,23 @@ const UserHome = () => {
 						boxShadow="3"
 						bgcolor={cardList[shownCards[2]]}
 						component={motion.div}
-						animate={controlsRight}
+						layout
 					>
 						{cardList[shownCards[2]]}
 					</Box>
 					<Box
 						boxSizing="border-box"
 						zIndex="1"
-						gridColumn="5/7"
+						gridColumn={animating ? '5/7' : '7/7'}
 						gridRow="1/2"
+						visibility={animating ? 'visible' : 'hidden'}
 						height="70%"
 						width="70%"
 						display="flex"
 						boxShadow="3"
 						bgcolor={cardList[shownCards[3]]}
 						component={motion.div}
-						initial={{
-							x: 1000
-						}}
-						animate={controlsNext}
+						layout
 					>
 						{cardList[shownCards[3]]}
 					</Box>
@@ -162,4 +137,4 @@ const UserHome = () => {
 	);
 };
 
-export default UserHome;
+export default UserHome2;

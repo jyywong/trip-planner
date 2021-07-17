@@ -13,6 +13,7 @@ import Welcome from './Pages/Welcome';
 import NewTrip from './Pages/NewTrip';
 import Login from './Pages/Login';
 import UserHome from './Pages/UserHome';
+import UserHome2 from './Pages/UserHome2';
 
 const libraries = [ 'places' ];
 
@@ -39,7 +40,7 @@ function Main() {
 					<Login />
 				</Route>
 				<Route path="/home">
-					<UserHome />
+					<UserHome2 />
 				</Route>
 				<Route path="/new_trip">
 					<NewTrip />
