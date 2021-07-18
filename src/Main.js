@@ -14,6 +14,7 @@ import NewTrip from './Pages/NewTrip';
 import Login from './Pages/Login';
 import UserHome from './Pages/UserHome';
 import UserHome2 from './Pages/UserHome2';
+import EditTrip from './Pages/EditTrip';
 
 const libraries = [ 'places' ];
 
@@ -40,31 +41,13 @@ function Main() {
 					<Login />
 				</Route>
 				<Route path="/home">
-					<UserHome2 />
+					<UserHome />
 				</Route>
 				<Route path="/new_trip">
 					<NewTrip />
 				</Route>
 				<Route path="/edit_trip">
-					<div
-						ref={gridRef}
-						style={{
-							display: 'grid',
-							padding: '1rem',
-							borderRadius: '10px',
-							height: '95vh',
-							maxHeight: '100vh',
-							minHeight: '0',
-							width: '97vw',
-							gridTemplateColumns: 'repeat(8, 1fr)',
-							overflowX: 'hidden'
-						}}
-					>
-						<TimelineContainer />
-						<DetailComp />
-						<SuggestionsComp />
-						<EventIdeaContainer />
-					</div>
+					<EditTrip />
 				</Route>
 			</Switch>
 		</Router>

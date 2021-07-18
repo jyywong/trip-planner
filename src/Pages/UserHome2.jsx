@@ -10,7 +10,19 @@ const useStyles = makeStyles({
 		gridColumn: '1/3'
 	},
 	leftBoxA: {
-		gridColumn: '1/1'
+		gridColumn: '1/3'
+	},
+	middleBoxNA: {
+		gridColumn: '3/5'
+	},
+	middleBoxA: {
+		gridColumn: '1/3'
+	},
+	rightBoxNA: {
+		gridColumn: '5/7'
+	},
+	rightBoxA: {
+		gridColumn: '3/5'
 	}
 });
 const UserHome2 = () => {
@@ -28,6 +40,40 @@ const UserHome2 = () => {
 	};
 	const handleClickRight = () => {
 		setAnimating(true);
+		Promise.all([
+			controlsLeft.start({
+				x: -700
+			}),
+			controlsMiddle.start({
+				scale: 0.875
+			}),
+			controlsRight.start({
+				scale: 1.142
+			}),
+			controlsNext.start({
+				x: 0,
+				transition: {
+					duration: 0.3
+				}
+			})
+		]).then(() => {
+			setAnimating(false);
+		});
+		// controlsLeft.start({
+		// 	x: -700
+		// }),
+		// controlsMiddle.start({
+		// 	scale: 0.875
+		// }),
+		// controlsRight.start({
+		// 	scale: 1.142
+		// }),
+		// controlsNext.start({
+		// 	x: 0,
+		// 	transition: {
+		// 		duration: 0.3
+		// 	}
+		// });
 	};
 
 	return (
@@ -72,14 +118,16 @@ const UserHome2 = () => {
 						boxShadow="3"
 						bgcolor={cardList[shownCards[0]]}
 						component={motion.div}
+						animate={controlsLeft}
 						layout
 					>
 						{cardList[shownCards[0]]}
 					</Box>
 
 					<Box
+						className={animating ? classes.middleBoxA : classes.middleBoxNA}
 						boxSizing="border-box"
-						gridColumn={animating ? '1/3' : '3/5'}
+						// gridColumn={animating ? '1/3' : '3/5'}
 						gridRow="1/2"
 						height="80%"
 						width="80%"
@@ -87,6 +135,7 @@ const UserHome2 = () => {
 						boxShadow="8"
 						bgcolor={cardList[shownCards[1]]}
 						component={motion.div}
+						animate={controlsMiddle}
 						layout
 					>
 						<Button onClick={handleClickLeft}>
@@ -101,9 +150,10 @@ const UserHome2 = () => {
 					</Box>
 
 					<Box
+						className={animating ? classes.rightBoxA : classes.rightBoxNA}
 						boxSizing="border-box"
 						zIndex="2"
-						gridColumn={animating ? '3/5' : '5/7'}
+						// gridColumn={animating ? '3/5' : '5/7'}
 						gridRow="1/2"
 						height="70%"
 						width="70%"
@@ -111,6 +161,7 @@ const UserHome2 = () => {
 						boxShadow="3"
 						bgcolor={cardList[shownCards[2]]}
 						component={motion.div}
+						animate={controlsRight}
 						layout
 					>
 						{cardList[shownCards[2]]}
@@ -127,6 +178,8 @@ const UserHome2 = () => {
 						boxShadow="3"
 						bgcolor={cardList[shownCards[3]]}
 						component={motion.div}
+						initial={{ x: 1000 }}
+						animate={controlsNext}
 						layout
 					>
 						{cardList[shownCards[3]]}

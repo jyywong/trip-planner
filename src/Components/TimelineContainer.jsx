@@ -3,10 +3,11 @@ import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography, Button } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import TimelineComp from './TimelineComp';
 import { makeStyles } from '@material-ui/core/styles';
 import { timelineStateComparer } from '../HelperFunction';
-import { openEventIdeas, returnToTimelineOnly } from '../Slices/TimelineStateSlice';
+import { openEventIdeas, openMembersList, returnToTimelineOnly } from '../Slices/TimelineStateSlice';
 
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
@@ -23,6 +24,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 	halfGrid: {
 		gridColumn: '1/5',
+		gridRow: '1/2',
+		display: 'flex',
+		minHeight: '0'
+	},
+	rightGrid: {
+		gridColumn: '5/9',
 		gridRow: '1/2',
 		display: 'flex',
 		minHeight: '0'
@@ -54,7 +61,8 @@ const TimelineContainer = () => {
 					classes.expandGrid,
 					classes.collapsedGrid,
 					classes.collapsedGrid,
-					classes.halfGrid
+					classes.halfGrid,
+					classes.rightGrid
 				)}
 				layout
 			>
@@ -86,18 +94,32 @@ const TimelineContainer = () => {
 					>
 						<TimelineComp selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
 					</Box>
-					<Button
-						endIcon={<ChevronRightIcon fontSize="large" />}
-						onClick={() => {
-							timelineState !== 'TIMELINE_EVENT_IDEAS'
-								? dispatch(openEventIdeas())
-								: dispatch(returnToTimelineOnly());
-						}}
-						component={motion.div}
-						layout
-					>
-						Other Ideas
-					</Button>
+					<Box display="flex">
+						<Button
+							startIcon={<ChevronLeftIcon fontsize="large" />}
+							onClick={() => {
+								timelineState !== 'MEMBERS_TIMELINE'
+									? dispatch(openMembersList())
+									: dispatch(returnToTimelineOnly());
+							}}
+							component={motion.div}
+							layout
+						>
+							Manage Members
+						</Button>
+						<Button
+							endIcon={<ChevronRightIcon fontSize="large" />}
+							onClick={() => {
+								timelineState !== 'TIMELINE_EVENT_IDEAS'
+									? dispatch(openEventIdeas())
+									: dispatch(returnToTimelineOnly());
+							}}
+							component={motion.div}
+							layout
+						>
+							Other Ideas
+						</Button>
+					</Box>
 				</Box>
 			</motion.div>
 		</React.Fragment>
