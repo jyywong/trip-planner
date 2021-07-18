@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { AnimateSharedLayout } from 'framer-motion';
 import parseISO from 'date-fns/parseISO';
 import { changeModeToAdd } from '../Slices/UISlice';
 import { openDetails } from '../Slices/TimelineStateSlice';
@@ -13,6 +14,7 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
 import TimelineBlock from './Timeline/TimelineBlock';
+import { MotionTimelineBlock } from './Timeline/TimelineBlock';
 import { compareAsc } from 'date-fns';
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -54,13 +56,16 @@ const TimelineComp = ({ selectedItem, setSelectedItem }) => {
 		<React.Fragment>
 			<Timeline align="alternate">
 				{sortedTripStops.map((item) => (
-					<TimelineBlock
+					<MotionTimelineBlock
 						key={item.id}
 						id={item.id}
 						selectedItem={selectedItem}
 						setSelectedItem={setSelectedItem}
 						time={item.time}
 						details={item.details}
+						animate={{ scaleY: 1 }}
+						initial={{ scaleY: 0 }}
+						transition={{ duration: 0.25 }}
 					/>
 				))}
 				<TimelineItem>

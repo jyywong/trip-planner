@@ -1,11 +1,14 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Box, Typography, Divider, Button } from '@material-ui/core';
+import { format, parseISO } from 'date-fns';
 
 import EventIdeaDetails from './EventIdeaDetails';
 import EventIdeaLocation from './EventIdeaLocation';
 import EventIdeaVoteButtons from './EventIdeaVoteButtons';
 import EventIdeaVoteBar from './EventIdeaVoteBar';
+import { createStop } from '../../Slices/TripStopSlice';
 
 const useStyles = makeStyles({
 	whiteText: {
@@ -14,7 +17,22 @@ const useStyles = makeStyles({
 });
 
 const EventIdea = ({ eventIdea }) => {
+	const dispatch = useDispatch();
 	const classes = useStyles();
+	const handleAdd = () => {
+		const id = Math.random() * 100;
+		const newStop = {
+			id,
+			time: eventIdea.content.time,
+			details: {
+				title: eventIdea.content.eventName,
+				body: eventIdea.content.details
+			},
+			location: eventIdea.content.location
+		};
+		dispatch(createStop(newStop));
+	};
+
 	return (
 		<React.Fragment>
 			<Box
@@ -33,7 +51,7 @@ const EventIdea = ({ eventIdea }) => {
 					<Box
 						display="flex"
 						paddingLeft={2}
-						width="100%"
+						marginRight="auto"
 						justifyContent="space-between"
 						alignSelf="flex-end"
 					>
@@ -41,8 +59,13 @@ const EventIdea = ({ eventIdea }) => {
 							{eventIdea.content.eventName}
 						</Typography>
 					</Box>
+					<Box alignSelf="flex-end" marginRight={3}>
+						<Typography className={classes.whiteText} variant="h5">
+							{format(parseISO(eventIdea.content.time), 'h:mmaaa')}
+						</Typography>
+					</Box>
 					<Box alignSelf="center" marginRight={1.5}>
-						<Button variant="contained" color="primary">
+						<Button variant="contained" color="primary" onClick={handleAdd}>
 							Add
 						</Button>
 					</Box>
@@ -57,7 +80,7 @@ const EventIdea = ({ eventIdea }) => {
 						</Box>
 						<EventIdeaLocation location={eventIdea.content.location} />
 					</Box>
-					<EventIdeaVoteButtons votes={eventIdea.votes} />
+					<EventIdeaVoteButtons id={eventIdea.id} votes={eventIdea.votes} />
 				</Box>
 				<EventIdeaVoteBar votes={eventIdea.votes} />
 			</Box>

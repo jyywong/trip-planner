@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { Box, Typography, Tabs, Tab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
@@ -36,6 +37,8 @@ const SavedDetailBase = ({ timelineState }) => {
 				display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
 				width="100%"
 				justifyContent="center"
+				component={motion.div}
+				layout
 			>
 				<Tabs value={tabValue} onChange={handleTabChange}>
 					<Tab label="Details" />
@@ -50,6 +53,8 @@ const SavedDetailBase = ({ timelineState }) => {
 				width="100%"
 				height="50%"
 				flexGrow="1"
+				component={motion.div}
+				layout
 			>
 				{(() => {
 					switch (tabValue) {

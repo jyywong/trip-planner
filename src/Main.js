@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useJsApiLoader } from '@react-google-maps/api';
+import { motion, AnimateSharedLayout } from 'framer-motion';
 import DetailComp from './Components/DetailComp';
 import TimelineContainer from './Components/TimelineContainer';
 import { wrapGrid } from 'animate-css-grid';
@@ -9,6 +11,10 @@ import { updateGoogleIsLoaded } from './Slices/TripStopSlice';
 import EventIdeaContainer from './Components/EventIdeas/EventIdeaContainer';
 import Welcome from './Pages/Welcome';
 import NewTrip from './Pages/NewTrip';
+import Login from './Pages/Login';
+import UserHome from './Pages/UserHome';
+import UserHome2 from './Pages/UserHome2';
+import EditTrip from './Pages/EditTrip';
 
 const libraries = [ 'places' ];
 
@@ -19,9 +25,6 @@ function Main() {
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
 		libraries
 	});
-	useEffect(() => {
-		wrapGrid(gridRef.current, { duration: 400, easing: 'easeOut' });
-	}, []);
 	useEffect(
 		() => {
 			dispatch(updateGoogleIsLoaded(isLoaded));
@@ -29,28 +32,25 @@ function Main() {
 		[ isLoaded ]
 	);
 	return (
-		<React.Fragment>
-			{/* <Welcome /> */}
-			{/* <NewTrip /> */}
-			<div
-				ref={gridRef}
-				style={{
-					display: 'grid',
-					padding: '1rem',
-					borderRadius: '10px',
-					height: '92vh',
-					maxHeight: '92vh',
-					minHeight: '0',
-					width: '97vw',
-					gridTemplateColumns: 'repeat(8, 1fr)'
-				}}
-			>
-				<TimelineContainer />
-				<DetailComp />
-				<SuggestionsComp />
-				<EventIdeaContainer />
-			</div>
-		</React.Fragment>
+		<Router>
+			<Switch>
+				<Route exact path="/">
+					<Welcome />
+				</Route>
+				<Route path="/login">
+					<Login />
+				</Route>
+				<Route path="/home">
+					<UserHome />
+				</Route>
+				<Route path="/new_trip">
+					<NewTrip />
+				</Route>
+				<Route path="/edit_trip">
+					<EditTrip />
+				</Route>
+			</Switch>
+		</Router>
 	);
 }
 

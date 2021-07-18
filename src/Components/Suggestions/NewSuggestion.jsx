@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography, TextField, Button } from '@material-ui/core';
@@ -76,6 +77,16 @@ const NewSuggestion = ({ setShowForm }) => {
 				justifyContent="space-between"
 				flexDirection="column"
 				bgcolor="white"
+				component={motion.div}
+				animate={{
+					y: 0
+				}}
+				initial={{
+					y: -200
+				}}
+				exit={{
+					y: -600
+				}}
 			>
 				<Box display="flex" marginTop={2} justifyContent="center" alignItems="center" width="100%">
 					<Typography variant="h5">New suggestion</Typography>

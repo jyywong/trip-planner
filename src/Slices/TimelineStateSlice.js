@@ -21,10 +21,20 @@ export const timelineState = createSlice({
 		returnToTimelineOnly: (state) => {
 			state = 'TIMELINE_ONLY';
 			return state;
+		},
+		openMembersList: (state) => {
+			state = 'MEMBERS_TIMELINE';
+			return state;
 		}
 	}
 });
 
-export const { openDetails, openSuggestions, openEventIdeas, returnToTimelineOnly } = timelineState.actions;
+export const {
+	openDetails,
+	openSuggestions,
+	openEventIdeas,
+	returnToTimelineOnly,
+	openMembersList
+} = timelineState.actions;
 
 export default timelineState.reducer;

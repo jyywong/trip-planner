@@ -1,6 +1,13 @@
 const parseMilitaryTime = (milTime) => {};
 
-export const timelineStateComparer = (timelineState, timeOnly, timeDetails, timeDetailsSuggestions, timeEventIdeas) => {
+export const timelineStateComparer = (
+	timelineState,
+	timeOnly,
+	timeDetails,
+	timeDetailsSuggestions,
+	timeEventIdeas,
+	timeMembers
+) => {
 	if (timelineState === 'TIMELINE_ONLY') {
 		return timeOnly;
 	} else if (timelineState === 'TIMELINE_DETAILS') {
@@ -9,6 +16,8 @@ export const timelineStateComparer = (timelineState, timeOnly, timeDetails, time
 		return timeDetailsSuggestions;
 	} else if (timelineState === 'TIMELINE_EVENT_IDEAS') {
 		return timeEventIdeas;
+	} else if (timelineState === 'MEMBERS_TIMELINE') {
+		return timeMembers;
 	}
 };
 

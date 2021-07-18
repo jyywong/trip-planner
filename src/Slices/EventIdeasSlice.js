@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { setHours, setMinutes } from 'date-fns';
 
+const today = new Date();
 const initialState = {
 	byID: {
 		1: {
@@ -8,7 +10,7 @@ const initialState = {
 			created_at: 'today',
 			content: {
 				eventName: 'Event name',
-				time: '09:30',
+				time: setMinutes(setHours(today, 13), 30).toISOString(),
 				location: {
 					name: "McDonald's",
 					place_id: 'ChIJOYmf5_VAK4gR5jyD_UnsFJo',
@@ -28,7 +30,7 @@ const initialState = {
 			created_at: 'today',
 			content: {
 				eventName: 'Eat somewhere else',
-				time: '10:30',
+				time: setMinutes(setHours(today, 15), 30).toISOString(),
 				location: {
 					name: 'Subway',
 					place_id: 'ChIJq7Ql3M80K4gRFiRJkXUWZ-I',
@@ -51,10 +53,16 @@ export const EventIdeasSlice = createSlice({
 	reducers: {
 		newEventIdea: (state, action) => {
 			return { ...state, byID: { ...state.byID, [action.payload.id]: { ...action.payload } } };
+		},
+		upvoteEventIdea: (state, action) => {
+			state.byID[action.payload.id].votes.upvotes += 1;
+		},
+		downvoteEventIdea: (state, action) => {
+			state.byID[action.payload.id].votes.downvotes += 1;
 		}
 	}
 });
 
-export const { newEventIdea } = EventIdeasSlice.actions;
+export const { newEventIdea, upvoteEventIdea, downvoteEventIdea } = EventIdeasSlice.actions;
 
 export default EventIdeasSlice.reducer;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { motion, AnimatePresence } from 'framer-motion';
 import DetailHeaderPicture from './DetailHeaderPicture';
 import SavedDetailHeader from './DetailHeader/SavedDetailHeader';
 import SavedDetailBase from './DetailBody/SavedDetailBase';
@@ -33,40 +34,61 @@ const DetailComp = () => {
 	const UIMode = useSelector((state) => state.UIState.mode);
 	const classes = useStyles();
 	return (
-		<React.Fragment>
-			<div
-				className={timelineStateComparer(
-					timelineState,
-					classes.collapsedGrid,
-					classes.expandGrid,
-					classes.middleGrid,
-					classes.collapsedGrid
-				)}
-			>
-				<Box
-					display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
-					flexGrow="1"
-					flexDirection="column"
-					alignItems="center"
-					borderRadius="10px"
-					m={1}
-					boxShadow={3}
-				>
-					<DetailHeaderPicture timelineState={timelineState} />
+		<AnimatePresence>
+			{(timelineState === 'TIMELINE_DETAILS' || timelineState === 'TIMELINE_DETAILS_SUGGESTIONS') && (
+				<React.Fragment>
+					<motion.div
+						className={timelineStateComparer(
+							timelineState,
+							classes.collapsedGrid,
+							classes.expandGrid,
+							classes.middleGrid,
+							classes.collapsedGrid
+						)}
+						animate={{
+							x: 0
+						}}
+						initial={{
+							x: 1200
+						}}
+						exit={{
+							x: 1500
+						}}
+						transition={{
+							type: 'spring',
+							stiffness: 50,
+							mass: 0.8
+						}}
+						layout
+					>
+						<Box
+							display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
+							flexGrow="1"
+							flexDirection="column"
+							alignItems="center"
+							borderRadius="10px"
+							m={1}
+							boxShadow={3}
+							component={motion.div}
+							layout
+						>
+							<DetailHeaderPicture timelineState={timelineState} />
 
-					{UIMode === 'Detail' ? (
-						<React.Fragment>
-							<SavedDetailHeader timelineState={timelineState} />
-							<SavedDetailBase timelineState={timelineState} />
-						</React.Fragment>
-					) : (
-						<React.Fragment>
-							<NewStopFormComp timelineState={timelineState} />
-						</React.Fragment>
-					)}
-				</Box>
-			</div>
-		</React.Fragment>
+							{UIMode === 'Detail' ? (
+								<React.Fragment>
+									<SavedDetailHeader timelineState={timelineState} />
+									<SavedDetailBase timelineState={timelineState} />
+								</React.Fragment>
+							) : (
+								<React.Fragment>
+									<NewStopFormComp timelineState={timelineState} />
+								</React.Fragment>
+							)}
+						</Box>
+					</motion.div>
+				</React.Fragment>
+			)}
+		</AnimatePresence>
 	);
 };
 

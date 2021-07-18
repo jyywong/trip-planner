@@ -1,10 +1,11 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Box } from '@material-ui/core';
 import SuggestionHeader from './SuggestionParts/SuggestionHeader';
 import SuggestionPropChange from './SuggestionParts/SuggestionPropChange';
 import SuggestionVotes from './SuggestionParts/SuggestionVotes';
 import SuggestionVoteBar from './SuggestionParts/SuggestionVoteBar';
-const Suggestion = () => {
+const Suggestion = ({ suggestion }) => {
 	return (
 		<React.Fragment>
 			<Box
@@ -18,13 +19,15 @@ const Suggestion = () => {
 				justifyContent="space-between"
 				flexDirection="column"
 				bgcolor="white"
+				component={motion.div}
+				layout
 			>
 				<Box flexGrow="0" padding={2}>
-					<SuggestionHeader />
-					<SuggestionPropChange />
-					<SuggestionVotes />
+					<SuggestionHeader suggestion={suggestion} />
+					<SuggestionPropChange suggestion={suggestion} />
+					<SuggestionVotes suggestion={suggestion} />
 				</Box>
-				<SuggestionVoteBar />
+				<SuggestionVoteBar suggestion={suggestion} />
 			</Box>
 		</React.Fragment>
 	);
