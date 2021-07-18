@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { motion, AnimatePresence } from 'framer-motion';
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Fab } from '@material-ui/core';
+import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
+import { makeStyles } from '@material-ui/styles';
+import { Box, Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import MemberListItem from './MemberListItem';
+import NewMemberForm from './NewMemberForm';
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
 		gridColumn: '1/5',
@@ -11,12 +13,10 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		minHeight: '0'
 	},
-	fabOverride: {
-		alignSelf: 'flex-start',
-		marginTop: '-2.5rem',
-		marginLeft: '15%',
-		height: '5rem',
-		width: '5rem'
+
+	avatarOverride: {
+		height: '4rem',
+		width: '4rem'
 	},
 	root: {
 		'&::-webkit-scrollbar': {
@@ -33,10 +33,13 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 const TripMembersContainer = () => {
+	const [ showForm, setShowForm ] = useState(false);
 	const timelineState = useSelector((state) => state.timelineState);
-
 	const classes = useStyles();
 
+	const handleAdd = () => {
+		setShowForm(true);
+	};
 	return (
 		<AnimatePresence>
 			{timelineState === 'MEMBERS_TIMELINE' && (
@@ -45,6 +48,9 @@ const TripMembersContainer = () => {
 						className={classes.expandGrid}
 						animate={{ x: 0 }}
 						initial={{
+							x: -1200
+						}}
+						exit={{
 							x: -1200
 						}}
 						transition={{
@@ -68,12 +74,37 @@ const TripMembersContainer = () => {
 							component={motion.div}
 							layout
 						>
-							<Box boxSizing="border-box" flexBasis="20%" bgcolor="#A895B7" width="100%" padding={2}>
-								Hello
+							<Box display="flex" boxSizing="border-box" bgcolor="#A895B7" width="100%" padding={2}>
+								<Box display="flex" width="100%" alignSelf="flex-end" marginLeft="2%">
+									<Typography variant="h4">Trip Members</Typography>
+									<Box alignSelf="flex-end" marginLeft="auto">
+										<Button variant="outlined" onClick={handleAdd}>
+											<AddIcon />
+										</Button>
+									</Box>
+								</Box>
 							</Box>
-							<Fab className={classes.fabOverride} size="large">
-								<AddIcon />
-							</Fab>
+							<AnimateSharedLayout>
+								<Box
+									className={classes.root}
+									overflow="auto"
+									display="flex"
+									flexGrow="1"
+									width="100%"
+									alignItems="center"
+									flexDirection="column"
+									component={motion.div}
+									layout
+								>
+									<AnimatePresence>
+										{showForm ? <NewMemberForm setShowForm={setShowForm} /> : <React.Fragment />}
+									</AnimatePresence>
+									<MemberListItem />
+									<MemberListItem />
+									<MemberListItem />
+									<MemberListItem />
+								</Box>
+							</AnimateSharedLayout>
 						</Box>
 					</motion.div>
 				</React.Fragment>
