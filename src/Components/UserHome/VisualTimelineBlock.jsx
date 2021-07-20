@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 		cursor: 'pointer'
 	}
 }));
-const VisualTimelineBlock = () => {
+const VisualTimelineBlock = ({ id, time, name, details }) => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
@@ -26,7 +26,7 @@ const VisualTimelineBlock = () => {
 				<TimelineOppositeContent>
 					<Typography variant="body2" color="textSecondary">
 						{/* {format(parseISO(time), 'h:mmaaa')} */}
-						time
+						{time}
 					</Typography>
 				</TimelineOppositeContent>
 
@@ -39,9 +39,9 @@ const VisualTimelineBlock = () => {
 				<TimelineContent>
 					<Paper elevation={3} className={classes.paper}>
 						<Typography variant="h6" component="h1">
-							hello
+							{name}
 						</Typography>
-						<Typography>hello</Typography>
+						<Typography>{details}</Typography>
 					</Paper>
 				</TimelineContent>
 			</TimelineItem>

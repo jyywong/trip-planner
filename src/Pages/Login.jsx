@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../Slices/AuthSlice';
+import { useLoginMutation } from '../Services/tripPlannerBackend';
 import { Card, Button, Typography, CardContent, Box, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
@@ -18,7 +22,20 @@ const useStyles = makeStyles({
 	}
 });
 const Login = () => {
+	const dispatch = useDispatch();
+	const { push } = useHistory();
+	const [ login, { isLoading } ] = useLoginMutation();
+	const [ formValues, setFormValues ] = useState({ username: '', password: '' });
 	const classes = useStyles();
+	const handleSubmit = async () => {
+		try {
+			const user = await login(formValues).unwrap();
+			dispatch(setCredentials(user));
+			push('/home');
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<React.Fragment>
 			<Box display="flex" width="100vw" height="100vh" alignItems="center" justifyContent="center">
@@ -40,14 +57,23 @@ const Login = () => {
 							<TextField
 								variant="outlined"
 								className={classes.mediumBottomMargin}
-								label="Email"
+								label="Username"
 								fullWidth
+								value={formValues.username}
+								onChange={(e) => {
+									setFormValues((current) => ({ ...current, username: e.target.value }));
+								}}
 							/>
 							<TextField
 								variant="outlined"
 								className={classes.mediumBottomMargin}
 								label="Password"
+								type="password"
 								fullWidth
+								value={formValues.password}
+								onChange={(e) => {
+									setFormValues((current) => ({ ...current, password: e.target.value }));
+								}}
 							/>
 							<Button
 								variant="contained"
@@ -55,6 +81,7 @@ const Login = () => {
 								color="primary"
 								size="large"
 								fullWidth
+								onClick={handleSubmit}
 							>
 								SIGN IN
 							</Button>

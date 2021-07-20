@@ -6,6 +6,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { makeStyles } from '@material-ui/styles';
 import HomeTimelines from '../Components/UserHome/HomeTimelines';
+import { useGetTripsQuery } from '../Services/tripPlannerBackend';
 
 const useStyles = makeStyles({
 	gridOverride: {
@@ -20,9 +21,8 @@ const useStyles = makeStyles({
 	}
 });
 const UserHome = () => {
+	const { data, error, isLoading } = useGetTripsQuery();
 	const classes = useStyles();
-	const cardList = [ 'pink', 'orangered', 'blue', 'green', 'purple', 'black', 'grey' ];
-	const [ shownCards, setShownCards ] = useState([ 1, 2, 3, 4 ]);
 
 	return (
 		<React.Fragment>
@@ -46,14 +46,7 @@ const UserHome = () => {
 					</Toolbar>
 				</AppBar>
 				<motion.div className={classes.gridOverride} layout>
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
+					{!isLoading && !error && data.map((trip) => <HomeTimelines key={trip.id} trip={trip} />)}
 				</motion.div>
 			</Box>
 		</React.Fragment>

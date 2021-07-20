@@ -96,7 +96,7 @@ const TimelineContainer = () => {
 					</Box>
 					<Box display="flex">
 						<Button
-							startIcon={<ChevronLeftIcon fontsize="large" />}
+							startIcon={<ChevronLeftIcon fontSize="large" />}
 							onClick={() => {
 								timelineState !== 'MEMBERS_TIMELINE'
 									? dispatch(openMembersList())

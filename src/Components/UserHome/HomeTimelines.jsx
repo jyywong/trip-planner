@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Box, Typography } from '@material-ui/core';
 import VisualTimeline from './VisualTimeline';
-const HomeTimelines = () => {
+const HomeTimelines = ({ trip }) => {
 	return (
 		<React.Fragment>
 			<Link to="/edit_trip">
@@ -20,10 +20,10 @@ const HomeTimelines = () => {
 				>
 					<Box display="flex" flexShrink="1" marginTop={2} flexBasis="15%">
 						<Typography align="center" variant="h2">
-							Name of Trip
+							{trip.name}
 						</Typography>
 					</Box>
-					<VisualTimeline />
+					<VisualTimeline trip={trip} />
 				</Box>
 			</Link>
 		</React.Fragment>

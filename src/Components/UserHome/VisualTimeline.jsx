@@ -12,6 +12,7 @@ import VisualTimelineBlock from './VisualTimelineBlock';
 import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
+import { useGetTripEventsQuery } from '../../Services/tripPlannerBackend';
 
 const useStyles = makeStyles((theme) => ({
 	paper: {
@@ -24,22 +25,27 @@ const useStyles = makeStyles((theme) => ({
 		visibility: 'hidden'
 	}
 }));
-const VisualTimeline = () => {
+const VisualTimeline = ({ trip }) => {
+	const { data, error, isLoading } = useGetTripEventsQuery(trip.id);
 	const classes = useStyles();
-	const tripStops = useSelector((state) => state.tripStop.stops);
-	const unFrozenTripStops = [ ...tripStops ];
-	const sortTripStopsByTime = (unFrozenTripStops) =>
-		unFrozenTripStops.sort((a, b) => compareAsc(parseISO(a.time), parseISO(b.time)));
-	const sortedTripStops = sortTripStopsByTime(unFrozenTripStops);
 
 	return (
 		<React.Fragment>
 			<Box className={classes.root} flexBasis="70%" width="100%" flexGrow="0" overflow="auto" minHeight="0">
 				<Timeline align="alternate">
-					{sortedTripStops.map((item) => (
-						<VisualTimelineBlock key={item.id} id={item.id} time={item.time} details={item.details} />
-					))}
-					{/* <TimelineItem>
+					{!isLoading &&
+						!error &&
+						data.map((item) => (
+							<VisualTimelineBlock
+								key={item.id}
+								id={item.id}
+								time={item.time}
+								name={item.name}
+								details={item.details}
+							/>
+						))}
+					{/* Uncommenting below will fix alignment issues */}
+					<TimelineItem>
 						<TimelineSeparator>
 							<TimelineDot className={classes.addCircle} color="secondary">
 								<AddIcon />
@@ -53,7 +59,7 @@ const VisualTimeline = () => {
 								<Typography>Because this is the life you love!</Typography>
 							</Paper>
 						</TimelineContent>
-					</TimelineItem> */}
+					</TimelineItem>
 				</Timeline>
 			</Box>
 		</React.Fragment>
