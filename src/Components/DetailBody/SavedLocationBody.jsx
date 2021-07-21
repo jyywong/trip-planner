@@ -3,7 +3,7 @@ import { getDetails } from 'use-places-autocomplete';
 import { useSelector } from 'react-redux';
 import { Box } from '@material-ui/core';
 import LocationDetails from './LocationDetails';
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 
 const containerStyle = {
 	width: '100%',
@@ -15,10 +15,11 @@ const center = {
 	lng: -38.523
 };
 
-const SavedLocationBody = () => {
+const SavedLocationBody = ({ tripEvent }) => {
 	const isLoaded = useSelector((state) => state.tripStop.googleLibraryIsLoaded);
-	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
-	const stop = useSelector((state) => state.tripStop.stops.find((stop) => stop.id === selectedItem));
+	// const selectedItem = useSelector((state) => state.tripStop.selectedStop);
+	// const stop = useSelector((state) => state.tripStop.stops.find((stop) => stop.id === selectedItem));
+	const { lat, long: lng, placeID } = tripEvent;
 	const [ placeDetails, setPlaceDetails ] = useState({
 		name: '',
 		business_status: '',
@@ -37,12 +38,12 @@ const SavedLocationBody = () => {
 			// map.fitBounds(bounds);
 			setMap(map);
 			mapRef.current = map;
-			panTo({ lat: Number(stop.location.latLng[0]), lng: Number(stop.location.latLng[1]) });
-			setCurrentMapMarker({ lat: Number(stop.location.latLng[0]), lng: Number(stop.location.latLng[1]) });
-			map.setCenter({ lat: Number(stop.location.latLng[0]), lng: Number(stop.location.latLng[1]) });
+			panTo({ lat: Number(lat), lng: Number(lng) });
+			setCurrentMapMarker({ lat, lng });
+			map.setCenter({ lat, lng });
 
 			const parameter = {
-				placeId: stop.location.place_id,
+				placeId: placeID,
 				fields: [ 'name', 'business_status', 'formatted_address', 'icon', 'type', 'url' ]
 			};
 
@@ -52,7 +53,7 @@ const SavedLocationBody = () => {
 				console.log(details);
 			});
 		},
-		[ stop ]
+		[ tripEvent ]
 	);
 
 	const onUnmount = useCallback((map) => {

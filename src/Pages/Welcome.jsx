@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Typography, Box, Button } from '@material-ui/core';
 
 const Welcome = () => {
@@ -21,7 +22,7 @@ const Welcome = () => {
 					</Box>
 
 					<Box width="40%">
-						<Button variant="contained" color="primary" fullWidth>
+						<Button variant="contained" color="primary" component={Link} to="/login" fullWidth>
 							Log In
 						</Button>
 					</Box>

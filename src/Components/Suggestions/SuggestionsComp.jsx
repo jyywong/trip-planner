@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
+import { useGetAlternativesQuery } from '../../Services/tripPlannerBackend';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Box, Typography, Button } from '@material-ui/core';
@@ -7,6 +8,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { displayOnlyIfTimelineStateIsTimelineDetailsSuggestions, timelineStateComparer } from '../../HelperFunction';
 import Suggestion from './Suggestion';
 import NewSuggestion from './NewSuggestion';
+import { timelineModeSelector } from '../../Slices/TimelineStateSlice';
 
 const useStyles = makeStyles({
 	collapsedGrid: {
@@ -41,7 +43,9 @@ const useStyles = makeStyles({
 	}
 });
 const SuggestionsComp = () => {
-	const timelineState = useSelector((state) => state.timelineState);
+	const selectedStop = useSelector((state) => state.tripStop.selectedStop);
+	const { data, error, isLoading } = useGetAlternativesQuery(selectedStop);
+	const timelineState = useSelector(timelineModeSelector);
 	const alternativesForSelectedStop = useSelector((state) => {
 		const allSuggestions = Object.values(state.suggestions.byID);
 		return allSuggestions.filter((suggestion) => suggestion.eventID === state.tripStop.selectedStop);
@@ -123,9 +127,11 @@ const SuggestionsComp = () => {
 									<AnimatePresence>
 										{showForm && <NewSuggestion key="newSuggestion" setShowForm={setShowForm} />}
 									</AnimatePresence>
-									{alternativesForSelectedStop.map((alternative) => (
-										<Suggestion key={alternative.id} suggestion={alternative} />
-									))}
+									{!isLoading &&
+										!error &&
+										data.map((alternative) => (
+											<Suggestion key={alternative.id} suggestion={alternative} />
+										))}
 								</Box>
 							</AnimateSharedLayout>
 						</Box>

@@ -6,6 +6,7 @@ import { Box, Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import MemberListItem from './MemberListItem';
 import NewMemberForm from './NewMemberForm';
+import { timelineModeSelector } from '../../Slices/TimelineStateSlice';
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
 		gridColumn: '1/5',
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TripMembersContainer = () => {
 	const [ showForm, setShowForm ] = useState(false);
-	const timelineState = useSelector((state) => state.timelineState);
+	const timelineState = useSelector(timelineModeSelector);
 	const classes = useStyles();
 
 	const handleAdd = () => {

@@ -1,12 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Box, Typography } from '@material-ui/core';
 import VisualTimeline from './VisualTimeline';
+import { selectTrip } from '../../Slices/TimelineStateSlice';
 const HomeTimelines = ({ trip }) => {
+	const dispatch = useDispatch();
 	return (
 		<React.Fragment>
-			<Link to="/edit_trip">
+			<Link
+				to="/edit_trip"
+				onClick={() => {
+					dispatch(selectTrip(trip.id));
+				}}
+			>
 				<Box
 					display="flex"
 					padding={2}

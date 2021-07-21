@@ -12,22 +12,22 @@ const useStyles = makeStyles((theme) => ({
 
 const SuggestionPropChange = ({ suggestion }) => {
 	const classes = useStyles();
-	const selectedStopID = useSelector((state) => state.tripStop.selectedStop);
-	const selectedStop = useSelector((state) => state.tripStop.stops.find((stop) => stop.id === selectedStopID));
+	// const selectedStopID = useSelector((state) => state.tripStop.selectedStop);
+	// const selectedStop = useSelector((state) => state.tripStop.stops.find((stop) => stop.id === selectedStopID));
 	return (
 		<React.Fragment>
 			<Box display="flex" flexDirection="column" marginTop={1}>
 				<Typography variant="overline">Proposed: </Typography>
 				<Box display="flex" flexDirection="column" alignItems="center">
 					<Typography className={classes.crossedOutOverride} variant="body1">
-						{selectedStop.location.name}
+						Current Name
 					</Typography>
 					<ArrowDownwardIcon />
-					<Typography variant="body1">{suggestion.content.location.name}</Typography>
+					<Typography variant="body1">{suggestion.name}</Typography>
 				</Box>
 				<Typography variant="overline">Reason: </Typography>
 				<Box paddingX={3}>
-					<Typography variant="body2">{suggestion.content.details}</Typography>
+					<Typography variant="body2">{suggestion.details}</Typography>
 				</Box>
 			</Box>
 		</React.Fragment>

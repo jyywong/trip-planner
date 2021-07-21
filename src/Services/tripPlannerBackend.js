@@ -47,9 +47,24 @@ export const tripPlannerApi = createApi({
 		getTrips: builder.query({
 			query: () => 'trips'
 		}),
+		getATrip: builder.query({
+			query: (tripID) => `trip/${tripID}`
+		}),
 		getTripEvents: builder.query({
 			query: (tripID) => ({
 				url: `trip_events/${tripID}`
+			})
+		}),
+		getATripEvent: builder.query({
+			query: (eventID) => ({
+				url: `trip_event/${eventID}`
+			})
+		}),
+		createTripEvent: builder.mutation({
+			query: ({ tripID, newEvent }) => ({
+				url: `trip_events/${tripID}`,
+				method: 'POST',
+				body: newEvent
 			})
 		}),
 		getEventIdeas: builder.query({
@@ -68,7 +83,9 @@ export const tripPlannerApi = createApi({
 export const {
 	useLoginMutation,
 	useGetTripsQuery,
+	useGetATripQuery,
 	useGetTripEventsQuery,
+	useGetATripEventQuery,
 	useGetEventIdeasQuery,
 	useGetAlternativesQuery
 } = tripPlannerApi;

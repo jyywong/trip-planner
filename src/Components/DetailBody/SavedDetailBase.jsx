@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
-import { Box, Typography, Tabs, Tab } from '@material-ui/core';
+import { Box, Tabs, Tab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
 import SavedDetailBody from './SavedDetailBody';
 import SavedLocationBody from './SavedLocationBody';
@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 		display: 'inherit'
 	}
 });
-const SavedDetailBase = ({ timelineState }) => {
+const SavedDetailBase = ({ tripEvent, timelineState }) => {
 	const classes = useStyles();
 	const [ tabValue, setTabValue ] = useState(0);
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
@@ -26,7 +26,6 @@ const SavedDetailBase = ({ timelineState }) => {
 
 	useEffect(
 		() => {
-			console.log('saveddetailbase being updated');
 			setTabValue(0);
 		},
 		[ selectedItem ]
@@ -61,14 +60,13 @@ const SavedDetailBase = ({ timelineState }) => {
 						case 0:
 							return (
 								<SavedDetailBody
-									selectedItem={selectedItem}
+									tripEvent={tripEvent}
 									timelineState={timelineState}
 									classes={classes}
-									stop={stop}
 								/>
 							);
 						case 1:
-							return <SavedLocationBody />;
+							return <SavedLocationBody tripEvent={tripEvent} />;
 						case 2:
 							return <NextStopBody />;
 					}

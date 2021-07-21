@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
+import { useGetATripQuery, useGetTripEventsQuery } from '../Services/tripPlannerBackend';
 import { Box, Typography, Button } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import TimelineComp from './TimelineComp';
 import { makeStyles } from '@material-ui/core/styles';
 import { timelineStateComparer } from '../HelperFunction';
-import { openEventIdeas, openMembersList, returnToTimelineOnly } from '../Slices/TimelineStateSlice';
+import {
+	openEventIdeas,
+	openMembersList,
+	returnToTimelineOnly,
+	timelineModeSelector,
+	timelineSelectedTrip
+} from '../Slices/TimelineStateSlice';
 
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
@@ -50,8 +57,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TimelineContainer = () => {
 	const dispatch = useDispatch();
+	const selectedTrip = useSelector(timelineSelectedTrip);
+	const { data: tripData, error: tripError, isLoading: tripIsLoading } = useGetATripQuery(selectedTrip);
 	const [ selectedItem, setSelectedItem ] = useState({});
-	const timelineState = useSelector((state) => state.timelineState);
+	const timelineState = useSelector(timelineModeSelector);
 	const classes = useStyles();
 	return (
 		<React.Fragment>
@@ -81,7 +90,7 @@ const TimelineContainer = () => {
 					layout
 				>
 					<Box display="flex" flexShrink="1" marginTop={2} flexBasis="15%" component={motion.div} layout>
-						<Typography variant="h2">Name of Trip</Typography>
+						{!tripIsLoading && !tripError && <Typography variant="h2">{tripData.name}</Typography>}
 					</Box>
 					<Box
 						className={classes.root}

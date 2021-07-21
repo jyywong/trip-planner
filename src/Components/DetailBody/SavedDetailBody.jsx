@@ -6,7 +6,8 @@ import { useDispatch } from 'react-redux';
 import { Typography, Box, Button } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
-const SavedDetailBody = ({ timelineState, selectedItem, stop }) => {
+const SavedDetailBody = ({ timelineState, tripEvent }) => {
+	const { details } = tripEvent;
 	const controls = useAnimation();
 	const dispatch = useDispatch();
 
@@ -14,7 +15,7 @@ const SavedDetailBody = ({ timelineState, selectedItem, stop }) => {
 		() => {
 			controls.start({ x: [ -100, 0 ], opacity: [ 0, 1 ] });
 		},
-		[ stop ]
+		[ tripEvent ]
 	);
 	return (
 		<React.Fragment>
@@ -29,7 +30,7 @@ const SavedDetailBody = ({ timelineState, selectedItem, stop }) => {
 				layout
 			>
 				<Box component={motion.div} animate={controls} initial={{ x: -100 }}>
-					<Typography variant="body1">{selectedItem !== 0 && stop.details.body}</Typography>
+					<Typography variant="body1">{details}</Typography>
 				</Box>
 				<Box alignSelf="flex-end">
 					<Button

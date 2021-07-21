@@ -17,18 +17,20 @@ const useStyles = makeStyles({
 });
 
 const EventIdea = ({ eventIdea }) => {
+	console.log(eventIdea);
+	const { id, suggestor, time, name, details, locationName, address, placeID, upvotes, downvotes } = eventIdea;
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const handleAdd = () => {
 		const id = Math.random() * 100;
 		const newStop = {
 			id,
-			time: eventIdea.content.time,
+			time,
 			details: {
-				title: eventIdea.content.eventName,
-				body: eventIdea.content.details
+				title: name,
+				body: details
 			},
-			location: eventIdea.content.location
+			location: { locationName, address, placeID }
 		};
 		dispatch(createStop(newStop));
 	};
@@ -56,12 +58,12 @@ const EventIdea = ({ eventIdea }) => {
 						alignSelf="flex-end"
 					>
 						<Typography className={classes.whiteText} variant="h4">
-							{eventIdea.content.eventName}
+							{name}
 						</Typography>
 					</Box>
 					<Box alignSelf="flex-end" marginRight={3}>
 						<Typography className={classes.whiteText} variant="h5">
-							{format(parseISO(eventIdea.content.time), 'h:mmaaa')}
+							{format(parseISO(time), 'h:mmaaa')}
 						</Typography>
 					</Box>
 					<Box alignSelf="center" marginRight={1.5}>
@@ -72,17 +74,17 @@ const EventIdea = ({ eventIdea }) => {
 				</Box>
 				<Box display="flex" flexGrow="1">
 					<Box marginTop={1} display="flex" justifyContent="space-evenly">
-						<EventIdeaDetails details={eventIdea.content.details} />
+						<EventIdeaDetails details={details} />
 						<Box display="flex" alignItems="center">
 							<Box height="80%">
 								<Divider orientation="vertical" flexItem />
 							</Box>
 						</Box>
-						<EventIdeaLocation location={eventIdea.content.location} />
+						<EventIdeaLocation location={{ locationName, address }} />
 					</Box>
-					<EventIdeaVoteButtons id={eventIdea.id} votes={eventIdea.votes} />
+					<EventIdeaVoteButtons id={id} votes={{ upvotes, downvotes }} />
 				</Box>
-				<EventIdeaVoteBar votes={eventIdea.votes} />
+				<EventIdeaVoteBar votes={{ upvotes, downvotes }} />
 			</Box>
 		</React.Fragment>
 	);

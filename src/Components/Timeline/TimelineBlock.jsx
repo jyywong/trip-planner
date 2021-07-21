@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 		border: '1px solid blue'
 	}
 }));
-const TimelineBlock = forwardRef(({ id, time, details }, ref) => {
+const TimelineBlock = forwardRef(({ id, time, name, details }, ref) => {
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
 	const timelineExpand = useSelector((state) => state.timelineExpand);
 	const uiMode = useSelector((state) => state.UIState.mode);
@@ -63,9 +63,9 @@ const TimelineBlock = forwardRef(({ id, time, details }, ref) => {
 						}
 					>
 						<Typography variant="h6" component="h1">
-							{details.title}
+							{name}
 						</Typography>
-						<Typography>{details.body} </Typography>
+						<Typography>{details} </Typography>
 					</Paper>
 				</TimelineContent>
 			</TimelineItem>
