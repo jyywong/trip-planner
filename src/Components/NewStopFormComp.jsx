@@ -4,7 +4,11 @@ import { setHours, setMinutes, parseISO } from 'date-fns';
 import { createStop } from '../Slices/TripStopSlice';
 import NewDetailHeader from './DetailHeader/NewDetailHeader';
 import NewDetailBody from './DetailBody/NewDetailBody';
+import { useCreateTripEventMutation } from '../Services/tripPlannerBackend';
+import { timelineSelectedTrip } from '../Slices/TimelineStateSlice';
 const NewStopFormComp = ({ timelineState }) => {
+	const selectedTrip = useSelector(timelineSelectedTrip);
+	const [ createEvent, { data, error, isLoading } ] = useCreateTripEventMutation();
 	const dispatch = useDispatch();
 	const today = useSelector((state) => state.tripStop.date);
 	const [ formValues, setFormValues ] = useState({
@@ -23,16 +27,19 @@ const NewStopFormComp = ({ timelineState }) => {
 	};
 
 	const createNewStop = () => {
-		const id = Math.random() * 100;
+		const { time, name, details, location: { address, place_id, latLng: { lat, lng } } } = formValues;
 		const newStop = {
-			id,
-			time: convertToDate(formValues.time),
-			details: {
-				title: formValues.name,
-				body: formValues.details
-			},
-			location: formValues.location
+			trip: selectedTrip,
+			time: convertToDate(time),
+			name,
+			details,
+			placeID: place_id,
+			address,
+			lat,
+			long: lng
 		};
+		// console.log(newStop);
+		createEvent({ tripID: selectedTrip, newEvent: newStop }).then((result) => console.log(result));
 		dispatch(createStop(newStop));
 	};
 	return (

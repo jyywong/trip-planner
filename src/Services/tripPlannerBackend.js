@@ -36,6 +36,7 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const tripPlannerApi = createApi({
 	reducerPath: 'tripPlannerApi',
 	baseQuery: baseQueryWithReauth,
+	tagTypes: [ 'tripEvents', 'eventIdeas', 'alternatives' ],
 	endpoints: (builder) => ({
 		login: builder.mutation({
 			query: (credentials) => ({
@@ -50,10 +51,18 @@ export const tripPlannerApi = createApi({
 		getATrip: builder.query({
 			query: (tripID) => `trip/${tripID}`
 		}),
+		createTrip: builder.query({
+			query: (newTrip) => ({
+				url: 'trips',
+				method: 'POST',
+				body: newTrip
+			})
+		}),
 		getTripEvents: builder.query({
 			query: (tripID) => ({
 				url: `trip_events/${tripID}`
-			})
+			}),
+			providesTags: [ 'tripEvents' ]
 		}),
 		getATripEvent: builder.query({
 			query: (eventID) => ({
@@ -65,17 +74,36 @@ export const tripPlannerApi = createApi({
 				url: `trip_events/${tripID}`,
 				method: 'POST',
 				body: newEvent
-			})
+			}),
+			invalidatesTags: [ 'tripEvents' ]
 		}),
 		getEventIdeas: builder.query({
 			query: (tripID) => ({
 				url: `event_ideas/${tripID}`
-			})
+			}),
+			providesTags: [ 'eventIdeas' ]
+		}),
+		createEventIdea: builder.query({
+			query: ({ tripID, newEventIdea }) => ({
+				url: `event_ideas/${tripID}`,
+				method: 'POST',
+				body: newEventIdea
+			}),
+			invalidatesTags: [ 'eventIdeas' ]
 		}),
 		getAlternatives: builder.query({
 			query: (eventID) => ({
 				url: `event_alternatives/${eventID}`
-			})
+			}),
+			providesTags: [ 'alternatives' ]
+		}),
+		createAlternative: builder.mutation({
+			query: ({ eventID, newAlternative }) => ({
+				url: `event_alternatives/${eventID}`,
+				method: 'POST',
+				body: newAlternative
+			}),
+			invalidatesTags: [ 'alternatives' ]
 		})
 	})
 });
@@ -86,6 +114,9 @@ export const {
 	useGetATripQuery,
 	useGetTripEventsQuery,
 	useGetATripEventQuery,
+	useCreateTripEventMutation,
 	useGetEventIdeasQuery,
-	useGetAlternativesQuery
+	useCreateEventIdeaQuery,
+	useGetAlternativesQuery,
+	useCreateAlternativeMutation
 } = tripPlannerApi;

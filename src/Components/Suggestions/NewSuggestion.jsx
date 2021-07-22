@@ -6,6 +6,7 @@ import { Box, Typography, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import NewLocationSelector from './NewSuggestionParts/NewLocationSelector';
 import { newSuggestion } from '../../Slices/SuggestionsSlice';
+import { useCreateAlternativeMutation } from '../../Services/tripPlannerBackend';
 
 const useStyles = makeStyles((theme) => ({
 	overrideTextMargins: {
@@ -23,7 +24,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NewSuggestion = ({ setShowForm }) => {
+	const userID = useSelector((state) => state.authState.user);
 	const dispatch = useDispatch();
+	const [ createSuggestion, { data, error, isLoading } ] = useCreateAlternativeMutation();
 	const [ formValues, setFormValues ] = useState({
 		eventName: '',
 		time: '',
@@ -36,32 +39,39 @@ const NewSuggestion = ({ setShowForm }) => {
 	});
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
 	const selectedStop = useSelector((state) => state.tripStop.stops.find((stop) => stop.id === selectedItem));
-	useEffect(
-		() => {
-			if (selectedItem !== 0) {
-				const { time, details, location } = selectedStop;
-				setFormValues({
-					eventName: details.title,
-					details: details.body,
-					time: format(parseISO(time), 'kk:mm'),
-					location
-				});
-			}
-		},
-		[ selectedItem ]
-	);
+	// useEffect(
+	// 	() => {
+	// 		if (selectedItem !== 0) {
+	// 			const { time, details, location } = selectedStop;
+	// 			setFormValues({
+	// 				eventName: details.title,
+	// 				details: details.body,
+	// 				time: format(parseISO(time), 'kk:mm'),
+	// 				location
+	// 			});
+	// 		}
+	// 	},
+	// 	[ selectedItem ]
+	// );
 	const classes = useStyles();
 	const handleCreate = () => {
+		const { eventName, time, location: { name, address, place_id }, details } = formValues;
 		const newSuggestionObject = {
-			id: Math.random() * 100,
-			creator: 1,
-			created_at: new Date().toISOString(),
-			content: formValues,
-			votes: {
-				upvotes: 0,
-				downvotes: 0
-			}
+			createdBy: 1,
+			createdAt: new Date().toISOString(),
+			time,
+			name: eventName,
+			details,
+			locationName: name,
+			address,
+			placeID: place_id,
+			upvotes: 0,
+			downvotes: 0
 		};
+		console.log(newSuggestionObject);
+		// createSuggestion({ eventID: selectedItem, newAlternative: newSuggestionObject }).then((response) =>
+		// 	console.log(response)
+		// );
 		dispatch(newSuggestion(newSuggestionObject));
 	};
 	return (

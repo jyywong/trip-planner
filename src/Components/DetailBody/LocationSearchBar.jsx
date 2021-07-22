@@ -47,7 +47,7 @@ const LocationSearchBar = ({ panTo, formValues, setCurrentMapMarker, onChooseLoc
 
 						panTo({ lat, lng });
 						setCurrentMapMarker({ lat, lng });
-						onChooseLocation(address, results[0].place_id, [ lat, lng ]);
+						onChooseLocation(address, results[0].place_id, { lat, lng });
 					} catch (error) {
 						console.log('error');
 					}

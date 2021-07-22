@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import LocationSearchBar from './LocationSearchBar';
 import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
 
