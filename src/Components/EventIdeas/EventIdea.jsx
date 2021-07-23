@@ -9,6 +9,7 @@ import EventIdeaLocation from './EventIdeaLocation';
 import EventIdeaVoteButtons from './EventIdeaVoteButtons';
 import EventIdeaVoteBar from './EventIdeaVoteBar';
 import { createStop } from '../../Slices/TripStopSlice';
+import { useAddEventIdeaMutation } from '../../Services/tripPlannerBackend';
 
 const useStyles = makeStyles({
 	whiteText: {
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
 });
 
 const EventIdea = ({ eventIdea }) => {
-	console.log(eventIdea);
+	const [ addEventIdea, { data, error, isLoading } ] = useAddEventIdeaMutation();
 	const { id, suggestor, time, name, details, locationName, address, placeID, upvotes, downvotes } = eventIdea;
 	const dispatch = useDispatch();
 	const classes = useStyles();
@@ -32,6 +33,7 @@ const EventIdea = ({ eventIdea }) => {
 			},
 			location: { locationName, address, placeID }
 		};
+		addEventIdea(eventIdea.id);
 		dispatch(createStop(newStop));
 	};
 
@@ -66,11 +68,13 @@ const EventIdea = ({ eventIdea }) => {
 							{format(parseISO(time), 'h:mmaaa')}
 						</Typography>
 					</Box>
-					<Box alignSelf="center" marginRight={1.5}>
-						<Button variant="contained" color="primary" onClick={handleAdd}>
-							Add
-						</Button>
-					</Box>
+					{eventIdea.status === 'Suggested' && (
+						<Box alignSelf="center" marginRight={1.5}>
+							<Button variant="contained" color="primary" onClick={handleAdd}>
+								Add
+							</Button>
+						</Box>
+					)}
 				</Box>
 				<Box display="flex" flexGrow="1">
 					<Box marginTop={1} display="flex" justifyContent="space-evenly">

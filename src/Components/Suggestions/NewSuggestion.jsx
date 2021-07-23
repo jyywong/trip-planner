@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/styles';
 import NewLocationSelector from './NewSuggestionParts/NewLocationSelector';
 import { newSuggestion } from '../../Slices/SuggestionsSlice';
 import { useCreateAlternativeMutation } from '../../Services/tripPlannerBackend';
+import { convertToDate } from '../../HelperFunction';
 
 const useStyles = makeStyles((theme) => ({
 	overrideTextMargins: {
@@ -37,41 +38,29 @@ const NewSuggestion = ({ setShowForm }) => {
 		},
 		details: ''
 	});
+	const today = useSelector((state) => state.tripStop.date);
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
-	const selectedStop = useSelector((state) => state.tripStop.stops.find((stop) => stop.id === selectedItem));
-	// useEffect(
-	// 	() => {
-	// 		if (selectedItem !== 0) {
-	// 			const { time, details, location } = selectedStop;
-	// 			setFormValues({
-	// 				eventName: details.title,
-	// 				details: details.body,
-	// 				time: format(parseISO(time), 'kk:mm'),
-	// 				location
-	// 			});
-	// 		}
-	// 	},
-	// 	[ selectedItem ]
-	// );
+
 	const classes = useStyles();
 	const handleCreate = () => {
-		const { eventName, time, location: { name, address, place_id }, details } = formValues;
+		const { eventName, time, locationName, address, place_id, details } = formValues;
 		const newSuggestionObject = {
+			alternativeTo: selectedItem,
 			createdBy: 1,
 			createdAt: new Date().toISOString(),
-			time,
+			time: convertToDate(today, time),
 			name: eventName,
 			details,
-			locationName: name,
+			locationName,
 			address,
 			placeID: place_id,
 			upvotes: 0,
 			downvotes: 0
 		};
 		console.log(newSuggestionObject);
-		// createSuggestion({ eventID: selectedItem, newAlternative: newSuggestionObject }).then((response) =>
-		// 	console.log(response)
-		// );
+		createSuggestion({ eventID: selectedItem, newAlternative: newSuggestionObject }).then((response) =>
+			console.log(response)
+		);
 		dispatch(newSuggestion(newSuggestionObject));
 	};
 	return (
@@ -125,7 +114,7 @@ const NewSuggestion = ({ setShowForm }) => {
 						onChange={(e) => setFormValues((current) => ({ ...current, time: e.target.value }))}
 					/>
 					<div className={classes.overrideTextMargins}>
-						<NewLocationSelector />
+						<NewLocationSelector setFormValues={setFormValues} />
 					</div>
 
 					<TextField

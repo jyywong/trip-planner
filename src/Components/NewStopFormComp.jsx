@@ -6,6 +6,7 @@ import NewDetailHeader from './DetailHeader/NewDetailHeader';
 import NewDetailBody from './DetailBody/NewDetailBody';
 import { useCreateTripEventMutation } from '../Services/tripPlannerBackend';
 import { timelineSelectedTrip } from '../Slices/TimelineStateSlice';
+import { convertToDate } from '../HelperFunction';
 const NewStopFormComp = ({ timelineState }) => {
 	const selectedTrip = useSelector(timelineSelectedTrip);
 	const [ createEvent, { data, error, isLoading } ] = useCreateTripEventMutation();
@@ -17,20 +18,12 @@ const NewStopFormComp = ({ timelineState }) => {
 		details: '',
 		location: { address: '', place_id: '', latLng: {} }
 	});
-	const convertToDate = (time) => {
-		const hoursRE = /^\d+/;
-		const minsRE = /\d+$/;
-		const hours = time.match(hoursRE);
-		const mins = time.match(minsRE);
-		const finalDate = setMinutes(setHours(parseISO(today), hours), mins).toISOString();
-		return finalDate;
-	};
 
 	const createNewStop = () => {
 		const { time, name, details, location: { address, place_id, latLng: { lat, lng } } } = formValues;
 		const newStop = {
 			trip: selectedTrip,
-			time: convertToDate(time),
+			time: convertToDate(today, time),
 			name,
 			details,
 			placeID: place_id,

@@ -91,6 +91,16 @@ export const tripPlannerApi = createApi({
 			}),
 			invalidatesTags: [ 'eventIdeas' ]
 		}),
+		addEventIdea: builder.mutation({
+			query: (eventIdeaID) => ({
+				url: `event_idea/${eventIdeaID}`,
+				method: 'PATCH',
+				body: {
+					status: 'Added'
+				}
+			}),
+			invalidatesTags: [ 'eventIdeas', 'tripEvents' ]
+		}),
 		getAlternatives: builder.query({
 			query: (eventID) => ({
 				url: `event_alternatives/${eventID}`
@@ -117,6 +127,7 @@ export const {
 	useCreateTripEventMutation,
 	useGetEventIdeasQuery,
 	useCreateEventIdeaQuery,
+	useAddEventIdeaMutation,
 	useGetAlternativesQuery,
 	useCreateAlternativeMutation
 } = tripPlannerApi;
