@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { makeStyles } from '@material-ui/styles';
 import { Box, Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import MemberListItem from './MemberListItem';
-import NewMemberForm from './NewMemberForm';
 import { timelineModeSelector } from '../../Slices/TimelineStateSlice';
+import MembersTable from './MembersTable';
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
 		gridColumn: '1/5',
@@ -36,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const TripMembersContainer = () => {
 	const [ showForm, setShowForm ] = useState(false);
 	const timelineState = useSelector(timelineModeSelector);
+
 	const classes = useStyles();
 
 	const handleAdd = () => {
@@ -85,27 +85,7 @@ const TripMembersContainer = () => {
 									</Box>
 								</Box>
 							</Box>
-							<AnimateSharedLayout>
-								<Box
-									className={classes.root}
-									overflow="auto"
-									display="flex"
-									flexGrow="1"
-									width="100%"
-									alignItems="center"
-									flexDirection="column"
-									component={motion.div}
-									layout
-								>
-									<AnimatePresence>
-										{showForm ? <NewMemberForm setShowForm={setShowForm} /> : <React.Fragment />}
-									</AnimatePresence>
-									<MemberListItem />
-									<MemberListItem />
-									<MemberListItem />
-									<MemberListItem />
-								</Box>
-							</AnimateSharedLayout>
+							<MembersTable showForm={showForm} setShowForm={setShowForm} />
 						</Box>
 					</motion.div>
 				</React.Fragment>

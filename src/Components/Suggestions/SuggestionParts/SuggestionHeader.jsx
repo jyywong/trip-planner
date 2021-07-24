@@ -1,9 +1,8 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { Box, Avatar, Typography, Button } from '@material-ui/core';
 import SyncAltIcon from '@material-ui/icons/SyncAlt';
 import { makeStyles } from '@material-ui/styles';
-import { updateStop } from '../../../Slices/TripStopSlice';
+import { useSwitchAlternativeMutation } from '../../../Services/tripPlannerBackend';
 
 const useStyles = makeStyles((theme) => ({
 	lineHeightOverride: {
@@ -18,16 +17,12 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 const SuggestionHeader = ({ suggestion }) => {
-	const dispatch = useDispatch();
+	const [ switchAlternative, { data, error, isLoading } ] = useSwitchAlternativeMutation();
 	const classes = useStyles();
 	const handleSwitch = () => {
-		const newStop = {
-			title: suggestion.content.eventName,
-			details: suggestion.content.details,
-			location: suggestion.content.location
-		};
-		dispatch(updateStop(newStop));
+		switchAlternative(suggestion.id);
 	};
+
 	return (
 		<React.Fragment>
 			<Box

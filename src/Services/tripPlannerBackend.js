@@ -36,13 +36,20 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const tripPlannerApi = createApi({
 	reducerPath: 'tripPlannerApi',
 	baseQuery: baseQueryWithReauth,
-	tagTypes: [ 'tripEvents', 'eventIdeas', 'alternatives' ],
+	tagTypes: [ 'tripEvents', 'tripEvent', 'eventIdeas', 'alternatives' ],
 	endpoints: (builder) => ({
 		login: builder.mutation({
 			query: (credentials) => ({
 				url: 'token',
 				method: 'POST',
 				body: credentials
+			})
+		}),
+		createInvitation: builder.mutation({
+			query: ({ tripID, email }) => ({
+				url: 'create_member_invite',
+				method: 'POST',
+				body: { trip: tripID, inviteeEmail: email }
 			})
 		}),
 		getTrips: builder.query({
@@ -67,7 +74,8 @@ export const tripPlannerApi = createApi({
 		getATripEvent: builder.query({
 			query: (eventID) => ({
 				url: `trip_event/${eventID}`
-			})
+			}),
+			providesTags: [ 'tripEvent' ]
 		}),
 		createTripEvent: builder.mutation({
 			query: ({ tripID, newEvent }) => ({
@@ -114,12 +122,21 @@ export const tripPlannerApi = createApi({
 				body: newAlternative
 			}),
 			invalidatesTags: [ 'alternatives' ]
+		}),
+		switchAlternative: builder.mutation({
+			query: (alternativeID) => ({
+				url: `event_alternative/${alternativeID}`,
+				method: 'PATCH',
+				body: { status: 'Added' }
+			}),
+			invalidatesTags: [ 'tripEvents', 'tripEvent', 'alternatives' ]
 		})
 	})
 });
 
 export const {
 	useLoginMutation,
+	useCreateInvitationMutation,
 	useGetTripsQuery,
 	useGetATripQuery,
 	useGetTripEventsQuery,
@@ -129,5 +146,6 @@ export const {
 	useCreateEventIdeaQuery,
 	useAddEventIdeaMutation,
 	useGetAlternativesQuery,
-	useCreateAlternativeMutation
+	useCreateAlternativeMutation,
+	useSwitchAlternativeMutation
 } = tripPlannerApi;
