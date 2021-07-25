@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
+import { useSnackbar } from 'notistack';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
@@ -25,9 +26,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NewSuggestion = ({ setShowForm }) => {
+	const { enqueueSnackbar } = useSnackbar();
 	const userID = useSelector((state) => state.authState.user);
 	const dispatch = useDispatch();
-	const [ createSuggestion, { data, error, isLoading } ] = useCreateAlternativeMutation();
+	const [ createSuggestion, { isSuccess, isError, error } ] = useCreateAlternativeMutation();
 	const [ formValues, setFormValues ] = useState({
 		eventName: '',
 		time: '',
@@ -58,11 +60,20 @@ const NewSuggestion = ({ setShowForm }) => {
 			downvotes: 0
 		};
 		console.log(newSuggestionObject);
-		createSuggestion({ eventID: selectedItem, newAlternative: newSuggestionObject }).then((response) =>
-			console.log(response)
-		);
-		dispatch(newSuggestion(newSuggestionObject));
+		createSuggestion({ eventID: selectedItem, newAlternative: newSuggestionObject });
 	};
+
+	useEffect(
+		() => {
+			if (isSuccess) {
+				enqueueSnackbar('Successfully created new suggestion', { variant: 'success' });
+				setShowForm(false);
+			} else if (isError) {
+				enqueueSnackbar('Unable to create new suggestion', { variant: 'error' });
+			}
+		},
+		[ isSuccess, isError ]
+	);
 	return (
 		<React.Fragment>
 			<Box

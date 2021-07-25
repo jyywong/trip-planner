@@ -1,28 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { Box, Button, Typography, AppBar, Toolbar, IconButton } from '@material-ui/core';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Box, Typography, AppBar, Toolbar, IconButton, Tab, Tabs } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import PersonIcon from '@material-ui/icons/Person';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { makeStyles } from '@material-ui/styles';
 import HomeTimelines from '../Components/UserHome/HomeTimelines';
-import { useGetTripsQuery } from '../Services/tripPlannerBackend';
+import TimelineList from '../Components/UserHome/TimelineList';
+import InviteList from '../Components/UserHome/InviteList';
 
-const useStyles = makeStyles({
-	gridOverride: {
-		flexGrow: '1',
-		display: 'grid',
-		alignItems: 'center',
-		justifyItems: 'center',
-		gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-		gridColumnGap: '4rem',
-		gridRowGap: '2rem',
-		padding: '2rem 8rem'
-	}
-});
 const UserHome = () => {
-	const { data, error, isLoading } = useGetTripsQuery();
-	const classes = useStyles();
+	const [ tabValue, setTabValue ] = useState(0);
+
+	const handleTabChange = (event, newValue) => {
+		setTabValue(newValue);
+	};
 
 	return (
 		<React.Fragment>
@@ -45,9 +36,12 @@ const UserHome = () => {
 						</Box>
 					</Toolbar>
 				</AppBar>
-				<motion.div className={classes.gridOverride} layout>
-					{!isLoading && !error && data.map((trip) => <HomeTimelines key={trip.id} trip={trip} />)}
-				</motion.div>
+				<Tabs value={tabValue} onChange={handleTabChange} centered>
+					<Tab label="My trips" />
+					<Tab label="My invites" />
+				</Tabs>
+				{tabValue === 0 && <TimelineList />}
+				{tabValue === 1 && <InviteList />}
 			</Box>
 		</React.Fragment>
 	);

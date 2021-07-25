@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import parseISO from 'date-fns/parseISO';
 import { compareAsc } from 'date-fns';
 import { Box, Typography } from '@material-ui/core';
@@ -31,19 +30,21 @@ const VisualTimeline = ({ trip }) => {
 
 	return (
 		<React.Fragment>
-			<Box className={classes.root} flexBasis="70%" width="100%" flexGrow="0" overflow="auto" minHeight="0">
+			<Box className={classes.root} width="100%" flexGrow="1" overflow="auto" minHeight="0">
 				<Timeline align="alternate">
 					{!isLoading &&
 						!error &&
-						data.map((item) => (
-							<VisualTimelineBlock
-								key={item.id}
-								id={item.id}
-								time={item.time}
-								name={item.name}
-								details={item.details}
-							/>
-						))}
+						data
+							.slice(0, 3)
+							.map((item) => (
+								<VisualTimelineBlock
+									key={item.id}
+									id={item.id}
+									time={item.time}
+									name={item.name}
+									details={item.details}
+								/>
+							))}
 					{/* Uncommenting below will fix alignment issues */}
 					<TimelineItem>
 						<TimelineSeparator>

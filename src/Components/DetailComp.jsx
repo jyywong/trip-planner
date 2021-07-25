@@ -22,13 +22,17 @@ const useStyles = makeStyles({
 		gridColumn: '4/9',
 		visibility: 'visible',
 		gridRow: '1/2',
-		display: 'flex'
+		display: 'flex',
+		maxHeight: '100vh',
+		overflow: 'hidden'
 	},
 	middleGrid: {
 		gridColumn: '4/7',
 		visibility: 'visible',
 		gridRow: '1/2',
-		display: 'flex'
+		display: 'flex',
+		maxHeight: '100vh',
+		overflow: 'hidden'
 	}
 });
 const DetailComp = () => {
@@ -87,9 +91,7 @@ const DetailComp = () => {
 									</React.Fragment>
 								)
 							) : (
-								<React.Fragment>
-									<NewStopFormComp timelineState={timelineState} />
-								</React.Fragment>
+								<NewStopFormComp timelineState={timelineState} />
 							)}
 						</Box>
 					</motion.div>

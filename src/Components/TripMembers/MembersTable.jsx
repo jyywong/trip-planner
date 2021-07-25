@@ -6,7 +6,7 @@ import NewMemberForm from './NewMemberForm';
 import { useGetATripQuery } from '../../Services/tripPlannerBackend';
 import { timelineSelectedTrip } from '../../Slices/TimelineStateSlice';
 import { makeStyles } from '@material-ui/styles';
-import { Box, TableContainer, Table, TableBody, TableCell, TableRow, Paper } from '@material-ui/core';
+import { Box, TableContainer, Table, TableBody } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {

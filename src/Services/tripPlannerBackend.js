@@ -47,9 +47,19 @@ export const tripPlannerApi = createApi({
 		}),
 		createInvitation: builder.mutation({
 			query: ({ tripID, email }) => ({
-				url: 'create_member_invite',
+				url: `create_member_invite`,
 				method: 'POST',
-				body: { trip: tripID, inviteeEmail: email }
+				body: { tripID, inviteeEmail: email }
+			})
+		}),
+		getUserInvites: builder.query({
+			query: () => 'user_invites'
+		}),
+		updateInvite: builder.mutation({
+			query: ({ inviteID, action }) => ({
+				url: `single_invite/${inviteID}`,
+				method: 'PATCH',
+				body: { status: action }
 			})
 		}),
 		getTrips: builder.query({
@@ -137,6 +147,8 @@ export const tripPlannerApi = createApi({
 export const {
 	useLoginMutation,
 	useCreateInvitationMutation,
+	useGetUserInvitesQuery,
+	useUpdateInviteMutation,
 	useGetTripsQuery,
 	useGetATripQuery,
 	useGetTripEventsQuery,

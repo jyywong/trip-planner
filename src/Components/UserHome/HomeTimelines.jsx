@@ -18,10 +18,12 @@ const HomeTimelines = ({ trip }) => {
 					display="flex"
 					padding={2}
 					boxSizing="border-box"
+					height="80%"
 					flexDirection="column"
 					alignItems="center"
 					borderRadius="10px"
 					boxShadow={3}
+					height="560px"
 					overflow="hidden"
 					m={1}
 				>

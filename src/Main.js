@@ -7,7 +7,7 @@ import Welcome from './Pages/Welcome';
 import NewTrip from './Pages/NewTrip';
 import Login from './Pages/Login';
 import UserHome from './Pages/UserHome';
-import UserHome2 from './Pages/UserHome2';
+
 import EditTrip from './Pages/EditTrip';
 
 const libraries = [ 'places' ];

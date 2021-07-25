@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { Box, Typography, TextField, Button } from '@material-ui/core';
 import { useCreateInvitationMutation } from '../../Services/tripPlannerBackend';
 import { timelineSelectedTrip } from '../../Slices/TimelineStateSlice';
 const NewMemberForm = ({ setShowForm }) => {
+	const { enqueueSnackbar } = useSnackbar();
 	const selectedTrip = useSelector(timelineSelectedTrip);
 	const [ email, setEmail ] = useState('');
-	const [ createInvite, { data, error, isLoading } ] = useCreateInvitationMutation();
+	const [ createInvite, { isSuccess, isError } ] = useCreateInvitationMutation();
 	const handleCreate = () => {
 		createInvite({ tripID: selectedTrip, email }).then((response) => console.log(response));
 	};
 	const handleCancel = () => {
 		setShowForm(false);
 	};
+
+	useEffect(
+		() => {
+			if (isSuccess) {
+				enqueueSnackbar('Successfully sent invitation', { variant: 'success' });
+			} else if (isError) {
+				enqueueSnackbar('Unable to create new invite', { variant: 'error' });
+			}
+		},
+		[ isSuccess, isError ]
+	);
 	return (
 		<React.Fragment>
 			<Box

@@ -39,3 +39,6 @@ export const convertToDate = (today, time) => {
 	const finalDate = setMinutes(setHours(parseISO(today), hours), mins).toISOString();
 	return finalDate;
 };
+
+export const truncate = (input, charLimit) =>
+	input.length > charLimit ? `${input.substring(0, charLimit)}...` : input;
