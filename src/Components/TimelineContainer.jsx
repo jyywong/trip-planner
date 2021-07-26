@@ -7,6 +7,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import TimelineComp from './TimelineComp';
 import { makeStyles } from '@material-ui/core/styles';
+
 import { timelineStateComparer } from '../HelperFunction';
 import {
 	openEventIdeas,

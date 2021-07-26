@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import NewLocationSelector from './NewSuggestionParts/NewLocationSelector';
-import { newSuggestion } from '../../Slices/SuggestionsSlice';
 import { useCreateAlternativeMutation } from '../../Services/tripPlannerBackend';
 import { convertToDate } from '../../HelperFunction';
 
@@ -28,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 const NewSuggestion = ({ setShowForm }) => {
 	const { enqueueSnackbar } = useSnackbar();
 	const userID = useSelector((state) => state.authState.user);
-	const dispatch = useDispatch();
 	const [ createSuggestion, { isSuccess, isError, error } ] = useCreateAlternativeMutation();
 	const [ formValues, setFormValues ] = useState({
 		eventName: '',

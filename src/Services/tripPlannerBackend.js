@@ -36,7 +36,7 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const tripPlannerApi = createApi({
 	reducerPath: 'tripPlannerApi',
 	baseQuery: baseQueryWithReauth,
-	tagTypes: [ 'tripEvents', 'tripEvent', 'eventIdeas', 'alternatives' ],
+	tagTypes: [ 'trips', 'tripEvents', 'tripEvent', 'eventIdeas', 'alternatives' ],
 	endpoints: (builder) => ({
 		login: builder.mutation({
 			query: (credentials) => ({
@@ -63,17 +63,19 @@ export const tripPlannerApi = createApi({
 			})
 		}),
 		getTrips: builder.query({
-			query: () => 'trips'
+			query: () => 'trips',
+			providesTags: [ 'trips' ]
 		}),
 		getATrip: builder.query({
 			query: (tripID) => `trip/${tripID}`
 		}),
-		createTrip: builder.query({
+		createTrip: builder.mutation({
 			query: (newTrip) => ({
 				url: 'trips',
 				method: 'POST',
 				body: newTrip
-			})
+			}),
+			invalidatesTags: [ 'trips' ]
 		}),
 		getTripEvents: builder.query({
 			query: (tripID) => ({
@@ -151,6 +153,7 @@ export const {
 	useUpdateInviteMutation,
 	useGetTripsQuery,
 	useGetATripQuery,
+	useCreateTripMutation,
 	useGetTripEventsQuery,
 	useGetATripEventQuery,
 	useCreateTripEventMutation,
