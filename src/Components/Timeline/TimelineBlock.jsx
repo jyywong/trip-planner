@@ -14,6 +14,7 @@ import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import Paper from '@material-ui/core/Paper';
+import EventIcon from '@material-ui/icons/Event';
 import { openDetails } from '../../Slices/TimelineStateSlice';
 
 const useStyles = makeStyles((theme) => ({
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 		border: '1px solid blue'
 	}
 }));
-const TimelineBlock = forwardRef(({ id, time, details }, ref) => {
+const TimelineBlock = forwardRef(({ id, time, name, details }, ref) => {
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
 	const timelineExpand = useSelector((state) => state.timelineExpand);
 	const uiMode = useSelector((state) => state.UIState.mode);
@@ -43,7 +44,7 @@ const TimelineBlock = forwardRef(({ id, time, details }, ref) => {
 
 				<TimelineSeparator>
 					<TimelineDot>
-						<FastfoodIcon />
+						<EventIcon />
 					</TimelineDot>
 					<TimelineConnector />
 				</TimelineSeparator>
@@ -63,9 +64,9 @@ const TimelineBlock = forwardRef(({ id, time, details }, ref) => {
 						}
 					>
 						<Typography variant="h6" component="h1">
-							{details.title}
+							{name}
 						</Typography>
-						<Typography>{details.body} </Typography>
+						<Typography>{details} </Typography>
 					</Paper>
 				</TimelineContent>
 			</TimelineItem>

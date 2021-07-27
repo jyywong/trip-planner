@@ -1,35 +1,53 @@
 import React from 'react';
 import DetailComp from '../Components/DetailComp';
+import { useHistory } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { loggedOut } from '../Slices/AuthSlice';
 import TimelineContainer from '../Components/TimelineContainer';
 import SuggestionsComp from '../Components/Suggestions/SuggestionsComp';
 import EventIdeaContainer from '../Components/EventIdeas/EventIdeaContainer';
 import { Link } from 'react-router-dom';
 import { Typography, Box, AppBar, Toolbar, IconButton, Button } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import PersonIcon from '@material-ui/icons/Person';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import TripMembersContainer from '../Components/TripMembers/TripMembersContainer';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+	whiteIcon: {
+		color: 'white',
+		cursor: 'pointer'
+	},
+	whiteText: {
+		color: 'white',
+		textTransform: 'none'
+	}
+});
 
 const EditTrip = () => {
+	const dispatch = useDispatch();
+	const history = useHistory();
+	const handleSignOut = () => {
+		dispatch(loggedOut());
+		history.push('/');
+	};
+	const classes = useStyles();
 	return (
 		<React.Fragment>
 			<Box display="flex" height="100vh" width="100vw" flexDirection="column">
 				<AppBar position="static">
 					<Toolbar>
-						<IconButton edge="start">
-							<MenuIcon />
-						</IconButton>
 						<Typography variant="h6" color="inherit">
 							Trip Planner
 						</Typography>
 						<Box display="flex" alignItems="center" marginLeft="auto">
 							<Button component={Link} to="/home">
-								<Typography>Home</Typography>
+								<Typography className={classes.whiteText}>Home</Typography>
 							</Button>
-							<NotificationsIcon />
 
 							<Box display="flex" alignItems="center" marginLeft={4}>
-								<PersonIcon />
+								<Typography className={classes.whiteIcon} variant="body1" onClick={handleSignOut}>
+									Sign Out
+								</Typography>
 							</Box>
 						</Box>
 					</Toolbar>

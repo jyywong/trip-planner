@@ -4,12 +4,21 @@ import timelineStateReducer from './Slices/TimelineStateSlice';
 import UIStateReducer from './Slices/UISlice';
 import suggestionReducer from './Slices/SuggestionsSlice';
 import eventIdeasReducer from './Slices/EventIdeasSlice';
-export default configureStore({
+import authReducer from './Slices/AuthSlice';
+import { tripPlannerApi } from './Services/tripPlannerBackend';
+import { setupListeners } from '@reduxjs/toolkit/dist/query';
+
+export const store = configureStore({
 	reducer: {
 		timelineState: timelineStateReducer,
 		suggestions: suggestionReducer,
 		tripStop: tripStopReducer,
 		eventIdeas: eventIdeasReducer,
-		UIState: UIStateReducer
-	}
+		UIState: UIStateReducer,
+		authState: authReducer,
+		[tripPlannerApi.reducerPath]: tripPlannerApi.reducer
+	},
+	middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(tripPlannerApi.middleware)
 });
+
+setupListeners(store.dispatch);

@@ -5,6 +5,8 @@ import { Box, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { displayOnlyIfTimelineStateIsTimelineDetailsSuggestions, timelineStateComparer } from '../../HelperFunction';
 import EventIdea from './EventIdea';
+import { timelineModeSelector, timelineSelectedTrip } from '../../Slices/TimelineStateSlice';
+import { useGetEventIdeasQuery } from '../../Services/tripPlannerBackend';
 
 const useStyles = makeStyles({
 	collapsedGrid: {
@@ -41,7 +43,9 @@ const useStyles = makeStyles({
 });
 
 const EventIdeaContainer = () => {
-	const timelineState = useSelector((state) => state.timelineState);
+	const timelineState = useSelector(timelineModeSelector);
+	const selectedTrip = useSelector(timelineSelectedTrip);
+	const { data, error, isLoading } = useGetEventIdeasQuery(selectedTrip);
 	const eventIdeas = useSelector((state) => Object.values(state.eventIdeas.byID));
 	const classes = useStyles();
 
@@ -110,7 +114,9 @@ const EventIdeaContainer = () => {
 								height="100%"
 								minHeight="0"
 							>
-								{eventIdeas.map((eventIdea) => <EventIdea key={eventIdea.id} eventIdea={eventIdea} />)}
+								{!isLoading &&
+									!error &&
+									data.map((eventIdea) => <EventIdea key={eventIdea.id} eventIdea={eventIdea} />)}
 							</Box>
 						</Box>
 					</motion.div>

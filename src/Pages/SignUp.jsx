@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../Slices/AuthSlice';
 import { useLoginMutation } from '../Services/tripPlannerBackend';
+import { useSignupMutation } from '../Services/tripPlannerBackend';
 import { Card, Button, Typography, CardContent, Box, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
@@ -21,13 +23,19 @@ const useStyles = makeStyles({
 		marginBottom: '1rem'
 	}
 });
-const Login = () => {
-	const dispatch = useDispatch();
-	const { push } = useHistory();
+const SignUp = () => {
+	const { enqueueSnackbar } = useSnackbar();
 	const [ login, { isLoading } ] = useLoginMutation();
-	const [ formValues, setFormValues ] = useState({ username: '', password: '' });
+
+	const [ signup, { isSuccess, isError } ] = useSignupMutation();
+	const dispatch = useDispatch();
 	const classes = useStyles();
-	const handleSubmit = async () => {
+	const { push } = useHistory();
+	const [ formValues, setFormValues ] = useState({ username: '', email: '', password: '', password2: '' });
+	const handleSubmit = () => {
+		signup(formValues).then((response) => console.log(response));
+	};
+	const attemptLogin = async () => {
 		try {
 			const user = await login(formValues).unwrap();
 			dispatch(setCredentials(user));
@@ -36,6 +44,17 @@ const Login = () => {
 			console.log(error);
 		}
 	};
+	useEffect(
+		() => {
+			if (isSuccess) {
+				enqueueSnackbar('Successfully created a new account! Now signing you in.', { variant: 'success' });
+				setTimeout(attemptLogin(), 1000);
+			} else if (isError) {
+				enqueueSnackbar('Unable to create account', { variant: 'error' });
+			}
+		},
+		[ isSuccess, isError ]
+	);
 	return (
 		<React.Fragment>
 			<Box display="flex" width="100vw" height="100vh" alignItems="center" justifyContent="center">
@@ -52,7 +71,7 @@ const Login = () => {
 						>
 							<Box display="flex" marginBottom={2} flexDirection="column" alignItems="center">
 								<LockIcon />
-								<Typography variant="h4"> Log In</Typography>
+								<Typography variant="h4"> Sign Up </Typography>
 							</Box>
 							<TextField
 								variant="outlined"
@@ -67,12 +86,34 @@ const Login = () => {
 							<TextField
 								variant="outlined"
 								className={classes.mediumBottomMargin}
+								label="Email"
+								type="email"
+								fullWidth
+								value={formValues.email}
+								onChange={(e) => {
+									setFormValues((current) => ({ ...current, email: e.target.value }));
+								}}
+							/>
+							<TextField
+								variant="outlined"
+								className={classes.mediumBottomMargin}
 								label="Password"
 								type="password"
 								fullWidth
 								value={formValues.password}
 								onChange={(e) => {
 									setFormValues((current) => ({ ...current, password: e.target.value }));
+								}}
+							/>
+							<TextField
+								variant="outlined"
+								className={classes.mediumBottomMargin}
+								label="Confirm Password"
+								type="password"
+								fullWidth
+								value={formValues.password2}
+								onChange={(e) => {
+									setFormValues((current) => ({ ...current, password2: e.target.value }));
 								}}
 							/>
 							<Button
@@ -96,4 +137,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default SignUp;

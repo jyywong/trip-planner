@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useGetTripEventsQuery } from '../Services/tripPlannerBackend';
 import { AnimateSharedLayout } from 'framer-motion';
 import parseISO from 'date-fns/parseISO';
 import { changeModeToAdd } from '../Slices/UISlice';
-import { openDetails } from '../Slices/TimelineStateSlice';
-import { Box, Typography } from '@material-ui/core';
+import { openDetails, timelineSelectedTrip } from '../Slices/TimelineStateSlice';
+import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -13,7 +14,6 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
-import TimelineBlock from './Timeline/TimelineBlock';
 import { MotionTimelineBlock } from './Timeline/TimelineBlock';
 import { compareAsc } from 'date-fns';
 const useStyles = makeStyles((theme) => ({
@@ -45,23 +45,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TimelineComp = ({ selectedItem, setSelectedItem }) => {
 	const classes = useStyles();
+	const selectedTrip = useSelector(timelineSelectedTrip);
+	const { data, error, isLoading } = useGetTripEventsQuery(selectedTrip);
 	const dispatch = useDispatch();
-	const tripStops = useSelector((state) => state.tripStop.stops);
-	const unFrozenTripStops = [ ...tripStops ];
-	const sortTripStopsByTime = (unFrozenTripStops) =>
-		unFrozenTripStops.sort((a, b) => compareAsc(parseISO(a.time), parseISO(b.time)));
 
-	const sortedTripStops = sortTripStopsByTime(unFrozenTripStops);
+	// const sortTripStopsByTime = (data) => data.sort((a, b) => compareAsc(parseISO(a.time), parseISO(b.time)));
+	// const sortedTripStops = sortTripStopsByTime(data);
 	return (
 		<React.Fragment>
 			<Timeline align="alternate">
-				{sortedTripStops.map((item) => (
+				{data.map((item) => (
 					<MotionTimelineBlock
 						key={item.id}
 						id={item.id}
-						selectedItem={selectedItem}
-						setSelectedItem={setSelectedItem}
 						time={item.time}
+						name={item.name}
 						details={item.details}
 						animate={{ scaleY: 1 }}
 						initial={{ scaleY: 0 }}

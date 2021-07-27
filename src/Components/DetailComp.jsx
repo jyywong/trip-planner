@@ -8,6 +8,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 import NewStopFormComp from './NewStopFormComp';
 import { displayOnlyIfTimelineStateIsNotTimelineOnly, timelineStateComparer } from '../HelperFunction';
+import { timelineModeSelector, timelineSelectedTrip } from '../Slices/TimelineStateSlice';
+import { useGetATripEventQuery } from '../Services/tripPlannerBackend';
 
 const useStyles = makeStyles({
 	collapsedGrid: {
@@ -20,17 +22,23 @@ const useStyles = makeStyles({
 		gridColumn: '4/9',
 		visibility: 'visible',
 		gridRow: '1/2',
-		display: 'flex'
+		display: 'flex',
+		maxHeight: '100vh',
+		overflow: 'hidden'
 	},
 	middleGrid: {
 		gridColumn: '4/7',
 		visibility: 'visible',
 		gridRow: '1/2',
-		display: 'flex'
+		display: 'flex',
+		maxHeight: '100vh',
+		overflow: 'hidden'
 	}
 });
 const DetailComp = () => {
-	const timelineState = useSelector((state) => state.timelineState);
+	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
+	const { data, error, isLoading } = useGetATripEventQuery(selectedItem);
+	const timelineState = useSelector(timelineModeSelector);
 	const UIMode = useSelector((state) => state.UIState.mode);
 	const classes = useStyles();
 	return (
@@ -75,14 +83,15 @@ const DetailComp = () => {
 							<DetailHeaderPicture timelineState={timelineState} />
 
 							{UIMode === 'Detail' ? (
-								<React.Fragment>
-									<SavedDetailHeader timelineState={timelineState} />
-									<SavedDetailBase timelineState={timelineState} />
-								</React.Fragment>
+								!isLoading &&
+								!error && (
+									<React.Fragment>
+										<SavedDetailHeader tripEvent={data} timelineState={timelineState} />
+										<SavedDetailBase tripEvent={data} timelineState={timelineState} />
+									</React.Fragment>
+								)
 							) : (
-								<React.Fragment>
-									<NewStopFormComp timelineState={timelineState} />
-								</React.Fragment>
+								<NewStopFormComp timelineState={timelineState} />
 							)}
 						</Box>
 					</motion.div>

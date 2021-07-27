@@ -7,7 +7,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Autocomplete } from '@material-ui/lab';
 const libraries = [ 'places' ];
 
-const NewLocationSelector = () => {
+const NewLocationSelector = ({ setFormValues }) => {
 	const [ inputValue, setInputValue ] = useState('');
 
 	const isLoaded = useSelector((state) => state.tripStop.googleLibraryIsLoaded);
@@ -45,10 +45,20 @@ const NewLocationSelector = () => {
 					options={getOptions()}
 					value={value}
 					inputvalue={inputValue}
+					getOptionSelected={(option, value) => option.id === value.id}
 					getOptionLabel={(option) => (typeof option === 'string' ? option : option.description)}
-					onChange={(event, newValue) => {
+					onChange={async (event, newValue) => {
+						console.log('onchange');
 						setValue(newValue);
-						console.log(event, newValue);
+						setFormValues((current) => {
+							console.log('setformvalues');
+							return {
+								...current,
+								place_id: newValue.place_id,
+								address: newValue.description,
+								locationName: newValue.structured_formatting.main_text
+							};
+						});
 					}}
 					renderInput={(params) => (
 						<TextField {...params} label="Add a location" variant="outlined" fullWidth />

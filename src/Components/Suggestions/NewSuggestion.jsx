@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { format, parseISO } from 'date-fns';
+import { useSnackbar } from 'notistack';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import NewLocationSelector from './NewSuggestionParts/NewLocationSelector';
-import { newSuggestion } from '../../Slices/SuggestionsSlice';
+import { useCreateAlternativeMutation } from '../../Services/tripPlannerBackend';
+import { convertToDate } from '../../HelperFunction';
 
 const useStyles = makeStyles((theme) => ({
 	overrideTextMargins: {
@@ -23,7 +25,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NewSuggestion = ({ setShowForm }) => {
-	const dispatch = useDispatch();
+	const { enqueueSnackbar } = useSnackbar();
+	const userID = useSelector((state) => state.authState.user);
+	const [ createSuggestion, { isSuccess, isError, error } ] = useCreateAlternativeMutation();
 	const [ formValues, setFormValues ] = useState({
 		eventName: '',
 		time: '',
@@ -34,36 +38,40 @@ const NewSuggestion = ({ setShowForm }) => {
 		},
 		details: ''
 	});
+	const today = useSelector((state) => state.tripStop.date);
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
-	const selectedStop = useSelector((state) => state.tripStop.stops.find((stop) => stop.id === selectedItem));
-	useEffect(
-		() => {
-			if (selectedItem !== 0) {
-				const { time, details, location } = selectedStop;
-				setFormValues({
-					eventName: details.title,
-					details: details.body,
-					time: format(parseISO(time), 'kk:mm'),
-					location
-				});
-			}
-		},
-		[ selectedItem ]
-	);
+
 	const classes = useStyles();
 	const handleCreate = () => {
+		const { eventName, time, locationName, address, place_id, details } = formValues;
 		const newSuggestionObject = {
-			id: Math.random() * 100,
-			creator: 1,
-			created_at: new Date().toISOString(),
-			content: formValues,
-			votes: {
-				upvotes: 0,
-				downvotes: 0
-			}
+			alternativeTo: selectedItem,
+			createdBy: 1,
+			createdAt: new Date().toISOString(),
+			time: convertToDate(today, time),
+			name: eventName,
+			details,
+			locationName,
+			address,
+			placeID: place_id,
+			upvotes: 0,
+			downvotes: 0
 		};
-		dispatch(newSuggestion(newSuggestionObject));
+		console.log(newSuggestionObject);
+		createSuggestion({ eventID: selectedItem, newAlternative: newSuggestionObject });
 	};
+
+	useEffect(
+		() => {
+			if (isSuccess) {
+				enqueueSnackbar('Successfully created new suggestion', { variant: 'success' });
+				setShowForm(false);
+			} else if (isError) {
+				enqueueSnackbar('Unable to create new suggestion', { variant: 'error' });
+			}
+		},
+		[ isSuccess, isError ]
+	);
 	return (
 		<React.Fragment>
 			<Box
@@ -115,7 +123,7 @@ const NewSuggestion = ({ setShowForm }) => {
 						onChange={(e) => setFormValues((current) => ({ ...current, time: e.target.value }))}
 					/>
 					<div className={classes.overrideTextMargins}>
-						<NewLocationSelector />
+						<NewLocationSelector setFormValues={setFormValues} />
 					</div>
 
 					<TextField

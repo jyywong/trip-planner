@@ -1,60 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
-import { Box, Button, Typography, AppBar, Toolbar, IconButton } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import PersonIcon from '@material-ui/icons/Person';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { makeStyles } from '@material-ui/styles';
-import HomeTimelines from '../Components/UserHome/HomeTimelines';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+import { Box, Typography, AppBar, Toolbar, Tab, Tabs } from '@material-ui/core';
+import TimelineList from '../Components/UserHome/TimelineList';
+import InviteList from '../Components/UserHome/InviteList';
+import { makeStyles } from '@material-ui/core';
+import { loggedOut } from '../Slices/AuthSlice';
 
 const useStyles = makeStyles({
-	gridOverride: {
-		flexGrow: '1',
-		display: 'grid',
-		alignItems: 'center',
-		justifyItems: 'center',
-		gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-		gridColumnGap: '4rem',
-		gridRowGap: '2rem',
-		padding: '2rem 8rem'
+	whiteIcon: {
+		color: 'white',
+		cursor: 'pointer'
 	}
 });
 const UserHome = () => {
+	const history = useHistory();
 	const classes = useStyles();
-	const cardList = [ 'pink', 'orangered', 'blue', 'green', 'purple', 'black', 'grey' ];
-	const [ shownCards, setShownCards ] = useState([ 1, 2, 3, 4 ]);
+	const dispatch = useDispatch();
+	const [ tabValue, setTabValue ] = useState(0);
+
+	const handleTabChange = (event, newValue) => {
+		setTabValue(newValue);
+	};
+
+	const handleSignOut = () => {
+		dispatch(loggedOut());
+		history.push('/');
+	};
 
 	return (
 		<React.Fragment>
 			<Box display="flex" height="100vh" width="100vw" flexDirection="column">
 				<AppBar position="static">
 					<Toolbar>
-						<IconButton edge="start">
-							<MenuIcon />
-						</IconButton>
 						<Typography variant="h6" color="inherit">
 							Trip Planner
 						</Typography>
 						<Box display="flex" alignItems="center" marginLeft="auto">
-							<Typography>Home</Typography>
-							<NotificationsIcon />
-
 							<Box display="flex" alignItems="center" marginLeft={4}>
-								<PersonIcon />
+								<Typography className={classes.whiteIcon} variant="body1" onClick={handleSignOut}>
+									Sign Out
+								</Typography>
 							</Box>
 						</Box>
 					</Toolbar>
 				</AppBar>
-				<motion.div className={classes.gridOverride} layout>
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
-					<HomeTimelines />
-				</motion.div>
+				<Tabs value={tabValue} onChange={handleTabChange} centered>
+					<Tab label="My trips" />
+					<Tab label="My invites" />
+				</Tabs>
+				{tabValue === 0 && <TimelineList />}
+				{tabValue === 1 && <InviteList />}
 			</Box>
 		</React.Fragment>
 	);

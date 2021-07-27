@@ -1,9 +1,8 @@
 import React from 'react';
 import { parseISO, format } from 'date-fns';
-import { useDispatch, useSelector } from 'react-redux';
 import { Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-
+import { truncate } from '../../HelperFunction';
 import TimelineItem from '@material-ui/lab/TimelineItem';
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
 import TimelineConnector from '@material-ui/lab/TimelineConnector';
@@ -18,15 +17,14 @@ const useStyles = makeStyles((theme) => ({
 		cursor: 'pointer'
 	}
 }));
-const VisualTimelineBlock = () => {
+const VisualTimelineBlock = ({ id, time, name, details }) => {
 	const classes = useStyles();
 	return (
 		<React.Fragment>
 			<TimelineItem>
 				<TimelineOppositeContent>
 					<Typography variant="body2" color="textSecondary">
-						{/* {format(parseISO(time), 'h:mmaaa')} */}
-						time
+						{format(parseISO(time), 'h:mmaaa')}
 					</Typography>
 				</TimelineOppositeContent>
 
@@ -39,9 +37,9 @@ const VisualTimelineBlock = () => {
 				<TimelineContent>
 					<Paper elevation={3} className={classes.paper}>
 						<Typography variant="h6" component="h1">
-							hello
+							{truncate(name, 10)}
 						</Typography>
-						<Typography>hello</Typography>
+						<Typography>{truncate(details, 10)}</Typography>
 					</Paper>
 				</TimelineContent>
 			</TimelineItem>

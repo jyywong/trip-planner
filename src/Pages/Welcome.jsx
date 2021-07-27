@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Typography, Box, Button } from '@material-ui/core';
 
 const Welcome = () => {
@@ -15,13 +16,13 @@ const Welcome = () => {
 				<Typography variant="h1">Trip Planner</Typography>
 				<div style={{ display: 'flex', justifyContent: 'space-evenly', width: '30%' }}>
 					<Box width="40%">
-						<Button variant="contained" color="default" mr="auto" fullWidth>
-							New trip
+						<Button variant="contained" color="default" mr="auto" component={Link} to="/signup" fullWidth>
+							Sign Up
 						</Button>
 					</Box>
 
 					<Box width="40%">
-						<Button variant="contained" color="primary" fullWidth>
+						<Button variant="contained" color="primary" component={Link} to="/login" fullWidth>
 							Log In
 						</Button>
 					</Box>

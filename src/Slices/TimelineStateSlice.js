@@ -1,30 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = 'TIMELINE_ONLY';
+const initialState = { mode: 'TIMELINE_ONLY', selectedTrip: null };
 
 export const timelineState = createSlice({
 	name: 'timelineState',
 	initialState,
 	reducers: {
 		openDetails: (state) => {
-			state = 'TIMELINE_DETAILS';
+			state.mode = 'TIMELINE_DETAILS';
 			return state;
 		},
 		openSuggestions: (state) => {
-			state = 'TIMELINE_DETAILS_SUGGESTIONS';
+			state.mode = 'TIMELINE_DETAILS_SUGGESTIONS';
 			return state;
 		},
 		openEventIdeas: (state) => {
-			state = 'TIMELINE_EVENT_IDEAS';
+			state.mode = 'TIMELINE_EVENT_IDEAS';
 			return state;
 		},
 		returnToTimelineOnly: (state) => {
-			state = 'TIMELINE_ONLY';
+			state.mode = 'TIMELINE_ONLY';
 			return state;
 		},
 		openMembersList: (state) => {
-			state = 'MEMBERS_TIMELINE';
+			state.mode = 'MEMBERS_TIMELINE';
 			return state;
+		},
+		selectTrip: (state, action) => {
+			state.selectedTrip = action.payload;
 		}
 	}
 });
@@ -34,7 +37,12 @@ export const {
 	openSuggestions,
 	openEventIdeas,
 	returnToTimelineOnly,
-	openMembersList
+	openMembersList,
+	selectTrip
 } = timelineState.actions;
 
 export default timelineState.reducer;
+
+export const timelineModeSelector = (state) => state.timelineState.mode;
+
+export const timelineSelectedTrip = (state) => state.timelineState.selectedTrip;

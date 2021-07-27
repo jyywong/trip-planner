@@ -37,11 +37,11 @@ const SuggestionVotes = ({ suggestion }) => {
 				<IconButton onClick={handleUpvote}>
 					<ThumbUpIcon className={classes.greenThumb} fontSize="large" />
 				</IconButton>
-				<Typography variant="h5">{suggestion.votes.upvotes}</Typography>
+				<Typography variant="h5">{suggestion.upvotes}</Typography>
 				<IconButton onClick={handleDownvote}>
 					<ThumbDownIcon className={classes.redThumb} fontSize="large" />
 				</IconButton>
-				<Typography variant="h5">{suggestion.votes.downvotes}</Typography>
+				<Typography variant="h5">{suggestion.downvotes}</Typography>
 			</Box>
 		</React.Fragment>
 	);
