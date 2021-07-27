@@ -28,7 +28,6 @@ const UserHome = () => {
 						</Typography>
 						<Box display="flex" alignItems="center" marginLeft="auto">
 							<Typography>Home</Typography>
-							<NotificationsIcon />
 
 							<Box display="flex" alignItems="center" marginLeft={4}>
 								<PersonIcon />

@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DetailComp from '../Components/DetailComp';
 import TimelineContainer from '../Components/TimelineContainer';
 import SuggestionsComp from '../Components/Suggestions/SuggestionsComp';
 import EventIdeaContainer from '../Components/EventIdeas/EventIdeaContainer';
 import { Link } from 'react-router-dom';
-import { Typography, Box, AppBar, Toolbar, IconButton, Button, Snackbar } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { Typography, Box, AppBar, Toolbar, IconButton, Button } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import PersonIcon from '@material-ui/icons/Person';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import TripMembersContainer from '../Components/TripMembers/TripMembersContainer';
-import { FormatListBulletedRounded } from '@material-ui/icons';
 
 const EditTrip = () => {
 	return (
@@ -28,7 +26,6 @@ const EditTrip = () => {
 							<Button component={Link} to="/home">
 								<Typography>Home</Typography>
 							</Button>
-							<NotificationsIcon />
 
 							<Box display="flex" alignItems="center" marginLeft={4}>
 								<PersonIcon />

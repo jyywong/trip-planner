@@ -46,7 +46,7 @@ const VisualTimeline = ({ trip }) => {
 								/>
 							))}
 					{/* Uncommenting below will fix alignment issues */}
-					<TimelineItem>
+					<TimelineItem className={classes.invisible}>
 						<TimelineSeparator>
 							<TimelineDot className={classes.addCircle} color="secondary">
 								<AddIcon />

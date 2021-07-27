@@ -69,6 +69,13 @@ export const tripPlannerApi = createApi({
 		getATrip: builder.query({
 			query: (tripID) => `trip/${tripID}`
 		}),
+		deleteTrip: builder.mutation({
+			query: (tripID) => ({
+				url: `trip/${tripID}`,
+				method: 'DELETE'
+			}),
+			invalidatesTags: [ 'trips' ]
+		}),
 		createTrip: builder.mutation({
 			query: (newTrip) => ({
 				url: 'trips',
@@ -88,6 +95,13 @@ export const tripPlannerApi = createApi({
 				url: `trip_event/${eventID}`
 			}),
 			providesTags: [ 'tripEvent' ]
+		}),
+		deleteTripEvent: builder.mutation({
+			query: (eventID) => ({
+				url: `trip_event/${eventID}`,
+				method: 'DELETE'
+			}),
+			invalidatesTags: [ 'tripEvents', 'tripEvent' ]
 		}),
 		createTripEvent: builder.mutation({
 			query: ({ tripID, newEvent }) => ({
@@ -153,9 +167,11 @@ export const {
 	useUpdateInviteMutation,
 	useGetTripsQuery,
 	useGetATripQuery,
+	useDeleteTripMutation,
 	useCreateTripMutation,
 	useGetTripEventsQuery,
 	useGetATripEventQuery,
+	useDeleteTripEventMutation,
 	useCreateTripEventMutation,
 	useGetEventIdeasQuery,
 	useCreateEventIdeaQuery,
