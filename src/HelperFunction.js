@@ -1,4 +1,5 @@
 import { setHours, setMinutes, parseISO } from 'date-fns';
+import jwt_decode from 'jwt-decode';
 
 const parseMilitaryTime = (milTime) => {};
 
@@ -42,3 +43,16 @@ export const convertToDate = (today, time) => {
 
 export const truncate = (input, charLimit) =>
 	input.length > charLimit ? `${input.substring(0, charLimit)}...` : input;
+
+export const isRefreshTokenValid = (refreshToken) => {
+	if (refreshToken) {
+		const now = Math.ceil(Date.now() / 1000);
+		if (jwt_decode(refreshToken).exp > now) {
+			return true;
+		} else {
+			return false;
+		}
+	} else {
+		return false;
+	}
+};

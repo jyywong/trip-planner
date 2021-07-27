@@ -10,9 +10,13 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { useSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
 import { returnToTimelineOnly } from '../../Slices/TimelineStateSlice';
-import { useDeleteTripEventMutation, useGetTripEventsQuery } from '../../Services/tripPlannerBackend';
+import { useDeleteTripEventMutation } from '../../Services/tripPlannerBackend';
 
 const useStyles = makeStyles({
+	button: {
+		color: 'white',
+		border: '1px solid rgb(228, 228, 228)'
+	},
 	h3White: {
 		color: 'white'
 	},
@@ -72,7 +76,12 @@ const SavedDetailHeader = ({ tripEvent, timelineState }) => {
 					flexDirection="column"
 				>
 					<Box display="flex" marginRight={-2}>
-						<Button variant="outlined" endIcon={<ClearIcon />} onClick={handleDelete}>
+						<Button
+							className={classes.button}
+							variant="outlined"
+							endIcon={<ClearIcon />}
+							onClick={handleDelete}
+						>
 							Delete Event
 						</Button>
 					</Box>

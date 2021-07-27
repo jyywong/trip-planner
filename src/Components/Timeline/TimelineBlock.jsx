@@ -14,6 +14,7 @@ import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import Paper from '@material-ui/core/Paper';
+import EventIcon from '@material-ui/icons/Event';
 import { openDetails } from '../../Slices/TimelineStateSlice';
 
 const useStyles = makeStyles((theme) => ({
@@ -43,7 +44,7 @@ const TimelineBlock = forwardRef(({ id, time, name, details }, ref) => {
 
 				<TimelineSeparator>
 					<TimelineDot>
-						<FastfoodIcon />
+						<EventIcon />
 					</TimelineDot>
 					<TimelineConnector />
 				</TimelineSeparator>

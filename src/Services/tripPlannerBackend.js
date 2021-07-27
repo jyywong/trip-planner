@@ -36,8 +36,15 @@ export const baseQueryWithReauth = async (args, api, extraOptions) => {
 export const tripPlannerApi = createApi({
 	reducerPath: 'tripPlannerApi',
 	baseQuery: baseQueryWithReauth,
-	tagTypes: [ 'trips', 'tripEvents', 'tripEvent', 'eventIdeas', 'alternatives' ],
+	tagTypes: [ 'trip', 'trips', 'tripEvents', 'tripEvent', 'eventIdeas', 'alternatives' ],
 	endpoints: (builder) => ({
+		signup: builder.mutation({
+			query: (newUser) => ({
+				url: 'signup',
+				method: 'POST',
+				body: newUser
+			})
+		}),
 		login: builder.mutation({
 			query: (credentials) => ({
 				url: 'token',
@@ -67,7 +74,16 @@ export const tripPlannerApi = createApi({
 			providesTags: [ 'trips' ]
 		}),
 		getATrip: builder.query({
-			query: (tripID) => `trip/${tripID}`
+			query: (tripID) => `trip/${tripID}`,
+			providesTags: [ 'trip' ]
+		}),
+		removeMember: builder.mutation({
+			query: ({ tripID, newMemberList }) => ({
+				url: `remove_from_trip/${tripID}`,
+				method: 'PATCH',
+				body: newMemberList
+			}),
+			invalidatesTags: [ 'trip' ]
 		}),
 		deleteTrip: builder.mutation({
 			query: (tripID) => ({
@@ -161,12 +177,14 @@ export const tripPlannerApi = createApi({
 });
 
 export const {
+	useSignupMutation,
 	useLoginMutation,
 	useCreateInvitationMutation,
 	useGetUserInvitesQuery,
 	useUpdateInviteMutation,
 	useGetTripsQuery,
 	useGetATripQuery,
+	useRemoveMemberMutation,
 	useDeleteTripMutation,
 	useCreateTripMutation,
 	useGetTripEventsQuery,

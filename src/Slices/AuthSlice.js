@@ -15,7 +15,9 @@ export const authState = createSlice({
 			state.accessToken = payload.access;
 		},
 		loggedOut: (state) => {
-			state = initialState;
+			state.user = null;
+			state.accessToken = null;
+			state.refreshToken = null;
 		}
 	}
 });

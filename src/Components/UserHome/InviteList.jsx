@@ -2,7 +2,15 @@ import React from 'react';
 import { Box, Typography, TableContainer, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 import InviteItem from './InviteItem';
 import { useGetUserInvitesQuery } from '../../Services/tripPlannerBackend';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles({
+	whiteText: {
+		color: '#f2f2f2'
+	}
+});
 const InviteList = () => {
+	const classes = useStyles();
 	const { data, error, isLoading } = useGetUserInvitesQuery();
 	return (
 		<React.Fragment>
@@ -27,7 +35,9 @@ const InviteList = () => {
 					paddingX={3}
 					bgcolor="gray"
 				>
-					<Typography variant="h2">My Invites</Typography>
+					<Typography className={classes.whiteText} variant="h2">
+						My Invites
+					</Typography>
 				</Box>
 				<Box display="flex" flexGrow="1">
 					<TableContainer>

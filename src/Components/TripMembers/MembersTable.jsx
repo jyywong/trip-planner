@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const MembersTable = ({ showForm, setShowForm }) => {
+const MembersTable = ({ showForm, setShowForm, setShowDialog, setChosenMember }) => {
 	const classes = useStyles();
 	const selectedTrip = useSelector(timelineSelectedTrip);
 
@@ -60,7 +60,15 @@ const MembersTable = ({ showForm, setShowForm }) => {
 						<TableBody>
 							{!isLoading &&
 								!error &&
-								data.members.map((user) => <MemberListItem key={user.id} user={user} />)}
+								data.members.map((user) => (
+									<MemberListItem
+										key={user.id}
+										memberList={data}
+										user={user}
+										setShowDialog={setShowDialog}
+										setChosenMember={setChosenMember}
+									/>
+								))}
 						</TableBody>
 					</Table>
 				</TableContainer>

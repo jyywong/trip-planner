@@ -1,6 +1,5 @@
 import React from 'react';
 import { parseISO, format } from 'date-fns';
-import { useDispatch, useSelector } from 'react-redux';
 import { Typography, Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { truncate } from '../../HelperFunction';
@@ -25,8 +24,7 @@ const VisualTimelineBlock = ({ id, time, name, details }) => {
 			<TimelineItem>
 				<TimelineOppositeContent>
 					<Typography variant="body2" color="textSecondary">
-						{/* {format(parseISO(time), 'h:mmaaa')} */}
-						{time}
+						{format(parseISO(time), 'h:mmaaa')}
 					</Typography>
 				</TimelineOppositeContent>
 

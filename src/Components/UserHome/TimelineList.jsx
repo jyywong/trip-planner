@@ -7,6 +7,13 @@ import { useGetTripsQuery } from '../../Services/tripPlannerBackend';
 import { Box, Typography, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 const useStyles = makeStyles({
+	whiteText: {
+		color: '#f2f2f2'
+	},
+	whiteButton: {
+		color: 'white',
+		border: '1px solid #f2f2f2'
+	},
 	gridOverride: {
 		boxSizing: 'border-box',
 		flexGrow: '1',
@@ -61,7 +68,9 @@ const TimelineList = () => {
 					paddingX={3}
 					bgcolor="gray"
 				>
-					<Typography variant="h2">My Trips</Typography>
+					<Typography className={classes.whiteText} variant="h2">
+						My Trips
+					</Typography>
 					<Box marginLeft="auto" alignSelf="center">
 						<Button
 							variant="outlined"

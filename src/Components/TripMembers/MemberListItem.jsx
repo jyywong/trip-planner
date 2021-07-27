@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Box, Avatar, Typography, TableCell, TableRow } from '@material-ui/core';
+import { Button, Avatar, Typography, TableCell, TableRow } from '@material-ui/core';
+import ClearIcon from '@material-ui/icons/Clear';
 import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
 	avatarOverride: {
@@ -9,8 +9,12 @@ const useStyles = makeStyles((theme) => ({
 		marginLeft: '1.5rem'
 	}
 }));
-const MemberListItem = ({ user }) => {
+const MemberListItem = ({ user, setShowDialog, setChosenMember }) => {
 	const classes = useStyles();
+	const handleRemove = () => {
+		setShowDialog(true);
+		setChosenMember(user);
+	};
 	return (
 		<React.Fragment>
 			<TableRow>
@@ -22,6 +26,11 @@ const MemberListItem = ({ user }) => {
 				</TableCell>
 				<TableCell>
 					<Typography variant="body1">{user.email}</Typography>
+				</TableCell>
+				<TableCell align="right">
+					<Button variant="outlined" color="secondary" onClick={handleRemove}>
+						<ClearIcon />
+					</Button>
 				</TableCell>
 			</TableRow>
 		</React.Fragment>

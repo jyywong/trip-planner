@@ -6,6 +6,7 @@ import { Box, Button, Typography } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { timelineModeSelector } from '../../Slices/TimelineStateSlice';
 import MembersTable from './MembersTable';
+import DeleteMemberDialog from './DeleteMemberDialog';
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
 		gridColumn: '1/5',
@@ -17,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
 	avatarOverride: {
 		height: '4rem',
 		width: '4rem'
+	},
+	whiteText: {
+		color: 'white'
 	},
 	root: {
 		'&::-webkit-scrollbar': {
@@ -34,6 +38,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TripMembersContainer = () => {
 	const [ showForm, setShowForm ] = useState(false);
+	const [ showDialog, setShowDialog ] = useState(false);
+	const [ chosenMember, setChosenMember ] = useState(0);
 	const timelineState = useSelector(timelineModeSelector);
 
 	const classes = useStyles();
@@ -77,7 +83,9 @@ const TripMembersContainer = () => {
 						>
 							<Box display="flex" boxSizing="border-box" bgcolor="#A895B7" width="100%" padding={2}>
 								<Box display="flex" width="100%" alignSelf="flex-end" marginLeft="2%">
-									<Typography variant="h4">Trip Members</Typography>
+									<Typography className={classes.whiteText} variant="h4">
+										Trip Members
+									</Typography>
 									<Box alignSelf="flex-end" marginLeft="auto">
 										<Button variant="outlined" onClick={handleAdd}>
 											<AddIcon />
@@ -85,9 +93,19 @@ const TripMembersContainer = () => {
 									</Box>
 								</Box>
 							</Box>
-							<MembersTable showForm={showForm} setShowForm={setShowForm} />
+							<MembersTable
+								showForm={showForm}
+								setShowForm={setShowForm}
+								setShowDialog={setShowDialog}
+								setChosenMember={setChosenMember}
+							/>
 						</Box>
 					</motion.div>
+					<DeleteMemberDialog
+						showDialog={showDialog}
+						setShowDialog={setShowDialog}
+						chosenMember={chosenMember}
+					/>
 				</React.Fragment>
 			)}
 		</AnimatePresence>
