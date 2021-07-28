@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
@@ -24,9 +25,20 @@ const useStyles = makeStyles({
 	}
 });
 const SignUp = () => {
+	const formik = useFormik({
+		initialValues: {
+			username: '',
+			email: '',
+			password: '',
+			password2: ''
+		},
+		onSubmit: (values) => {
+			console.log(values);
+		}
+	});
+
 	const { enqueueSnackbar } = useSnackbar();
 	const [ login, { isLoading } ] = useLoginMutation();
-
 	const [ signup, { isSuccess, isError } ] = useSignupMutation();
 	const dispatch = useDispatch();
 	const classes = useStyles();
@@ -76,45 +88,41 @@ const SignUp = () => {
 							<TextField
 								variant="outlined"
 								className={classes.mediumBottomMargin}
+								id="username"
 								label="Username"
 								fullWidth
-								value={formValues.username}
-								onChange={(e) => {
-									setFormValues((current) => ({ ...current, username: e.target.value }));
-								}}
+								value={formik.username}
+								onChange={formik.handleChange}
 							/>
 							<TextField
 								variant="outlined"
 								className={classes.mediumBottomMargin}
+								id="email"
 								label="Email"
 								type="email"
 								fullWidth
-								value={formValues.email}
-								onChange={(e) => {
-									setFormValues((current) => ({ ...current, email: e.target.value }));
-								}}
+								value={formik.email}
+								onChange={formik.handleChange}
 							/>
 							<TextField
 								variant="outlined"
 								className={classes.mediumBottomMargin}
+								id="password"
 								label="Password"
 								type="password"
 								fullWidth
-								value={formValues.password}
-								onChange={(e) => {
-									setFormValues((current) => ({ ...current, password: e.target.value }));
-								}}
+								value={formik.password}
+								onChange={formik.handleChange}
 							/>
 							<TextField
 								variant="outlined"
 								className={classes.mediumBottomMargin}
+								id="password2"
 								label="Confirm Password"
 								type="password"
 								fullWidth
-								value={formValues.password2}
-								onChange={(e) => {
-									setFormValues((current) => ({ ...current, password2: e.target.value }));
-								}}
+								value={formik.password2}
+								onChange={formik.handleChange}
 							/>
 							<Button
 								variant="contained"
