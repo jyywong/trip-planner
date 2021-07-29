@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import * as Yup from 'yup';
 import { motion } from 'framer-motion';
-import { format, parseISO } from 'date-fns';
+import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Box, Typography, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import NewLocationSelector from './NewSuggestionParts/NewLocationSelector';
@@ -25,41 +26,50 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NewSuggestion = ({ setShowForm }) => {
+	const formik = useFormik({
+		initialValues: {
+			eventName: '',
+			time: '',
+			details: ''
+		},
+		validationSchema: Yup.object({
+			eventName: Yup.string().max(30, 'Name must be less than 30 characters!').required('Must have a name!'),
+			time: Yup.string().required('Must have a time!'),
+			details: Yup.string().required('Must have details!')
+		}),
+		onSubmit: () => {
+			const { eventName, time, details } = formik.values;
+			const { locationName, address, place_id } = formValues;
+			const newSuggestionObject = {
+				alternativeTo: selectedItem,
+				createdBy: 1,
+				createdAt: new Date().toISOString(),
+				time: convertToDate(today, time),
+				name: eventName,
+				details,
+				locationName,
+				address,
+				placeID: place_id,
+				upvotes: 0,
+				downvotes: 0
+			};
+			console.log(newSuggestionObject);
+			createSuggestion({ eventID: selectedItem, newAlternative: newSuggestionObject });
+		}
+	});
+
 	const { enqueueSnackbar } = useSnackbar();
-	const userID = useSelector((state) => state.authState.user);
 	const [ createSuggestion, { isSuccess, isError, error } ] = useCreateAlternativeMutation();
 	const [ formValues, setFormValues ] = useState({
-		eventName: '',
-		time: '',
 		location: {
 			name: '',
 			address: '',
 			place_id: ''
-		},
-		details: ''
+		}
 	});
 	const today = useSelector((state) => state.tripStop.date);
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
-
 	const classes = useStyles();
-	const handleCreate = () => {
-		const { eventName, time, locationName, address, place_id, details } = formValues;
-		const newSuggestionObject = {
-			alternativeTo: selectedItem,
-			createdBy: 1,
-			createdAt: new Date().toISOString(),
-			time: convertToDate(today, time),
-			name: eventName,
-			details,
-			locationName,
-			address,
-			placeID: place_id,
-			upvotes: 0,
-			downvotes: 0
-		};
-		console.log(newSuggestionObject);
-		createSuggestion({ eventID: selectedItem, newAlternative: newSuggestionObject });
-	};
 
 	useEffect(
 		() => {
@@ -99,63 +109,76 @@ const NewSuggestion = ({ setShowForm }) => {
 				<Box display="flex" marginTop={2} justifyContent="center" alignItems="center" width="100%">
 					<Typography variant="h5">New suggestion</Typography>
 				</Box>
-				<Box
-					display="flex"
-					flexDirection="column"
-					justifyContent="space-between"
-					paddingBottom={2}
-					paddingX={4}
-				>
-					<TextField
-						className={classes.overrideTextMargins}
-						variant="outlined"
-						label="New event name"
-						value={formValues.eventName}
-						onChange={(e) => setFormValues((current) => ({ ...current, eventName: e.target.value }))}
-					/>
-					<TextField
-						className={classes.overrideTextMargins}
-						label="New time"
-						InputLabelProps={{ shrink: true }}
-						type="time"
-						variant="outlined"
-						value={formValues.time}
-						onChange={(e) => setFormValues((current) => ({ ...current, time: e.target.value }))}
-					/>
-					<div className={classes.overrideTextMargins}>
-						<NewLocationSelector setFormValues={setFormValues} />
-					</div>
+				<form onSubmit={formik.handleSubmit} noValidate>
+					<Box
+						display="flex"
+						flexDirection="column"
+						justifyContent="space-between"
+						paddingBottom={2}
+						paddingX={4}
+					>
+						<TextField
+							className={classes.overrideTextMargins}
+							id="eventName"
+							name="eventName"
+							variant="outlined"
+							label="New event name"
+							{...formik.getFieldProps('eventName')}
+							error={formik.touched.eventName && formik.errors.eventName && true}
+							helperText={
+								formik.touched.eventName && formik.errors.eventName ? formik.errors.eventName : ''
+							}
+						/>
+						<TextField
+							className={classes.overrideTextMargins}
+							id="time"
+							name="time"
+							label="New time"
+							InputLabelProps={{ shrink: true }}
+							type="time"
+							variant="outlined"
+							{...formik.getFieldProps('time')}
+							error={formik.touched.time && formik.errors.time && true}
+							helperText={formik.touched.time && formik.errors.time ? formik.errors.time : ''}
+						/>
+						<div className={classes.overrideTextMargins}>
+							<NewLocationSelector setFormValues={setFormValues} />
+						</div>
 
-					<TextField
-						className={classes.overrideTextMargins}
-						label="New details"
-						variant="outlined"
-						rows={5}
-						multiline
-						value={formValues.details}
-						onChange={(e) => setFormValues((current) => ({ ...current, details: e.target.value }))}
-					/>
-					<Button
-						className={classes.overrideCreateButtonMargin}
-						size="large"
-						color="primary"
-						variant="contained"
-						onClick={handleCreate}
-					>
-						Create
-					</Button>
-					<Button
-						className={classes.overrideCancelButtonMargin}
-						size="large"
-						color="primary"
-						variant="outlined"
-						onClick={() => {
-							setShowForm(false);
-						}}
-					>
-						Cancel
-					</Button>
-				</Box>
+						<TextField
+							className={classes.overrideTextMargins}
+							id="details"
+							name="details"
+							label="New details"
+							variant="outlined"
+							rows={5}
+							multiline
+							{...formik.getFieldProps('details')}
+							error={formik.touched.details && formik.errors.details && true}
+							helperText={formik.touched.details && formik.errors.details ? formik.errors.details : ''}
+						/>
+						<Button
+							className={classes.overrideCreateButtonMargin}
+							size="large"
+							color="primary"
+							variant="contained"
+							type="submit"
+						>
+							Create
+						</Button>
+						<Button
+							className={classes.overrideCancelButtonMargin}
+							size="large"
+							color="primary"
+							variant="outlined"
+							onClick={() => {
+								setShowForm(false);
+							}}
+						>
+							Cancel
+						</Button>
+					</Box>
+				</form>
 			</Box>
 		</React.Fragment>
 	);

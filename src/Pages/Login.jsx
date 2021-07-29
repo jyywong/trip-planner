@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../Slices/AuthSlice';
 import { useLoginMutation } from '../Services/tripPlannerBackend';
-import { Card, Button, Typography, CardContent, Box, TextField } from '@material-ui/core';
+import { Card, Button, Typography, CardContent, Box, TextField, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
@@ -86,7 +87,10 @@ const Login = () => {
 								SIGN IN
 							</Button>
 							<Typography className={classes.noBottomMargin} variant="subtitle1">
-								Don't have an account? Sign up!
+								Don't have an account?
+								<Link component={RouterLink} to="/signup">
+									Sign up!
+								</Link>
 							</Typography>
 						</Box>
 					</CardContent>
