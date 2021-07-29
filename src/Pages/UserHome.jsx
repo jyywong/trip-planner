@@ -6,6 +6,7 @@ import TimelineList from '../Components/UserHome/TimelineList';
 import InviteList from '../Components/UserHome/InviteList';
 import { makeStyles } from '@material-ui/core';
 import { loggedOut } from '../Slices/AuthSlice';
+import Dropdown from '../Components/Dropdown';
 
 const useStyles = makeStyles({
 	whiteIcon: {
@@ -38,9 +39,7 @@ const UserHome = () => {
 						</Typography>
 						<Box display="flex" alignItems="center" marginLeft="auto">
 							<Box display="flex" alignItems="center" marginLeft={4}>
-								<Typography className={classes.whiteIcon} variant="body1" onClick={handleSignOut}>
-									Sign Out
-								</Typography>
+								<Dropdown handleSignOut={handleSignOut} />
 							</Box>
 						</Box>
 					</Toolbar>

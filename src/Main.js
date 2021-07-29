@@ -39,7 +39,6 @@ function Main() {
 					<SignUp />
 				</Route>
 				<ProtectedRoute path="/home" component={UserHome} />
-				<ProtectedRoute path="/new_trip" component={NewTrip} />
 				<ProtectedRoute path="/edit_trip" component={EditTrip} />
 			</Switch>
 		</Router>
