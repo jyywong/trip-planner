@@ -52,6 +52,9 @@ export const tripPlannerApi = createApi({
 				body: credentials
 			})
 		}),
+		getUserDetails: builder.query({
+			query: (userID) => `user_details/${userID}`
+		}),
 		createInvitation: builder.mutation({
 			query: ({ tripID, email }) => ({
 				url: `create_member_invite`,
@@ -179,6 +182,7 @@ export const tripPlannerApi = createApi({
 export const {
 	useSignupMutation,
 	useLoginMutation,
+	useGetUserDetailsQuery,
 	useCreateInvitationMutation,
 	useGetUserInvitesQuery,
 	useUpdateInviteMutation,

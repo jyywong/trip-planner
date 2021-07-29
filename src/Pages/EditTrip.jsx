@@ -11,6 +11,7 @@ import { Typography, Box, AppBar, Toolbar, IconButton, Button } from '@material-
 import MenuIcon from '@material-ui/icons/Menu';
 import TripMembersContainer from '../Components/TripMembers/TripMembersContainer';
 import { makeStyles } from '@material-ui/core';
+import Dropdown from '../Components/Dropdown';
 
 const useStyles = makeStyles({
 	whiteIcon: {
@@ -45,9 +46,7 @@ const EditTrip = () => {
 							</Button>
 
 							<Box display="flex" alignItems="center" marginLeft={4}>
-								<Typography className={classes.whiteIcon} variant="body1" onClick={handleSignOut}>
-									Sign Out
-								</Typography>
+								<Dropdown handleSignOut={handleSignOut} />
 							</Box>
 						</Box>
 					</Toolbar>
