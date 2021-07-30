@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useMediaQuery } from '@material-ui/core';
+import { mediaQueryComparer, TabletMQ, SMobileMQ } from '../HelperFunction';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
@@ -15,6 +17,12 @@ import LockIcon from '@material-ui/icons/Lock';
 const useStyles = makeStyles({
 	cardOverride: {
 		width: '30%'
+	},
+	cardOverrideTablet: {
+		width: '75%'
+	},
+	cardOverrideSMobile: {
+		width: '95%'
 	},
 	cardContentOverride: {
 		height: '100%'
@@ -39,6 +47,8 @@ const SignUpSchema = Yup.object().shape({
 });
 
 const SignUp = () => {
+	const tablet = useMediaQuery(TabletMQ);
+	const SMobile = useMediaQuery(SMobileMQ);
 	const { enqueueSnackbar } = useSnackbar();
 	const [ login, { isLoading } ] = useLoginMutation();
 	const [ signup, { isSuccess, isError } ] = useSignupMutation();
@@ -80,7 +90,17 @@ const SignUp = () => {
 	return (
 		<React.Fragment>
 			<Box display="flex" width="100vw" height="100vh" alignItems="center" justifyContent="center">
-				<Card className={classes.cardOverride} raised>
+				<Card
+					className={mediaQueryComparer(
+						{ tabletMatch: tablet, SMobileMatch: SMobile },
+						{
+							SMobileMQ: classes.cardOverrideSMobile,
+							tabletMQ: classes.cardOverrideTablet,
+							defaultMQ: classes.cardOverride
+						}
+					)}
+					raised
+				>
 					<CardContent className={classes.cardContentOverride}>
 						<form onSubmit={formik.handleSubmit} noValidate>
 							<Box
@@ -163,7 +183,7 @@ const SignUp = () => {
 								>
 									SIGN UP
 								</Button>
-								<Typography className={classes.noBottomMargin} variant="subtitle1">
+								<Typography align="center" className={classes.noBottomMargin} variant="subtitle1">
 									Already have an account?
 									<Link component={RouterLink} to="/login">
 										Log in!

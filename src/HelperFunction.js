@@ -56,3 +56,21 @@ export const isRefreshTokenValid = (refreshToken) => {
 		return false;
 	}
 };
+export const mediaQueryComparer = (
+	{ tabletMatch, LMobileMatch, SMobileMatch },
+	{ tabletMQ, LMobileMQ, SMobileMQ, defaultMQ }
+) => {
+	if (SMobileMatch) {
+		return SMobileMQ;
+	} else if (LMobileMatch) {
+		return LMobileMQ;
+	} else if (tabletMatch) {
+		return tabletMQ;
+	} else {
+		return defaultMQ;
+	}
+};
+
+export const TabletMQ = '(max-width:768px)';
+export const LMobileMQ = '(max-width:450px)';
+export const SMobileMQ = '(max-width:320px)';

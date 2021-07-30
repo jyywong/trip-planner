@@ -1,12 +1,17 @@
 import React, { useEffect } from 'react';
+import { useMediaQuery } from '@material-ui/core';
+import { TabletMQ } from '../../HelperFunction';
 import { motion, useAnimation } from 'framer-motion';
-import { openDetails } from '../../Slices/TimelineStateSlice';
+import { openDetails, returnToTimelineOnly } from '../../Slices/TimelineStateSlice';
 import { openSuggestions } from '../../Slices/TimelineStateSlice';
 import { useDispatch } from 'react-redux';
 import { Typography, Box, Button } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
 const SavedDetailBody = ({ timelineState, tripEvent }) => {
+	const tablet = useMediaQuery(TabletMQ);
+
 	const { details } = tripEvent;
 	const controls = useAnimation();
 	const dispatch = useDispatch();
@@ -32,7 +37,21 @@ const SavedDetailBody = ({ timelineState, tripEvent }) => {
 				<Box component={motion.div} animate={controls} initial={{ x: -100 }}>
 					<Typography variant="body1">{details}</Typography>
 				</Box>
-				<Box alignSelf="flex-end">
+				<Box
+					display={tablet ? 'flex' : ''}
+					justifyContent={tablet ? 'space-between' : ''}
+					alignSelf={tablet ? '' : 'flex-end'}
+				>
+					{tablet && (
+						<Button
+							startIcon={<ChevronLeftIcon fontSize="large" />}
+							onClick={() => {
+								dispatch(returnToTimelineOnly());
+							}}
+						>
+							Timeline
+						</Button>
+					)}
 					<Button
 						endIcon={<ChevronRightIcon fontSize="large" />}
 						onClick={() => {

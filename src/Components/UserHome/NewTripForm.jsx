@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useMediaQuery } from '@material-ui/core';
+import { mediaQueryComparer, TabletMQ, LMobileMQ } from '../../HelperFunction';
 import { motion } from 'framer-motion';
 import { useSnackbar } from 'notistack';
 import { Box, Typography, TextField, Button } from '@material-ui/core';
@@ -21,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NewTripForm = ({ setShowForm }) => {
+	const tablet = useMediaQuery(TabletMQ);
+	const LMobile = useMediaQuery(LMobileMQ);
 	const { enqueueSnackbar } = useSnackbar();
 	const [ createTrip, { isSuccess, isError } ] = useCreateTripMutation();
 	const [ formValues, setFormValues ] = useState({ name: '', date: '' });
@@ -52,7 +56,7 @@ const NewTripForm = ({ setShowForm }) => {
 				boxSizing="border-box"
 				flexBasis="40%"
 				margin={3}
-				width="35%"
+				width={LMobile ? '90%' : '75%'}
 				borderRadius="10px"
 				boxShadow={4}
 				display="flex"

@@ -1,5 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
+import { TabletMQ } from '../HelperFunction';
 import { motion, AnimatePresence } from 'framer-motion';
 import DetailHeaderPicture from './DetailHeaderPicture';
 import SavedDetailHeader from './DetailHeader/SavedDetailHeader';
@@ -33,9 +35,16 @@ const useStyles = makeStyles({
 		display: 'flex',
 		maxHeight: '100vh',
 		overflow: 'hidden'
+	},
+	fullGrid: {
+		gridColumn: '1/9',
+		gridRow: '1/2',
+		visibility: 'visible',
+		display: 'flex'
 	}
 });
 const DetailComp = () => {
+	const tablet = useMediaQuery(TabletMQ);
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
 	const { data, error, isLoading } = useGetATripEventQuery(selectedItem);
 	const timelineState = useSelector(timelineModeSelector);
@@ -46,13 +55,25 @@ const DetailComp = () => {
 			{(timelineState === 'TIMELINE_DETAILS' || timelineState === 'TIMELINE_DETAILS_SUGGESTIONS') && (
 				<React.Fragment>
 					<motion.div
-						className={timelineStateComparer(
-							timelineState,
-							classes.collapsedGrid,
-							classes.expandGrid,
-							classes.middleGrid,
-							classes.collapsedGrid
-						)}
+						className={
+							tablet ? (
+								timelineStateComparer(
+									timelineState,
+									classes.collapsedGrid,
+									classes.fullGrid,
+									classes.middleGrid,
+									classes.collapsedGrid
+								)
+							) : (
+								timelineStateComparer(
+									timelineState,
+									classes.collapsedGrid,
+									classes.expandGrid,
+									classes.middleGrid,
+									classes.collapsedGrid
+								)
+							)
+						}
 						animate={{
 							x: 0
 						}}

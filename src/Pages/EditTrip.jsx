@@ -53,13 +53,15 @@ const EditTrip = () => {
 				</AppBar>
 				<div
 					style={{
+						alignSelf: 'center',
+						boxSizing: 'border-box',
 						display: 'grid',
 						padding: '1rem',
 						borderRadius: '10px',
 						height: '95vh',
 						maxHeight: '100vh',
 						minHeight: '0',
-						width: '97vw',
+						width: '97%',
 						gridTemplateColumns: 'repeat(8, 1fr)',
 						overflowX: 'hidden'
 					}}
