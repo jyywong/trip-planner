@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMediaQuery } from '@material-ui/core';
-import { TabletMQ } from '../../HelperFunction';
+import { TabletMQ, SMobileMQ } from '../../HelperFunction';
 import { motion, useAnimation } from 'framer-motion';
 import { openDetails, returnToTimelineOnly } from '../../Slices/TimelineStateSlice';
 import { openSuggestions } from '../../Slices/TimelineStateSlice';
@@ -11,7 +11,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
 const SavedDetailBody = ({ timelineState, tripEvent }) => {
 	const tablet = useMediaQuery(TabletMQ);
-
+	const sMobile = useMediaQuery(SMobileMQ);
 	const { details } = tripEvent;
 	const controls = useAnimation();
 	const dispatch = useDispatch();
@@ -29,15 +29,16 @@ const SavedDetailBody = ({ timelineState, tripEvent }) => {
 				flexBasis="100%"
 				flexDirection="column"
 				justifyContent="space-between"
-				padding={4}
 				overflow="hidden"
 				component={motion.div}
 				layout
 			>
-				<Box component={motion.div} animate={controls} initial={{ x: -100 }}>
+				<Box padding={4} component={motion.div} animate={controls} initial={{ x: -100 }}>
 					<Typography variant="body1">{details}</Typography>
 				</Box>
 				<Box
+					boxSizing="border-box"
+					padding={sMobile ? 0 : 4}
 					display={tablet ? 'flex' : ''}
 					justifyContent={tablet ? 'space-between' : ''}
 					alignSelf={tablet ? '' : 'flex-end'}

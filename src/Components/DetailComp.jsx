@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
-import { TabletMQ } from '../HelperFunction';
+import { TabletMQ, TabletMidMQ } from '../HelperFunction';
 import { motion, AnimatePresence } from 'framer-motion';
 import DetailHeaderPicture from './DetailHeaderPicture';
 import SavedDetailHeader from './DetailHeader/SavedDetailHeader';
@@ -44,6 +44,7 @@ const useStyles = makeStyles({
 	}
 });
 const DetailComp = () => {
+	const tabletMid = useMediaQuery(TabletMidMQ);
 	const tablet = useMediaQuery(TabletMQ);
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
 	const { data, error, isLoading } = useGetATripEventQuery(selectedItem);
@@ -52,7 +53,8 @@ const DetailComp = () => {
 	const classes = useStyles();
 	return (
 		<AnimatePresence>
-			{(timelineState === 'TIMELINE_DETAILS' || timelineState === 'TIMELINE_DETAILS_SUGGESTIONS') && (
+			{(timelineState === 'TIMELINE_DETAILS' ||
+				(timelineState === 'TIMELINE_DETAILS_SUGGESTIONS' && !tablet)) && (
 				<React.Fragment>
 					<motion.div
 						className={
@@ -96,12 +98,13 @@ const DetailComp = () => {
 							flexDirection="column"
 							alignItems="center"
 							borderRadius="10px"
+							overflow="hidden"
 							m={1}
 							boxShadow={3}
 							component={motion.div}
 							layout
 						>
-							<DetailHeaderPicture timelineState={timelineState} />
+							{!tabletMid && <DetailHeaderPicture timelineState={timelineState} />}
 
 							{UIMode === 'Detail' ? (
 								!isLoading &&

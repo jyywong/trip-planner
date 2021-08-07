@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Box, Typography, Divider, Button } from '@material-ui/core';
 import { format, parseISO } from 'date-fns';
-
+import { useMediaQuery } from '@material-ui/core';
+import { TabletMidMQ } from '../../HelperFunction';
 import EventIdeaDetails from './EventIdeaDetails';
 import EventIdeaLocation from './EventIdeaLocation';
 import EventIdeaVoteButtons from './EventIdeaVoteButtons';
@@ -18,6 +19,7 @@ const useStyles = makeStyles({
 });
 
 const EventIdea = ({ eventIdea }) => {
+	const tabletMid = useMediaQuery(TabletMidMQ);
 	const [ addEventIdea, { data, error, isLoading } ] = useAddEventIdeaMutation();
 	const { id, suggestor, time, name, details, locationName, address, placeID, upvotes, downvotes } = eventIdea;
 	const dispatch = useDispatch();
@@ -51,7 +53,14 @@ const EventIdea = ({ eventIdea }) => {
 				flexDirection="column"
 				bgcolor="white"
 			>
-				<Box display="flex" bgcolor="#A895B7" flexBasis="24%" borderRadius="10px 10px 0 0">
+				<Box
+					display="flex"
+					paddingY={1}
+					flexDirection={tabletMid ? 'column' : 'row'}
+					bgcolor="#A895B7"
+					flexBasis="24%"
+					borderRadius="10px 10px 0 0"
+				>
 					<Box
 						display="flex"
 						paddingLeft={2}
@@ -63,25 +72,36 @@ const EventIdea = ({ eventIdea }) => {
 							{name}
 						</Typography>
 					</Box>
-					<Box alignSelf="flex-end" marginRight={3}>
+					<Box alignSelf={tabletMid ? '' : 'flex-end'} paddingLeft={tabletMid ? 2 : ''} marginRight={3}>
 						<Typography className={classes.whiteText} variant="h5">
 							{format(parseISO(time), 'h:mmaaa')}
 						</Typography>
 					</Box>
 					{eventIdea.status === 'Suggested' && (
-						<Box alignSelf="center" marginRight={1.5}>
-							<Button variant="contained" color="primary" onClick={handleAdd}>
+						<Box
+							alignSelf="center"
+							marginRight={tabletMid ? 0 : 1.5}
+							marginBottom={tabletMid ? 1 : 0}
+							width={tabletMid ? '90%' : 'auto'}
+						>
+							<Button variant="contained" color="primary" fullWidth onClick={handleAdd}>
 								Add
 							</Button>
 						</Box>
 					)}
 				</Box>
-				<Box display="flex" flexGrow="1">
-					<Box marginTop={1} display="flex" justifyContent="space-evenly">
+				<Box display="flex" flexDirection={tabletMid ? 'column' : 'row'} flexGrow="1">
+					<Box
+						marginTop={1}
+						display="flex"
+						flexDirection={tabletMid ? 'column' : 'row'}
+						paddingX={tabletMid ? 2 : 0}
+						justifyContent="space-evenly"
+					>
 						<EventIdeaDetails details={details} />
 						<Box display="flex" alignItems="center">
 							<Box height="80%">
-								<Divider orientation="vertical" flexItem />
+								<Divider orientation="vertical" />
 							</Box>
 						</Box>
 						<EventIdeaLocation location={{ locationName, address }} />

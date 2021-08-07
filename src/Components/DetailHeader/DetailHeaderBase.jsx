@@ -10,7 +10,6 @@ const DetailHeaderBase = ({ timelineState, children }) => {
 				display={displayOnlyIfTimelineStateIsNotTimelineOnly(timelineState)}
 				boxSizing="border-box"
 				width="100%"
-				height="15%"
 				alignItems="flex-end"
 				paddingY={2}
 				paddingX={4}

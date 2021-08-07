@@ -50,7 +50,7 @@ const SavedDetailBase = ({ tripEvent, timelineState }) => {
 				boxSizing="border-box"
 				flexDirection="column"
 				width="100%"
-				height="50%"
+				flexBasis="50%"
 				flexGrow="1"
 				component={motion.div}
 				layout

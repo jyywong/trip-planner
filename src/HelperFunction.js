@@ -72,5 +72,6 @@ export const mediaQueryComparer = (
 };
 
 export const TabletMQ = '(max-width:768px)';
+export const TabletMidMQ = '(max-width:550px)';
 export const LMobileMQ = '(max-width:450px)';
-export const SMobileMQ = '(max-width:320px)';
+export const SMobileMQ = '(max-width:375px)';

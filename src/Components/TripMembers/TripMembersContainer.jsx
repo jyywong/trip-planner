@@ -7,6 +7,8 @@ import AddIcon from '@material-ui/icons/Add';
 import { timelineModeSelector } from '../../Slices/TimelineStateSlice';
 import MembersTable from './MembersTable';
 import DeleteMemberDialog from './DeleteMemberDialog';
+import { useMediaQuery } from '@material-ui/core';
+import { TabletMQ } from '../../HelperFunction';
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
 		gridColumn: '1/5',
@@ -14,7 +16,12 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		minHeight: '0'
 	},
-
+	fullGrid: {
+		gridColumn: '1/9',
+		gridRow: '1/2',
+		display: 'flex',
+		minHeight: '0'
+	},
 	avatarOverride: {
 		height: '4rem',
 		width: '4rem'
@@ -37,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 const TripMembersContainer = () => {
+	const tablet = useMediaQuery(TabletMQ);
 	const [ showForm, setShowForm ] = useState(false);
 	const [ showDialog, setShowDialog ] = useState(false);
 	const [ chosenMember, setChosenMember ] = useState(0);
@@ -52,7 +60,7 @@ const TripMembersContainer = () => {
 			{timelineState === 'MEMBERS_TIMELINE' && (
 				<React.Fragment>
 					<motion.div
-						className={classes.expandGrid}
+						className={tablet ? classes.fullGrid : classes.expandGrid}
 						animate={{ x: 0 }}
 						initial={{
 							x: -1200

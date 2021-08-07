@@ -1,12 +1,16 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Box, Typography, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import { displayOnlyIfTimelineStateIsTimelineDetailsSuggestions, timelineStateComparer } from '../../HelperFunction';
+import { timelineStateComparer } from '../../HelperFunction';
 import EventIdea from './EventIdea';
 import { timelineModeSelector, timelineSelectedTrip } from '../../Slices/TimelineStateSlice';
 import { useGetEventIdeasQuery } from '../../Services/tripPlannerBackend';
+import { useMediaQuery } from '@material-ui/core';
+import { TabletMQ } from '../../HelperFunction';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { openDetails } from '../../Slices/TimelineStateSlice';
 
 const useStyles = makeStyles({
 	collapsedGrid: {
@@ -24,6 +28,13 @@ const useStyles = makeStyles({
 		display: 'flex',
 		minHeight: '0'
 	},
+	fullEventIdeas: {
+		gridColumn: '1/9',
+		gridRow: '1/2',
+		display: 'flex',
+		minHeight: '0'
+	},
+
 	whiteText: {
 		color: 'white'
 	},
@@ -43,6 +54,8 @@ const useStyles = makeStyles({
 });
 
 const EventIdeaContainer = () => {
+	const dispatch = useDispatch();
+	const tablet = useMediaQuery(TabletMQ);
 	const timelineState = useSelector(timelineModeSelector);
 	const selectedTrip = useSelector(timelineSelectedTrip);
 	const { data, error, isLoading } = useGetEventIdeasQuery(selectedTrip);
@@ -59,7 +72,7 @@ const EventIdeaContainer = () => {
 							classes.collapsedGrid,
 							classes.collapsedGrid,
 							classes.collapsedGrid,
-							classes.openEventIdeas
+							tablet ? classes.fullEventIdeas : classes.openEventIdeas
 						)}
 						animate={{
 							x: 0
@@ -117,6 +130,16 @@ const EventIdeaContainer = () => {
 								{!isLoading &&
 									!error &&
 									data.map((eventIdea) => <EventIdea key={eventIdea.id} eventIdea={eventIdea} />)}
+							</Box>
+							<Box>
+								<Button
+									startIcon={<ChevronLeftIcon fontSize="large" />}
+									onClick={() => {
+										dispatch(openDetails());
+									}}
+								>
+									Event Details
+								</Button>
 							</Box>
 						</Box>
 					</motion.div>

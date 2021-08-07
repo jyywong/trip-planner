@@ -11,7 +11,8 @@ import { useSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
 import { returnToTimelineOnly } from '../../Slices/TimelineStateSlice';
 import { useDeleteTripEventMutation } from '../../Services/tripPlannerBackend';
-
+import { useMediaQuery } from '@material-ui/core';
+import { TabletMidMQ } from '../../HelperFunction';
 const useStyles = makeStyles({
 	button: {
 		color: 'white',
@@ -21,7 +22,6 @@ const useStyles = makeStyles({
 		color: 'white'
 	},
 	h5White: {
-		marginLeft: '1rem',
 		color: 'white'
 	},
 	h6White: {
@@ -32,6 +32,7 @@ const useStyles = makeStyles({
 	}
 });
 const SavedDetailHeader = ({ tripEvent, timelineState }) => {
+	const tabletMid = useMediaQuery(TabletMidMQ);
 	const dispatch = useDispatch();
 	const { enqueueSnackbar } = useSnackbar();
 	const [ deleteEvent, { isSuccess, isError } ] = useDeleteTripEventMutation();
@@ -75,24 +76,29 @@ const SavedDetailHeader = ({ tripEvent, timelineState }) => {
 					initial={{ x: -100 }}
 					flexDirection="column"
 				>
-					<Box display="flex" marginRight={-2}>
+					<Box display="flex">
 						<Button
 							className={classes.button}
 							variant="outlined"
-							endIcon={<ClearIcon />}
+							endIcon={!tabletMid && <ClearIcon />}
 							onClick={handleDelete}
 						>
-							Delete Event
+							{tabletMid ? <ClearIcon /> : 'Delete Event'}
 						</Button>
 					</Box>
-					<Box display="flex" width="100%" alignItems="flex-end">
+					<Box
+						display="flex"
+						flexDirection={tabletMid ? 'column' : 'row'}
+						width="100%"
+						alignItems={tabletMid ? 'flex-start' : 'flex-end'}
+					>
 						<Typography className={classes.h3White} variant="h3">
 							{name}
 						</Typography>
 						<Typography className={classes.h5White} variant="h5">
 							{format(parseISO(time), 'h:mmaaa')}
 						</Typography>
-						<Box display="flex" marginLeft="auto">
+						<Box display="flex" marginLeft={tabletMid ? '' : 'auto'}>
 							<EditLocationIcon className={classes.whiteSVG} />
 							<Typography className={classes.h6White} variant="h6">
 								Location
