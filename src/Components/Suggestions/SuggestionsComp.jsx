@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
 import { useGetAlternativesQuery } from '../../Services/tripPlannerBackend';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/styles';
 import { Box, Typography, Button } from '@material-ui/core';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AddIcon from '@material-ui/icons/Add';
-import { displayOnlyIfTimelineStateIsTimelineDetailsSuggestions, timelineStateComparer } from '../../HelperFunction';
+import { MLaptopMQ, SMobileMQ } from '../../HelperFunction';
 import Suggestion from './Suggestion';
 import NewSuggestion from './NewSuggestion';
-import { timelineModeSelector } from '../../Slices/TimelineStateSlice';
-
+import { openDetails, timelineModeSelector } from '../../Slices/TimelineStateSlice';
+import { useMediaQuery } from '@material-ui/core';
+import { TabletMQ } from '../../HelperFunction';
 const useStyles = makeStyles({
 	collapsedGrid: {
 		gridColumn: '9/9',
@@ -21,6 +24,18 @@ const useStyles = makeStyles({
 	},
 	openSuggestions: {
 		gridColumn: '7/9',
+		gridRow: '1/2',
+		display: 'flex',
+		minHeight: '0'
+	},
+	fullSuggestions: {
+		gridColumn: '1/9',
+		gridRow: '1/2',
+		display: 'flex',
+		minHeight: '0'
+	},
+	halfSuggestions: {
+		gridColumn: '5/9',
 		gridRow: '1/2',
 		display: 'flex',
 		minHeight: '0'
@@ -43,6 +58,10 @@ const useStyles = makeStyles({
 	}
 });
 const SuggestionsComp = () => {
+	const dispatch = useDispatch();
+	const tablet = useMediaQuery(TabletMQ);
+	const sMobile = useMediaQuery(SMobileMQ);
+	const mLaptop = useMediaQuery(MLaptopMQ);
 	const selectedStop = useSelector((state) => state.tripStop.selectedStop);
 	const { data, error, isLoading } = useGetAlternativesQuery(selectedStop);
 	const timelineState = useSelector(timelineModeSelector);
@@ -58,7 +77,15 @@ const SuggestionsComp = () => {
 				<React.Fragment>
 					<motion.div
 						key="suggestion"
-						className={classes.openSuggestions}
+						className={(() => {
+							if (tablet) {
+								return classes.fullSuggestions;
+							} else if (mLaptop) {
+								return classes.halfSuggestions;
+							} else {
+								return classes.openSuggestions;
+							}
+						})()}
 						animate={{
 							x: 0
 						}}
@@ -66,7 +93,7 @@ const SuggestionsComp = () => {
 							x: 500
 						}}
 						exit={{
-							x: 500
+							x: 750
 						}}
 						transition={{
 							type: 'spring',
@@ -75,7 +102,7 @@ const SuggestionsComp = () => {
 						}}
 					>
 						<Box
-							display={displayOnlyIfTimelineStateIsTimelineDetailsSuggestions(timelineState)}
+							display="flex"
 							flexGrow="1"
 							boxSizing="border-box"
 							flexDirection="column"
@@ -91,8 +118,9 @@ const SuggestionsComp = () => {
 								display="flex"
 								paddingX={3}
 								paddingBottom={1}
-								alignItems="flex-end"
+								alignItems={sMobile || mLaptop ? 'center' : 'flex-end'}
 								justifyContent="space-between"
+								flexDirection={sMobile || mLaptop ? 'column' : 'row'}
 								flexBasis="10%"
 								width="100%"
 								bgcolor="#c4c4c4"
@@ -100,9 +128,10 @@ const SuggestionsComp = () => {
 								<Typography className={classes.whiteText} variant="h4">
 									Suggestions
 								</Typography>
-								<Box>
+								<Box width={sMobile || mLaptop ? '100%' : 'auto'}>
 									<Button
 										variant="outlined"
+										fullWidth={sMobile || mLaptop ? true : false}
 										onClick={() => {
 											setShowForm(true);
 										}}
@@ -132,6 +161,16 @@ const SuggestionsComp = () => {
 										data.map((alternative) => (
 											<Suggestion key={alternative.id} suggestion={alternative} />
 										))}
+								</Box>
+								<Box>
+									<Button
+										startIcon={<ChevronLeftIcon fontSize="large" />}
+										onClick={() => {
+											dispatch(openDetails());
+										}}
+									>
+										Details
+									</Button>
 								</Box>
 							</AnimateSharedLayout>
 						</Box>

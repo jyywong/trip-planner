@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useMediaQuery } from '@material-ui/core';
+import { mediaQueryComparer, TabletMQ, SMobileMQ } from '../HelperFunction';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../Slices/AuthSlice';
@@ -12,6 +14,13 @@ const useStyles = makeStyles({
 	cardOverride: {
 		width: '30%'
 	},
+	cardOverrideTablet: {
+		width: '75%'
+	},
+	cardOverrideSMobile: {
+		width: '95%'
+	},
+
 	cardContentOverride: {
 		height: '100%'
 	},
@@ -23,6 +32,8 @@ const useStyles = makeStyles({
 	}
 });
 const Login = () => {
+	const tablet = useMediaQuery(TabletMQ);
+	const SMobile = useMediaQuery(SMobileMQ);
 	const dispatch = useDispatch();
 	const { push } = useHistory();
 	const [ login, { isLoading } ] = useLoginMutation();
@@ -40,7 +51,17 @@ const Login = () => {
 	return (
 		<React.Fragment>
 			<Box display="flex" width="100vw" height="100vh" alignItems="center" justifyContent="center">
-				<Card className={classes.cardOverride} raised>
+				<Card
+					className={mediaQueryComparer(
+						{ tabletMatch: tablet, SMobileMatch: SMobile },
+						{
+							SMobileMQ: classes.cardOverrideSMobile,
+							tabletMQ: classes.cardOverrideTablet,
+							defaultMQ: classes.cardOverride
+						}
+					)}
+					raised
+				>
 					<CardContent className={classes.cardContentOverride}>
 						<Box
 							boxSizing="border-box"
@@ -86,7 +107,7 @@ const Login = () => {
 							>
 								SIGN IN
 							</Button>
-							<Typography className={classes.noBottomMargin} variant="subtitle1">
+							<Typography align="center" className={classes.noBottomMargin} variant="subtitle1">
 								Don't have an account?
 								<Link component={RouterLink} to="/signup">
 									Sign up!

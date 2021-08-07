@@ -42,7 +42,7 @@ const SavedDetailBase = ({ tripEvent, timelineState }) => {
 				<Tabs value={tabValue} onChange={handleTabChange}>
 					<Tab label="Details" />
 					<Tab label="Location" />
-					<Tab label="Next Stop" />
+					{/* <Tab label="Next Stop" /> */}
 				</Tabs>
 			</Box>
 			<Box
@@ -50,7 +50,7 @@ const SavedDetailBase = ({ tripEvent, timelineState }) => {
 				boxSizing="border-box"
 				flexDirection="column"
 				width="100%"
-				height="50%"
+				flexBasis="50%"
 				flexGrow="1"
 				component={motion.div}
 				layout

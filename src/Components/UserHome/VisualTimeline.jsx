@@ -1,6 +1,6 @@
 import React from 'react';
-import parseISO from 'date-fns/parseISO';
-import { compareAsc } from 'date-fns';
+import { useMediaQuery } from '@material-ui/core';
+import { LMobileMQ } from '../../HelperFunction';
 import { Box, Typography } from '@material-ui/core';
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -25,13 +25,14 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 const VisualTimeline = ({ trip }) => {
+	const LMobile = useMediaQuery(LMobileMQ);
 	const { data, error, isLoading } = useGetTripEventsQuery(trip.id);
 	const classes = useStyles();
 
 	return (
 		<React.Fragment>
 			<Box className={classes.root} width="100%" flexGrow="1" overflow="auto" minHeight="0">
-				<Timeline align="alternate">
+				<Timeline align={LMobile ? 'left' : 'alternate'}>
 					{!isLoading &&
 						!error &&
 						data

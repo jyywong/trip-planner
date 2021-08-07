@@ -35,7 +35,7 @@ const InviteList = () => {
 					paddingX={3}
 					bgcolor="gray"
 				>
-					<Typography className={classes.whiteText} variant="h2">
+					<Typography align="center" className={classes.whiteText} variant="h2">
 						My Invites
 					</Typography>
 				</Box>

@@ -2,6 +2,8 @@ import React from 'react';
 import { Button, Avatar, Typography, TableCell, TableRow } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import { makeStyles } from '@material-ui/core/styles';
+import { useMediaQuery } from '@material-ui/core';
+import { TabletMidMQ } from '../../HelperFunction';
 const useStyles = makeStyles((theme) => ({
 	avatarOverride: {
 		height: '4rem',
@@ -10,6 +12,8 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 const MemberListItem = ({ user, setShowDialog, setChosenMember }) => {
+	const tabletMid = useMediaQuery(TabletMidMQ);
+
 	const classes = useStyles();
 	const handleRemove = () => {
 		setShowDialog(true);
@@ -18,9 +22,12 @@ const MemberListItem = ({ user, setShowDialog, setChosenMember }) => {
 	return (
 		<React.Fragment>
 			<TableRow>
-				<TableCell>
-					<Avatar className={classes.avatarOverride} />
-				</TableCell>
+				{!tabletMid && (
+					<TableCell>
+						<Avatar className={classes.avatarOverride} />
+					</TableCell>
+				)}
+
 				<TableCell>
 					<Typography variant="h5">{user.username}</Typography>
 				</TableCell>

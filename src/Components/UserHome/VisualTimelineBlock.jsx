@@ -1,6 +1,8 @@
 import React from 'react';
+import { useMediaQuery } from '@material-ui/core';
+import { LMobileMQ } from '../../HelperFunction';
 import { parseISO, format } from 'date-fns';
-import { Typography, Box } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { truncate } from '../../HelperFunction';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -15,23 +17,26 @@ const useStyles = makeStyles((theme) => ({
 	paper: {
 		padding: '6px 16px',
 		cursor: 'pointer'
+	},
+	oppositeOverride: {
+		flexGrow: '0'
 	}
 }));
-const VisualTimelineBlock = ({ id, time, name, details }) => {
+const VisualTimelineBlock = ({ time, name, details }) => {
 	const classes = useStyles();
+	const LMobile = useMediaQuery(LMobileMQ);
+
 	return (
 		<React.Fragment>
 			<TimelineItem>
-				<TimelineOppositeContent>
+				<TimelineOppositeContent className={LMobile ? classes.oppositeOverride : ''}>
 					<Typography variant="body2" color="textSecondary">
 						{format(parseISO(time), 'h:mmaaa')}
 					</Typography>
 				</TimelineOppositeContent>
 
 				<TimelineSeparator>
-					<TimelineDot>
-						<FastfoodIcon />
-					</TimelineDot>
+					<TimelineDot>{!LMobile && <FastfoodIcon />}</TimelineDot>
 					<TimelineConnector />
 				</TimelineSeparator>
 				<TimelineContent>

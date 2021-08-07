@@ -56,3 +56,23 @@ export const isRefreshTokenValid = (refreshToken) => {
 		return false;
 	}
 };
+export const mediaQueryComparer = (
+	{ tabletMatch, LMobileMatch, SMobileMatch },
+	{ tabletMQ, LMobileMQ, SMobileMQ, defaultMQ }
+) => {
+	if (SMobileMatch) {
+		return SMobileMQ;
+	} else if (LMobileMatch) {
+		return LMobileMQ;
+	} else if (tabletMatch) {
+		return tabletMQ;
+	} else {
+		return defaultMQ;
+	}
+};
+export const MLaptopMQ = '(max-width:1300px)';
+export const SLaptopMQ = '(max-width:1100px) and (min-width: 768px)';
+export const TabletMQ = '(max-width:768px)';
+export const TabletMidMQ = '(max-width:550px)';
+export const LMobileMQ = '(max-width:450px)';
+export const SMobileMQ = '(max-width:375px)';

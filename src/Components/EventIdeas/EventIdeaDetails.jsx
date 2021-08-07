@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography } from '@material-ui/core';
+
 const EventIdeaDetails = ({ details }) => {
 	return (
 		<React.Fragment>

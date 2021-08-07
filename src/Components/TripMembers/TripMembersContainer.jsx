@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { makeStyles } from '@material-ui/styles';
 import { Box, Button, Typography } from '@material-ui/core';
@@ -7,6 +7,10 @@ import AddIcon from '@material-ui/icons/Add';
 import { timelineModeSelector } from '../../Slices/TimelineStateSlice';
 import MembersTable from './MembersTable';
 import DeleteMemberDialog from './DeleteMemberDialog';
+import { useMediaQuery } from '@material-ui/core';
+import { TabletMQ } from '../../HelperFunction';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { returnToTimelineOnly } from '../../Slices/TimelineStateSlice';
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
 		gridColumn: '1/5',
@@ -14,7 +18,12 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex',
 		minHeight: '0'
 	},
-
+	fullGrid: {
+		gridColumn: '1/9',
+		gridRow: '1/2',
+		display: 'flex',
+		minHeight: '0'
+	},
 	avatarOverride: {
 		height: '4rem',
 		width: '4rem'
@@ -37,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 const TripMembersContainer = () => {
+	const dispatch = useDispatch();
+	const tablet = useMediaQuery(TabletMQ);
 	const [ showForm, setShowForm ] = useState(false);
 	const [ showDialog, setShowDialog ] = useState(false);
 	const [ chosenMember, setChosenMember ] = useState(0);
@@ -52,7 +63,7 @@ const TripMembersContainer = () => {
 			{timelineState === 'MEMBERS_TIMELINE' && (
 				<React.Fragment>
 					<motion.div
-						className={classes.expandGrid}
+						className={tablet ? classes.fullGrid : classes.expandGrid}
 						animate={{ x: 0 }}
 						initial={{
 							x: -1200
@@ -99,6 +110,16 @@ const TripMembersContainer = () => {
 								setShowDialog={setShowDialog}
 								setChosenMember={setChosenMember}
 							/>
+							<Box>
+								<Button
+									endIcon={<ChevronRightIcon fontSize="large" />}
+									onClick={() => {
+										dispatch(returnToTimelineOnly());
+									}}
+								>
+									Timeline
+								</Button>
+							</Box>
 						</Box>
 					</motion.div>
 					<DeleteMemberDialog
