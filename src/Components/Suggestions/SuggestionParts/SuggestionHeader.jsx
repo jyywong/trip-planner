@@ -4,7 +4,7 @@ import SyncAltIcon from '@material-ui/icons/SyncAlt';
 import { makeStyles } from '@material-ui/styles';
 import { useSwitchAlternativeMutation } from '../../../Services/tripPlannerBackend';
 import { useMediaQuery } from '@material-ui/core';
-import { LMobileMQ } from '../../../HelperFunction';
+import { LMobileMQ, MLaptopMQ } from '../../../HelperFunction';
 import { truncate } from '../../../HelperFunction';
 const useStyles = makeStyles((theme) => ({
 	lineHeightOverride: {
@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const SuggestionHeader = ({ suggestion }) => {
 	const lMobile = useMediaQuery(LMobileMQ);
+	const mLaptop = useMediaQuery(MLaptopMQ);
 	const [ switchAlternative, { data, error, isLoading } ] = useSwitchAlternativeMutation();
 	const classes = useStyles();
 	const handleSwitch = () => {
@@ -32,7 +33,7 @@ const SuggestionHeader = ({ suggestion }) => {
 				boxSizing="border-box"
 				display="flex"
 				alignItems="center"
-				flexDirection={lMobile ? 'column' : 'row'}
+				flexDirection={lMobile || mLaptop ? 'column' : 'row'}
 				justifyContent="space-between"
 			>
 				<Box display="flex">
@@ -50,7 +51,13 @@ const SuggestionHeader = ({ suggestion }) => {
 					</Box>
 				</Box>
 
-				<Box display="flex" justifyContent="center" width="100%" flexGrow="1" marginTop={lMobile ? 2 : 0}>
+				<Box
+					display="flex"
+					justifyContent="center"
+					width="100%"
+					flexGrow="1"
+					marginTop={lMobile || mLaptop ? 2 : 0}
+				>
 					<Button
 						className={classes.buttonOverride}
 						onClick={handleSwitch}

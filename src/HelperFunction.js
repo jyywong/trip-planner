@@ -70,7 +70,8 @@ export const mediaQueryComparer = (
 		return defaultMQ;
 	}
 };
-
+export const MLaptopMQ = '(max-width:1300px)';
+export const SLaptopMQ = '(max-width:1100px) and (min-width: 768px)';
 export const TabletMQ = '(max-width:768px)';
 export const TabletMidMQ = '(max-width:550px)';
 export const LMobileMQ = '(max-width:450px)';

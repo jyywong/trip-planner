@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useMediaQuery } from '@material-ui/core';
+import { LMobileMQ, SLaptopMQ } from '../HelperFunction';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetTripEventsQuery } from '../Services/tripPlannerBackend';
-import { AnimateSharedLayout } from 'framer-motion';
-import parseISO from 'date-fns/parseISO';
 import { changeModeToAdd } from '../Slices/UISlice';
-import { openDetails, timelineSelectedTrip } from '../Slices/TimelineStateSlice';
+import { openDetails, timelineSelectedTrip, timelineModeSelector } from '../Slices/TimelineStateSlice';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Timeline from '@material-ui/lab/Timeline';
@@ -15,7 +15,6 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
 import { MotionTimelineBlock } from './Timeline/TimelineBlock';
-import { compareAsc } from 'date-fns';
 const useStyles = makeStyles((theme) => ({
 	paper: {
 		padding: '6px 16px'
@@ -44,7 +43,11 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 const TimelineComp = ({ selectedItem, setSelectedItem }) => {
+	const LMobile = useMediaQuery(LMobileMQ);
+	const sLaptop = useMediaQuery(SLaptopMQ);
 	const classes = useStyles();
+	const timelineState = useSelector(timelineModeSelector);
+
 	const selectedTrip = useSelector(timelineSelectedTrip);
 	const { data, error, isLoading } = useGetTripEventsQuery(selectedTrip);
 	const dispatch = useDispatch();
@@ -53,7 +56,7 @@ const TimelineComp = ({ selectedItem, setSelectedItem }) => {
 	// const sortedTripStops = sortTripStopsByTime(data);
 	return (
 		<React.Fragment>
-			<Timeline align="alternate">
+			<Timeline align={LMobile || (sLaptop && timelineState !== 'TIMELINE_ONLY') ? 'left' : 'alternate'}>
 				{data.map((item) => (
 					<MotionTimelineBlock
 						key={item.id}

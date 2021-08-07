@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMediaQuery } from '@material-ui/core';
-import { TabletMQ } from '../HelperFunction';
+import { MLaptopMQ, TabletMQ } from '../HelperFunction';
 import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetATripQuery, useGetTripEventsQuery } from '../Services/tripPlannerBackend';
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TimelineContainer = () => {
 	const tablet = useMediaQuery(TabletMQ);
-
+	const mLaptop = useMediaQuery(MLaptopMQ);
 	const dispatch = useDispatch();
 	const selectedTrip = useSelector(timelineSelectedTrip);
 	const { data: tripData, error: tripError, isLoading: tripIsLoading } = useGetATripQuery(selectedTrip);
@@ -79,7 +79,10 @@ const TimelineContainer = () => {
 			}
 		}
 	};
-	if (tablet && timelineState !== 'TIMELINE_ONLY') {
+	if (
+		(tablet && timelineState !== 'TIMELINE_ONLY') ||
+		(mLaptop && timelineState === 'TIMELINE_DETAILS_SUGGESTIONS')
+	) {
 		return <React.Fragment />;
 	} else {
 		return (
@@ -110,7 +113,12 @@ const TimelineContainer = () => {
 						layout
 					>
 						<Box display="flex" flexShrink="1" marginTop={2} flexBasis="15%" component={motion.div} layout>
-							{!tripIsLoading && !tripError && <Typography variant="h2">{tripData.name}</Typography>}
+							{!tripIsLoading &&
+							!tripError && (
+								<Typography align="center" variant="h2">
+									{tripData.name}
+								</Typography>
+							)}
 						</Box>
 						<Box
 							className={classes.root}

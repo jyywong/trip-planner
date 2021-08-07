@@ -22,7 +22,8 @@ const useStyles = makeStyles({
 		color: 'white'
 	},
 	h5White: {
-		color: 'white'
+		color: 'white',
+		marginLeft: '1rem'
 	},
 	h6White: {
 		color: 'white'
@@ -98,10 +99,14 @@ const SavedDetailHeader = ({ tripEvent, timelineState }) => {
 						<Typography className={classes.h5White} variant="h5">
 							{format(parseISO(time), 'h:mmaaa')}
 						</Typography>
-						<Box display="flex" marginLeft={tabletMid ? '' : 'auto'}>
+						<Box display="flex" alignItems="center" marginLeft={tabletMid ? '' : 'auto'}>
 							<EditLocationIcon className={classes.whiteSVG} />
-							<Typography className={classes.h6White} variant="h6">
-								Location
+							<Typography
+								align={tabletMid ? 'left' : 'right'}
+								className={classes.h6White}
+								variant="caption"
+							>
+								{address}
 							</Typography>
 						</Box>
 					</Box>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { makeStyles } from '@material-ui/styles';
 import { Box, Button, Typography } from '@material-ui/core';
@@ -9,6 +9,8 @@ import MembersTable from './MembersTable';
 import DeleteMemberDialog from './DeleteMemberDialog';
 import { useMediaQuery } from '@material-ui/core';
 import { TabletMQ } from '../../HelperFunction';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { returnToTimelineOnly } from '../../Slices/TimelineStateSlice';
 const useStyles = makeStyles((theme) => ({
 	expandGrid: {
 		gridColumn: '1/5',
@@ -44,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 const TripMembersContainer = () => {
+	const dispatch = useDispatch();
 	const tablet = useMediaQuery(TabletMQ);
 	const [ showForm, setShowForm ] = useState(false);
 	const [ showDialog, setShowDialog ] = useState(false);
@@ -107,6 +110,16 @@ const TripMembersContainer = () => {
 								setShowDialog={setShowDialog}
 								setChosenMember={setChosenMember}
 							/>
+							<Box>
+								<Button
+									endIcon={<ChevronRightIcon fontSize="large" />}
+									onClick={() => {
+										dispatch(returnToTimelineOnly());
+									}}
+								>
+									Timeline
+								</Button>
+							</Box>
 						</Box>
 					</motion.div>
 					<DeleteMemberDialog

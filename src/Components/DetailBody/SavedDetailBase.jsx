@@ -42,7 +42,7 @@ const SavedDetailBase = ({ tripEvent, timelineState }) => {
 				<Tabs value={tabValue} onChange={handleTabChange}>
 					<Tab label="Details" />
 					<Tab label="Location" />
-					<Tab label="Next Stop" />
+					{/* <Tab label="Next Stop" /> */}
 				</Tabs>
 			</Box>
 			<Box

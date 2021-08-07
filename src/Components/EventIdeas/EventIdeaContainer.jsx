@@ -10,7 +10,7 @@ import { useGetEventIdeasQuery } from '../../Services/tripPlannerBackend';
 import { useMediaQuery } from '@material-ui/core';
 import { TabletMQ } from '../../HelperFunction';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import { openDetails } from '../../Slices/TimelineStateSlice';
+import { returnToTimelineOnly } from '../../Slices/TimelineStateSlice';
 
 const useStyles = makeStyles({
 	collapsedGrid: {
@@ -135,7 +135,7 @@ const EventIdeaContainer = () => {
 								<Button
 									startIcon={<ChevronLeftIcon fontSize="large" />}
 									onClick={() => {
-										dispatch(openDetails());
+										dispatch(returnToTimelineOnly());
 									}}
 								>
 									Event Details

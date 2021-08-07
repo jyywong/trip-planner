@@ -67,7 +67,9 @@ const NewMemberForm = ({ setShowForm }) => {
 				}}
 			>
 				<Box alignSelf="center">
-					<Typography variant="h5">Add New Member</Typography>
+					<Typography align="center" variant="h5">
+						Add New Member
+					</Typography>
 				</Box>
 				<form onSubmit={formik.handleSubmit}>
 					<Box marginTop={3}>

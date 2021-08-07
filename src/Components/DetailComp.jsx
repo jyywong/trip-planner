@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
-import { TabletMQ, TabletMidMQ } from '../HelperFunction';
+import { TabletMQ, TabletMidMQ, MLaptopMQ } from '../HelperFunction';
 import { motion, AnimatePresence } from 'framer-motion';
 import DetailHeaderPicture from './DetailHeaderPicture';
 import SavedDetailHeader from './DetailHeader/SavedDetailHeader';
@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Box } from '@material-ui/core';
 import NewStopFormComp from './NewStopFormComp';
 import { displayOnlyIfTimelineStateIsNotTimelineOnly, timelineStateComparer } from '../HelperFunction';
-import { timelineModeSelector, timelineSelectedTrip } from '../Slices/TimelineStateSlice';
+import { timelineModeSelector } from '../Slices/TimelineStateSlice';
 import { useGetATripEventQuery } from '../Services/tripPlannerBackend';
 
 const useStyles = makeStyles({
@@ -39,11 +39,18 @@ const useStyles = makeStyles({
 	fullGrid: {
 		gridColumn: '1/9',
 		gridRow: '1/2',
+
+		display: 'flex'
+	},
+	halfGrid: {
+		gridColumn: '1/5',
+		gridRow: '1/2',
 		visibility: 'visible',
 		display: 'flex'
 	}
 });
 const DetailComp = () => {
+	const mLaptop = useMediaQuery(MLaptopMQ);
 	const tabletMid = useMediaQuery(TabletMidMQ);
 	const tablet = useMediaQuery(TabletMQ);
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
@@ -57,25 +64,13 @@ const DetailComp = () => {
 				(timelineState === 'TIMELINE_DETAILS_SUGGESTIONS' && !tablet)) && (
 				<React.Fragment>
 					<motion.div
-						className={
-							tablet ? (
-								timelineStateComparer(
-									timelineState,
-									classes.collapsedGrid,
-									classes.fullGrid,
-									classes.middleGrid,
-									classes.collapsedGrid
-								)
-							) : (
-								timelineStateComparer(
-									timelineState,
-									classes.collapsedGrid,
-									classes.expandGrid,
-									classes.middleGrid,
-									classes.collapsedGrid
-								)
-							)
-						}
+						className={timelineStateComparer(
+							timelineState,
+							classes.collapsedGrid,
+							tablet ? classes.fullGrid : classes.expandGrid,
+							mLaptop ? classes.halfGrid : classes.middleGrid,
+							classes.collapsedGrid
+						)}
 						animate={{
 							x: 0
 						}}

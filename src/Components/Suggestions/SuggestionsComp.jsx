@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Box, Typography, Button } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import AddIcon from '@material-ui/icons/Add';
-import { SMobileMQ } from '../../HelperFunction';
+import { MLaptopMQ, SMobileMQ } from '../../HelperFunction';
 import Suggestion from './Suggestion';
 import NewSuggestion from './NewSuggestion';
 import { openDetails, timelineModeSelector } from '../../Slices/TimelineStateSlice';
@@ -34,6 +34,12 @@ const useStyles = makeStyles({
 		display: 'flex',
 		minHeight: '0'
 	},
+	halfSuggestions: {
+		gridColumn: '5/9',
+		gridRow: '1/2',
+		display: 'flex',
+		minHeight: '0'
+	},
 	whiteText: {
 		color: 'white'
 	},
@@ -55,6 +61,7 @@ const SuggestionsComp = () => {
 	const dispatch = useDispatch();
 	const tablet = useMediaQuery(TabletMQ);
 	const sMobile = useMediaQuery(SMobileMQ);
+	const mLaptop = useMediaQuery(MLaptopMQ);
 	const selectedStop = useSelector((state) => state.tripStop.selectedStop);
 	const { data, error, isLoading } = useGetAlternativesQuery(selectedStop);
 	const timelineState = useSelector(timelineModeSelector);
@@ -70,7 +77,15 @@ const SuggestionsComp = () => {
 				<React.Fragment>
 					<motion.div
 						key="suggestion"
-						className={tablet ? classes.fullSuggestions : classes.openSuggestions}
+						className={(() => {
+							if (tablet) {
+								return classes.fullSuggestions;
+							} else if (mLaptop) {
+								return classes.halfSuggestions;
+							} else {
+								return classes.openSuggestions;
+							}
+						})()}
 						animate={{
 							x: 0
 						}}
@@ -78,7 +93,7 @@ const SuggestionsComp = () => {
 							x: 500
 						}}
 						exit={{
-							x: 500
+							x: 750
 						}}
 						transition={{
 							type: 'spring',
@@ -103,9 +118,9 @@ const SuggestionsComp = () => {
 								display="flex"
 								paddingX={3}
 								paddingBottom={1}
-								alignItems={sMobile ? 'center' : 'flex-end'}
+								alignItems={sMobile || mLaptop ? 'center' : 'flex-end'}
 								justifyContent="space-between"
-								flexDirection={sMobile ? 'column' : 'row'}
+								flexDirection={sMobile || mLaptop ? 'column' : 'row'}
 								flexBasis="10%"
 								width="100%"
 								bgcolor="#c4c4c4"
@@ -113,10 +128,10 @@ const SuggestionsComp = () => {
 								<Typography className={classes.whiteText} variant="h4">
 									Suggestions
 								</Typography>
-								<Box width={sMobile ? '100%' : 'auto'}>
+								<Box width={sMobile || mLaptop ? '100%' : 'auto'}>
 									<Button
 										variant="outlined"
-										fullWidth={sMobile ? true : false}
+										fullWidth={sMobile || mLaptop ? true : false}
 										onClick={() => {
 											setShowForm(true);
 										}}
@@ -154,7 +169,7 @@ const SuggestionsComp = () => {
 											dispatch(openDetails());
 										}}
 									>
-										Timeline
+										Details
 									</Button>
 								</Box>
 							</AnimateSharedLayout>
