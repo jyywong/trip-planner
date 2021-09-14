@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Tabs, Tab } from '@material-ui/core';
+import { Box, Button, Tabs, Tab } from '@material-ui/core';
 import NewStopDetailsTextBox from './NewStopDetailsTextBox';
 import NewStopLocationSelector from './NewStopLocationSelector';
 import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
