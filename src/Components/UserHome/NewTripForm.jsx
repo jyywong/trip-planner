@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { mediaQueryComparer, TabletMQ, LMobileMQ } from '../../HelperFunction';
 import { motion } from 'framer-motion';
@@ -6,6 +7,7 @@ import { useSnackbar } from 'notistack';
 import { Box, Typography, TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useCreateTripMutation } from '../../Services/tripPlannerBackend';
+import { userIDSelector } from '../../Slices/AuthSlice';
 
 const useStyles = makeStyles((theme) => ({
 	overrideTextMargins: {
@@ -25,9 +27,10 @@ const useStyles = makeStyles((theme) => ({
 const NewTripForm = ({ setShowForm }) => {
 	const tablet = useMediaQuery(TabletMQ);
 	const LMobile = useMediaQuery(LMobileMQ);
+	const userID = useSelector(userIDSelector);
 	const { enqueueSnackbar } = useSnackbar();
 	const [ createTrip, { isSuccess, isError } ] = useCreateTripMutation();
-	const [ formValues, setFormValues ] = useState({ name: '', date: '' });
+	const [ formValues, setFormValues ] = useState({ name: '', date: '', members: [ { id: userID } ] });
 	const classes = useStyles();
 
 	const handleCancel = () => {

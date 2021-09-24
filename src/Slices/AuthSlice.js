@@ -25,3 +25,5 @@ export const authState = createSlice({
 export const { setCredentials, refreshToken, loggedOut } = authState.actions;
 
 export default authState.reducer;
+
+export const userIDSelector = (state) => state.authState.user;

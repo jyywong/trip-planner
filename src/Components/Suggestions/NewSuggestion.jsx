@@ -60,13 +60,7 @@ const NewSuggestion = ({ setShowForm }) => {
 
 	const { enqueueSnackbar } = useSnackbar();
 	const [ createSuggestion, { isSuccess, isError, error } ] = useCreateAlternativeMutation();
-	const [ formValues, setFormValues ] = useState({
-		location: {
-			name: '',
-			address: '',
-			place_id: ''
-		}
-	});
+	const [ formValues, setFormValues ] = useState({ place_id: '', address: '', locationName: '', lat: '', lng: '' });
 	const today = useSelector((state) => state.tripStop.date);
 	const selectedItem = useSelector((state) => state.tripStop.selectedStop);
 	const classes = useStyles();

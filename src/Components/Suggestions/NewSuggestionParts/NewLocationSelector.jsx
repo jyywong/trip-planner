@@ -50,14 +50,18 @@ const NewLocationSelector = ({ setFormValues }) => {
 					onChange={async (event, newValue) => {
 						console.log('onchange');
 						setValue(newValue);
-						setFormValues((current) => {
-							console.log('setformvalues');
-							return {
-								...current,
+						setFormValues(async (current) => {
+							console.log('newValue', newValue);
+							const geoResponse = await getGeocode({ address: newValue.description });
+							const { lat, lng } = await getLatLng(geoResponse[0]);
+							const newForm = {
+								// ...current,
 								place_id: newValue.place_id,
 								address: newValue.description,
 								locationName: newValue.structured_formatting.main_text
 							};
+							console.log(newForm);
+							return newForm;
 						});
 					}}
 					renderInput={(params) => (
