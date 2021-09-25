@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import { TextField, Grid, Typography } from '@material-ui/core';
-import { useJsApiLoader } from '@react-google-maps/api';
+
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { Autocomplete } from '@material-ui/lab';
 const libraries = [ 'places' ];
@@ -50,17 +50,18 @@ const NewLocationSelector = ({ setFormValues }) => {
 					onChange={async (event, newValue) => {
 						console.log('onchange');
 						setValue(newValue);
-						setFormValues(async (current) => {
+						const geoResponse = await getGeocode({ address: newValue.description });
+						const { lat, lng } = await getLatLng(geoResponse[0]);
+						setFormValues((current) => {
 							console.log('newValue', newValue);
-							const geoResponse = await getGeocode({ address: newValue.description });
-							const { lat, lng } = await getLatLng(geoResponse[0]);
 							const newForm = {
-								// ...current,
+								...current,
 								place_id: newValue.place_id,
 								address: newValue.description,
-								locationName: newValue.structured_formatting.main_text
+								locationName: newValue.structured_formatting.main_text,
+								lat,
+								lng
 							};
-							console.log(newForm);
 							return newForm;
 						});
 					}}

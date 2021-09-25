@@ -39,7 +39,7 @@ const NewSuggestion = ({ setShowForm }) => {
 		}),
 		onSubmit: () => {
 			const { eventName, time, details } = formik.values;
-			const { locationName, address, place_id } = formValues;
+			const { locationName, address, place_id, lat, lng } = formValues;
 			const newSuggestionObject = {
 				alternativeTo: selectedItem,
 				createdBy: 1,
@@ -50,6 +50,8 @@ const NewSuggestion = ({ setShowForm }) => {
 				locationName,
 				address,
 				placeID: place_id,
+				lat,
+				long: lng,
 				upvotes: 0,
 				downvotes: 0
 			};

@@ -34,6 +34,12 @@ const NewStopFormComp = ({ timelineState }) => {
 		};
 
 		createEvent({ tripID: selectedTrip, newEvent: newStop });
+		setFormValues({
+			name: '',
+			time: '',
+			details: '',
+			location: { address: '', place_id: '', latLng: {} }
+		});
 	};
 
 	useEffect(

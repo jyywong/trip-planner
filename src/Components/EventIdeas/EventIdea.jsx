@@ -25,9 +25,7 @@ const EventIdea = ({ eventIdea }) => {
 	const dispatch = useDispatch();
 	const classes = useStyles();
 	const handleAdd = () => {
-		const id = Math.random() * 100;
 		const newStop = {
-			id,
 			time,
 			details: {
 				title: name,
@@ -77,7 +75,7 @@ const EventIdea = ({ eventIdea }) => {
 							{format(parseISO(time), 'h:mmaaa')}
 						</Typography>
 					</Box>
-					{eventIdea.status === 'Suggested' && (
+					{eventIdea.status === 'Suggested' ? (
 						<Box
 							alignSelf="center"
 							marginRight={tabletMid ? 0 : 1.5}
@@ -86,6 +84,17 @@ const EventIdea = ({ eventIdea }) => {
 						>
 							<Button variant="contained" color="primary" fullWidth onClick={handleAdd}>
 								Add
+							</Button>
+						</Box>
+					) : (
+						<Box
+							alignSelf="center"
+							marginRight={tabletMid ? 0 : 1.5}
+							marginBottom={tabletMid ? 1 : 0}
+							width={tabletMid ? '90%' : 'auto'}
+						>
+							<Button variant="contained" color="primary" fullWidth disabled>
+								Added
 							</Button>
 						</Box>
 					)}
@@ -106,7 +115,7 @@ const EventIdea = ({ eventIdea }) => {
 						</Box>
 						<EventIdeaLocation location={{ locationName, address }} />
 					</Box>
-					<EventIdeaVoteButtons id={id} votes={{ upvotes, downvotes }} />
+					<EventIdeaVoteButtons id={id} eventIdea={eventIdea} votes={{ upvotes, downvotes }} />
 				</Box>
 				<EventIdeaVoteBar votes={{ upvotes, downvotes }} />
 			</Box>

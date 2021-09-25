@@ -6,6 +6,7 @@ import SuggestionPropChange from './SuggestionParts/SuggestionPropChange';
 import SuggestionVotes from './SuggestionParts/SuggestionVotes';
 import SuggestionVoteBar from './SuggestionParts/SuggestionVoteBar';
 const Suggestion = ({ suggestion }) => {
+	console.log(suggestion);
 	return (
 		<React.Fragment>
 			<Box

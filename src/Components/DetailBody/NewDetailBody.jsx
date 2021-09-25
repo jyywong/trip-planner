@@ -2,10 +2,16 @@ import React, { useState } from 'react';
 import { Box, Button, Tabs, Tab } from '@material-ui/core';
 import NewStopDetailsTextBox from './NewStopDetailsTextBox';
 import NewStopLocationSelector from './NewStopLocationSelector';
+import { useDispatch } from 'react-redux';
+import { returnToTimelineOnly } from '../../Slices/TimelineStateSlice';
 import { displayOnlyIfTimelineStateIsNotTimelineOnly } from '../../HelperFunction';
 
 const NewDetailBody = ({ createNewStop, formValues, setFormValues, timelineState }) => {
+	const dispatch = useDispatch();
 	const [ tabValue, setTabValue ] = useState(0);
+	const handleCancel = () => {
+		dispatch(returnToTimelineOnly());
+	};
 	const handleTabChange = (event, newValue) => {
 		setTabValue(newValue);
 	};
@@ -47,7 +53,7 @@ const NewDetailBody = ({ createNewStop, formValues, setFormValues, timelineState
 					Create
 				</Button>
 				<Box ml={2}>
-					<Button variant="outlined" color="secondary" size="large">
+					<Button onClick={handleCancel} variant="outlined" color="secondary" size="large">
 						Cancel
 					</Button>
 				</Box>

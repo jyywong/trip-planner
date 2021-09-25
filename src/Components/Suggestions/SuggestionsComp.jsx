@@ -63,7 +63,7 @@ const SuggestionsComp = () => {
 	const sMobile = useMediaQuery(SMobileMQ);
 	const mLaptop = useMediaQuery(MLaptopMQ);
 	const selectedStop = useSelector((state) => state.tripStop.selectedStop);
-	const { data, error, isLoading } = useGetAlternativesQuery(selectedStop);
+	const { data, error, suggestionIsLoading } = useGetAlternativesQuery(selectedStop);
 	const timelineState = useSelector(timelineModeSelector);
 	const alternativesForSelectedStop = useSelector((state) => {
 		const allSuggestions = Object.values(state.suggestions.byID);
@@ -156,7 +156,7 @@ const SuggestionsComp = () => {
 									<AnimatePresence>
 										{showForm && <NewSuggestion key="newSuggestion" setShowForm={setShowForm} />}
 									</AnimatePresence>
-									{!isLoading &&
+									{!suggestionIsLoading &&
 										!error &&
 										data.map((alternative) => (
 											<Suggestion key={alternative.id} suggestion={alternative} />

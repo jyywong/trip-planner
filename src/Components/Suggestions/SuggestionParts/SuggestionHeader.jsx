@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Avatar, Typography, Button } from '@material-ui/core';
 import SyncAltIcon from '@material-ui/icons/SyncAlt';
 import { makeStyles } from '@material-ui/styles';
 import { useSwitchAlternativeMutation } from '../../../Services/tripPlannerBackend';
 import { useMediaQuery } from '@material-ui/core';
 import { LMobileMQ, MLaptopMQ } from '../../../HelperFunction';
+import { useGetUserDetailsQuery } from '../../../Services/tripPlannerBackend';
 import { truncate } from '../../../HelperFunction';
 const useStyles = makeStyles((theme) => ({
 	lineHeightOverride: {
@@ -21,11 +22,20 @@ const useStyles = makeStyles((theme) => ({
 const SuggestionHeader = ({ suggestion }) => {
 	const lMobile = useMediaQuery(LMobileMQ);
 	const mLaptop = useMediaQuery(MLaptopMQ);
-	const [ switchAlternative, { data, error, isLoading } ] = useSwitchAlternativeMutation();
+	const { data, error, isLoading } = useGetUserDetailsQuery(suggestion.createdBy);
+	const [ switchAlternative ] = useSwitchAlternativeMutation();
 	const classes = useStyles();
 	const handleSwitch = () => {
 		switchAlternative(suggestion.id);
 	};
+
+	useEffect(
+		() => {
+			console.log(data);
+			console.log(error);
+		},
+		[ isLoading ]
+	);
 
 	return (
 		<React.Fragment>
@@ -38,15 +48,15 @@ const SuggestionHeader = ({ suggestion }) => {
 			>
 				<Box display="flex">
 					<Box marginRight={1}>
-						<Avatar className={classes.avatarOrange}>OP</Avatar>
+						<Avatar className={classes.avatarOrange} />
 					</Box>
 
 					<Box display="flex" justifyContent="space-between" flexDirection="column">
 						<Typography className={classes.lineHeightOverride} variant="h6">
-							Original Poster
+							{!isLoading && data.username}
 						</Typography>
 						<Typography className={classes.lineHeightOverride} variant="body2">
-							op@email.com
+							{!isLoading && data.email}
 						</Typography>
 					</Box>
 				</Box>

@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Box, Typography, IconButton } from '@material-ui/core';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { makeStyles } from '@material-ui/styles';
 import { upvoteSuggestion, downvoteSuggestion } from '../../../Slices/SuggestionsSlice';
+import { useDownvoteAlternativeMutation, useUpvoteAlternativeMutation } from '../../../Services/tripPlannerBackend';
 
 const useStyles = makeStyles((theme) => ({
 	greenThumb: {
@@ -16,14 +17,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SuggestionVotes = ({ suggestion }) => {
-	const dispatch = useDispatch();
+	const [ upvoteAlternative ] = useUpvoteAlternativeMutation();
+	const [ downvoteAlternative ] = useDownvoteAlternativeMutation();
 	const classes = useStyles();
 	const handleUpvote = () => {
-		dispatch(upvoteSuggestion({ id: suggestion.id }));
+		upvoteAlternative({ alternativeID: suggestion.id, upvote: suggestion.upvotes + 1 });
 	};
 	const handleDownvote = () => {
-		dispatch(downvoteSuggestion({ id: suggestion.id }));
+		downvoteAlternative({ alternativeID: suggestion.id, downvote: suggestion.downvotes + 1 });
 	};
+
 	return (
 		<React.Fragment>
 			<Box

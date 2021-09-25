@@ -154,6 +154,26 @@ export const tripPlannerApi = createApi({
 			}),
 			invalidatesTags: [ 'eventIdeas', 'tripEvents' ]
 		}),
+		upvoteEventIdea: builder.mutation({
+			query: ({ eventIdeaID, upvote }) => ({
+				url: `event_idea/${eventIdeaID}`,
+				method: 'PATCH',
+				body: {
+					upvotes: upvote
+				}
+			}),
+			invalidatesTags: [ 'eventIdeas', 'tripEvents' ]
+		}),
+		downvoteEventIdea: builder.mutation({
+			query: ({ eventIdeaID, downvote }) => ({
+				url: `event_idea/${eventIdeaID}`,
+				method: 'PATCH',
+				body: {
+					downvotes: downvote
+				}
+			}),
+			invalidatesTags: [ 'eventIdeas', 'tripEvents' ]
+		}),
 		getAlternatives: builder.query({
 			query: (eventID) => ({
 				url: `event_alternatives/${eventID}`
@@ -165,6 +185,22 @@ export const tripPlannerApi = createApi({
 				url: `event_alternatives/${eventID}`,
 				method: 'POST',
 				body: newAlternative
+			}),
+			invalidatesTags: [ 'alternatives' ]
+		}),
+		upvoteAlternative: builder.mutation({
+			query: ({ alternativeID, upvote }) => ({
+				url: `event_alternative/${alternativeID}`,
+				method: 'PATCH',
+				body: { upvotes: upvote }
+			}),
+			invalidatesTags: [ 'alternatives' ]
+		}),
+		downvoteAlternative: builder.mutation({
+			query: ({ alternativeID, downvote }) => ({
+				url: `event_alternative/${alternativeID}`,
+				method: 'PATCH',
+				body: { downvotes: downvote }
 			}),
 			invalidatesTags: [ 'alternatives' ]
 		}),
@@ -198,7 +234,11 @@ export const {
 	useGetEventIdeasQuery,
 	useCreateEventIdeaQuery,
 	useAddEventIdeaMutation,
+	useUpvoteEventIdeaMutation,
+	useDownvoteEventIdeaMutation,
 	useGetAlternativesQuery,
 	useCreateAlternativeMutation,
+	useUpvoteAlternativeMutation,
+	useDownvoteAlternativeMutation,
 	useSwitchAlternativeMutation
 } = tripPlannerApi;
