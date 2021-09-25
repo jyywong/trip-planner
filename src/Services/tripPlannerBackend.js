@@ -1,8 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { refreshToken, loggedOut } from '../Slices/AuthSlice';
 
+// const baseUrl = 'http://127.0.0.1:8000/api';
+const baseUrl = 'https://aqueous-harbor-15603.herokuapp.com/';
+
 const baseQuery = fetchBaseQuery({
-	baseUrl: 'http://127.0.0.1:8000/api',
+	baseUrl: baseUrl,
 	prepareHeaders: (headers, { getState }) => {
 		const token = getState().authState.accessToken;
 		if (token) {
