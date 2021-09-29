@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../Slices/AuthSlice';
 import { useLoginMutation } from '../Services/tripPlannerBackend';
-import { Card, Button, Typography, CardContent, Box, TextField, Link } from '@material-ui/core';
+import { Card, Button, Typography, CardContent, Box, TextField, Link, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 
@@ -72,10 +72,17 @@ const Login = () => {
 							alignItems="center"
 							padding={1}
 						>
-							<Box display="flex" marginBottom={2} flexDirection="column" alignItems="center">
-								<LockIcon />
-								<Typography variant="h4"> Log In</Typography>
-							</Box>
+							{isLoading ? (
+								<Box marginBottom={2}>
+									<CircularProgress />
+								</Box>
+							) : (
+								<Box display="flex" marginBottom={2} flexDirection="column" alignItems="center">
+									<LockIcon />
+									<Typography variant="h4"> Log In</Typography>
+								</Box>
+							)}
+
 							<TextField
 								variant="outlined"
 								className={classes.mediumBottomMargin}
@@ -110,8 +117,10 @@ const Login = () => {
 							<Typography align="center" className={classes.noBottomMargin} variant="subtitle1">
 								Don't have an account?
 								<Link component={RouterLink} to="/signup">
-									Sign up!
+									&nbsp;Sign up!
 								</Link>
+								<br />
+								Demo Username: demo | Demo Password: demopassword
 							</Typography>
 						</Box>
 					</CardContent>
